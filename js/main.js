@@ -89,15 +89,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 4. Mobile Drawer Toggle
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileBottomMenuBtn = document.getElementById('mobile-bottom-menu-toggle');
   const mobileDrawer = document.getElementById('mobile-drawer');
   const drawerCloseBtn = document.getElementById('drawer-close');
 
-  if (mobileMenuBtn && mobileDrawer) {
-    mobileMenuBtn.addEventListener('click', () => {
+  function openDrawer() {
+    if (mobileDrawer) {
       mobileDrawer.classList.add('open');
       document.body.style.overflow = 'hidden';
-    });
+    }
   }
+
+  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openDrawer);
+  if (mobileBottomMenuBtn) mobileBottomMenuBtn.addEventListener('click', openDrawer);
 
   if (drawerCloseBtn && mobileDrawer) {
     drawerCloseBtn.addEventListener('click', () => {
@@ -440,4 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderGallery();
   initCounters();
   initTiltEffect();
+  if (typeof initFlyingLogoScroll === 'function') {
+    initFlyingLogoScroll();
+  }
 });

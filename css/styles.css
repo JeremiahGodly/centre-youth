@@ -1960,3 +1960,502 @@ textarea.form-control {
     margin-top: 1rem;
   }
 }
+
+/* ==========================================================================
+   OFFICIAL LOGO & 3D FLYING EMBLEM SHOWCASE
+   ========================================================================== */
+.brand-emblem-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  display: block;
+  background: #ffffff;
+  padding: 2px;
+}
+
+.flying-logo-section {
+  padding: 3rem 0;
+  perspective: 1200px;
+}
+
+.flying-logo-banner {
+  padding: 2.75rem 3rem;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(225, 29, 72, 0.08), rgba(6, 182, 212, 0.08));
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.flying-logo-wrapper {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  align-items: center;
+  gap: 3rem;
+}
+
+.flying-logo-3d-box {
+  position: relative;
+  width: 230px;
+  height: 230px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 50px rgba(245, 158, 11, 0.3);
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.flying-logo-img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.5));
+  animation: floatLogo3D 6s ease-in-out infinite;
+}
+
+@keyframes floatLogo3D {
+  0%, 100% {
+    transform: translateY(0px) rotateY(0deg) rotateX(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotateY(12deg) rotateX(6deg) scale(1.03);
+  }
+  50% {
+    transform: translateY(-4px) rotateY(-8deg) rotateX(-4deg) scale(1.01);
+  }
+  75% {
+    transform: translateY(-12px) rotateY(6deg) rotateX(8deg) scale(1.04);
+  }
+}
+
+.logo-aura-glow {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.4) 0%, rgba(225, 29, 72, 0.25) 50%, transparent 70%);
+  filter: blur(25px);
+  pointer-events: none;
+}
+
+.flying-logo-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 0.85rem;
+}
+
+.flying-logo-desc {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.35rem;
+}
+
+.flying-logo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.chip-item {
+  font-size: 0.825rem;
+  font-weight: 700;
+  padding: 0.4rem 0.95rem;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-glass);
+  color: var(--text-accent);
+}
+
+/* ==========================================================================
+   YOUTH VIBES & CARTOONS (NANO BANANA STYLE)
+   ========================================================================== */
+.cartoons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.cartoon-card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartoon-img-wrap {
+  position: relative;
+  height: 290px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.cartoon-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.cartoon-card:hover .cartoon-img-wrap img {
+  transform: scale(1.05);
+}
+
+.comic-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: linear-gradient(135deg, #f59e0b, #e11d48);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.04em;
+}
+
+.cartoon-content {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex-grow: 1;
+}
+
+.cartoon-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.cartoon-caption {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.fun-quote-bubble {
+  background: var(--bg-surface-elevated);
+  border-left: 3px solid var(--gold-500);
+  padding: 0.75rem 1rem;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-accent);
+  margin-top: auto;
+}
+
+/* ==========================================================================
+   FLOATING WHATSAPP BUTTON (+918078041809)
+   ========================================================================== */
+.floating-whatsapp-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  background: #25D366;
+  color: #ffffff !important;
+  border-radius: var(--radius-full);
+  padding: 0.55rem 1.25rem 0.55rem 0.65rem;
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.floating-whatsapp-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+  color: #ffffff !important;
+}
+
+.whatsapp-btn-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.whatsapp-btn-label {
+  font-size: 0.925rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.whatsapp-badge-pulse {
+  position: absolute;
+  inset: -3px;
+  border-radius: var(--radius-full);
+  border: 2px solid #25D366;
+  animation: pulseGlow 2s infinite;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   MOBILE BOTTOM NAVIGATION BAR ("MAKE MANU BAR")
+   ========================================================================== */
+.mobile-bottom-nav {
+  display: none;
+}
+
+/* ==========================================================================
+   DESKTOP-LIKE DENSITY ON MOBILE ("MORE CONTENT IN SINGLE VIEW")
+   ========================================================================== */
+@media (max-width: 768px) {
+  html {
+    font-size: 13.5px; /* Compact base typography */
+  }
+
+  body {
+    padding-bottom: 65px; /* Clear space for bottom nav bar */
+  }
+
+  .container {
+    padding: 0 0.85rem;
+  }
+
+  .section-padding {
+    padding: 2.75rem 0;
+  }
+
+  .section-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.45rem;
+  }
+
+  .section-desc {
+    font-size: 0.85rem;
+  }
+
+  /* 2-Column Responsive High Density Grids */
+  .pillars-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem;
+  }
+  .pillar-card {
+    padding: 0.85rem 0.75rem;
+  }
+  .pillar-icon-badge {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 0.6rem;
+  }
+  .pillar-icon-badge svg {
+    width: 18px;
+    height: 18px;
+  }
+  .pillar-title {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+  }
+  .pillar-desc {
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .kalamela-items-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem;
+    margin-bottom: 1.75rem;
+  }
+  .kalamela-item-card {
+    padding: 0.75rem;
+  }
+  .item-name {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .parishes-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem;
+  }
+  .parish-card {
+    padding: 0.85rem;
+  }
+  .parish-title {
+    font-size: 0.88rem;
+    margin-bottom: 0.3rem;
+  }
+  .parish-meta {
+    font-size: 0.72rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .leaders-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem;
+  }
+  .leader-card {
+    padding: 0.85rem 0.65rem;
+  }
+  .leader-avatar-wrap {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 0.65rem;
+  }
+  .leader-name {
+    font-size: 0.9rem;
+  }
+  .leader-designation {
+    font-size: 0.72rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .achievements-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem;
+  }
+  .achievement-img-wrap {
+    height: 110px;
+  }
+  .achievement-content {
+    padding: 0.75rem;
+  }
+  .achievement-title {
+    font-size: 0.88rem;
+  }
+  .achievement-desc {
+    font-size: 0.75rem;
+  }
+
+  .cartoons-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem;
+  }
+  .cartoon-img-wrap {
+    height: 130px;
+  }
+  .cartoon-content {
+    padding: 0.75rem;
+    gap: 0.45rem;
+  }
+  .cartoon-title {
+    font-size: 0.9rem;
+  }
+  .cartoon-caption {
+    font-size: 0.75rem;
+  }
+  .fun-quote-bubble {
+    font-size: 0.72rem;
+    padding: 0.5rem 0.65rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.45rem;
+  }
+  .gallery-item {
+    height: 100px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+  .stat-item {
+    padding: 0.25rem;
+    gap: 0.5rem;
+  }
+  .stat-item-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .stat-number {
+    font-size: 1.25rem;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+  }
+
+  .flying-logo-wrapper {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1.25rem;
+  }
+  .flying-logo-banner {
+    padding: 1.75rem 1.25rem;
+  }
+  .flying-logo-3d-box {
+    width: 140px;
+    height: 140px;
+  }
+  .flying-logo-img {
+    width: 120px;
+    height: 120px;
+  }
+  .flying-logo-chips {
+    justify-content: center;
+  }
+
+  /* Mobile Bottom Menu Bar Active */
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1100;
+    height: 54px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border-glass);
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 0.25rem;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 4px 6px;
+    background: transparent;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+    text-decoration: none;
+    border: none;
+  }
+
+  .mobile-nav-item:hover, .mobile-nav-item.active {
+    color: var(--gold-500);
+  }
+
+  .mobile-nav-item svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Floating WhatsApp on Mobile */
+  .floating-whatsapp-btn {
+    bottom: 4.25rem;
+    right: 0.85rem;
+    padding: 0.55rem;
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+  }
+
+  .whatsapp-btn-label {
+    display: none;
+  }
+}

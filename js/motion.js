@@ -353,3 +353,27 @@ class Lightbox {
     this.caption.textContent = item[titleKey] || item.titleEn;
   }
 }
+
+// 3D Flying Logo Scroll Effect
+function initFlyingLogoScroll() {
+  const logoEl = document.getElementById('flying-logo-element');
+  const section = document.getElementById('emblem-3d');
+  if (!logoEl || !section) return;
+
+  window.addEventListener('scroll', () => {
+    const rect = section.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    if (rect.top < windowHeight && rect.bottom > 0) {
+      const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
+      const clamped = Math.max(0, Math.min(1, progress));
+
+      const rotateY = (clamped - 0.5) * 36;
+      const rotateX = Math.sin(clamped * Math.PI) * 14;
+      const translateY = (1 - Math.sin(clamped * Math.PI)) * -35;
+      const scale = 0.94 + Math.sin(clamped * Math.PI) * 0.14;
+
+      logoEl.style.transform = `perspective(1000px) translateY(${translateY}px) rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale3d(${scale}, ${scale}, ${scale})`;
+    }
+  }, { passive: true });
+}

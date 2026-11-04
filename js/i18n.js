@@ -109,7 +109,16 @@ const I18N = {
     footerAbout: "Mar Thoma Yuvajana Sakhyam is the youth movement of the Malankara Mar Thoma Syrian Church. Keezhillam - Munnar Centre unites vibrant youth from 15+ parishes for worship, study, witness, and selfless service.",
     footerLinks: "Quick Navigation",
     footerResources: "Official Documents",
-    footerCopyright: "© 2026 Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam. All rights reserved."
+    footerCopyright: "© 2026 Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam. All rights reserved.",
+
+    flyingLogoDesc: "Rooted in the eternal faith of the Malankara Mar Thoma Syrian Church, marching forward with Christ's beacon across Kottayam - Kochi Diocese.",
+    cartoonsBadge: "Youth Vibes & Moments",
+    cartoonsHeading: "Sakhyam Life & Camp Fun",
+    cartoonsSubhead: "Energetic, hilarious & unforgettable everyday moments from our youth fellowship!",
+    cartoon1Title: "“When Centre Sakhyam Wins The Cup!”",
+    cartoon1Desc: "“Final whistle blows: Half the team drops to their knees thanking God, the other half lifting the trophy chanting parish slogans at the top of their lungs!”",
+    cartoon2Title: "“Youth Camp Arrival Protocol”",
+    cartoon2Desc: "“Bags packed in 5 minutes, acoustic guitar ready, steaming hot Chaya kettle & banana chips in hand, with 0% sleep planned for the next 3 days!”"
   },
 
   ml: {
@@ -219,7 +228,16 @@ const I18N = {
     footerAbout: "മലങ്കര മാർത്തോമ്മാ സുറിയാനി സഭയുടെ ഔദ്യോഗിക യുവജന പ്രസ്ഥാനമാണ് മാർത്തോമ്മാ യുവജനസഖ്യം. കീഴില്ലം - മൂന്നാർ സെന്റർ 15-ലധികം ഇടവകകളിലെ യുവജനങ്ങളെ ആരാധന, പഠനം, സാക്ഷ്യം, സേവനം എന്നിവയിൽ കോർത്തിണക്കുന്നു.",
     footerLinks: "പ്രധാന ലിങ്കുകൾ",
     footerResources: "രേഖകളും ഡൗൺലോഡുകളും",
-    footerCopyright: "© 2026 കീഴില്ലം - മൂന്നാർ സെന്റർ മാർത്തോമ്മാ യുവജനസഖ്യം. സർവ്വ അവകാശങ്ങളും നിക്ഷിപ്തം."
+    footerCopyright: "© 2026 കീഴില്ലം - മൂന്നാർ സെന്റർ മാർത്തോമ്മാ യുവജനസഖ്യം. സർവ്വ അവകാശങ്ങളും നിക്ഷിപ്തം.",
+
+    flyingLogoDesc: "മലങ്കര മാർത്തോമ്മാ സുറിയാനി സഭയുടെ പവിത്രമായ പാരമ്പര്യത്തിൽ അടിയുറച്ച്, കോട്ടയം കൊച്ചി ഭദ്രാസനത്തിൽ ക്രിസ്തുവിന്റെ പ്രകാശമായി മുന്നോട്ട്.",
+    cartoonsBadge: "യുവജന വൈബ്സ് & തമാശകൾ",
+    cartoonsHeading: "സഖ്യം ജീവിതവും ക്യാമ്പ് തമാശകളും",
+    cartoonsSubhead: "നമ്മുടെ സഖ്യക്കൂട്ടായ്മയിലെ മറക്കാനാവാത്ത രസകരമായ നിമിഷങ്ങളും തമാശകളും!",
+    cartoon1Title: "“കീഴില്ലം - മൂന്നാർ സെന്റർ കിരീടം നേടുമ്പോൾ!”",
+    cartoon1Desc: "“ഫൈനൽ വിസിൽ മുഴങ്ങുമ്പോൾ: പകുതിപ്പേർ ദൈവത്തിന് സ്തുതി പാടുന്നു, ബാക്കി പകുതി ട്രോഫിയും ഉയർത്തിപ്പിടിച്ച് ജയ് വിളിക്കുന്നു!”",
+    cartoon2Title: "“യൂത്ത് ക്യാമ്പിലേക്ക് എത്തുമ്പോൾ”",
+    cartoon2Desc: "“അഞ്ചു മിനിറ്റിൽ ബാഗ് പാക്ക് ചെയ്തു, ഗിത്താറും കട്ടൻ ചായയും കായവറുത്തതും റെഡി, അടുത്ത 3 ദിവസത്തേക്ക് ഉറക്കമൊന്നുമില്ല!”"
   },
 
   mang: {
@@ -329,6 +347,15 @@ const I18N = {
     footerAbout: "Malankara Mar Thoma Syrian Sabhayude official youth movement aanu Mar Thoma Yuvajana Sakhyam. Keezhillam - Munnar Centre 15-il param idavakakalile youth-ne aaraadhana, padhanam, saakshyam, sevanam ennivayil koorthi-inakkunnu.",
     footerLinks: "Important Links",
     footerResources: "Documents & Downloads",
-    footerCopyright: "© 2026 Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam. All rights reserved."
+    footerCopyright: "© 2026 Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam. All rights reserved.",
+
+    flyingLogoDesc: "Malankara Mar Thoma Syrian Sabhayude vishwaasathil urachu ninnu, Kottayam - Kochi Bhadrasanathil velichamaayi munnoott.",
+    cartoonsBadge: "Youth Vibes & Moments",
+    cartoonsHeading: "Sakhyam Life & Camp Fun",
+    cartoonsSubhead: "Nammude youth koottaymayile rasakaramaya nimishangalum funny moments-um!",
+    cartoon1Title: "“Centre Sakhyam Trophy Adikkumbol!”",
+    cartoon1Desc: "“Final whistle adikkumbol: Paathi aalukal daivathinnu sthuthi parayunnu, bakki aalukal cup pokki parish slogans chanthi celebration!”",
+    cartoon2Title: "“Youth Camp-lekku Ethumbol”",
+    cartoon2Desc: "“5 min-il bag pack cheythu, guitar-um chaya-yum ready, adutha 3 divasathekk urakkam onnumilla!”"
   }
 };
