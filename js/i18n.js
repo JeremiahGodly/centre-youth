@@ -4,6 +4,7 @@
 const I18N = {
   en: {
     metaTitle: "Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam",
+    navBrandTitle: "Keezhillam - Munnar Centre",
     motto: "Lighted to Lighten",
     badgeDiocese: "Kottayam - Kochi Diocese | 2026 - 2027",
     navHome: "Home",
@@ -113,6 +114,7 @@ const I18N = {
 
   ml: {
     metaTitle: "കീഴില്ലം - മൂന്നാർ സെന്റർ മാർത്തോമ്മാ യുവജനസഖ്യം",
+    navBrandTitle: "കീഴില്ലം - മൂന്നാർ സെന്റർ",
     motto: "പ്രകാശിതരായി പ്രകാശിപ്പിക്കുക",
     badgeDiocese: "കോട്ടയം - കൊച്ചി ഭദ്രാസനം | 2026 - 2027",
     navHome: "പ്രധാന പേജ്",
@@ -222,6 +224,7 @@ const I18N = {
 
   mang: {
     metaTitle: "Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam",
+    navBrandTitle: "Keezhillam - Munnar Centre",
     motto: "Prakashitharaayi Prakaashippikkuka (Lighted to Lighten)",
     badgeDiocese: "Kottayam - Kochi Bhadrasanam | 2026 - 2027",
     navHome: "Home",
