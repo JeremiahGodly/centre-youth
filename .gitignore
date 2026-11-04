@@ -1,0 +1,4 @@
+# Ignore raw WhatsApp chat export directory
+WhatsApp Chat - *
+.DS_Store
+*.log

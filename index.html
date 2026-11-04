@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam</title>
+  <meta name="description" content="Official website of Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam, Kottayam - Kochi Diocese. Rooted in Worship, Study, Witness, and Service.">
+  <meta name="keywords" content="Mar Thoma, Yuvajana Sakhyam, Keezhillam Munnar Centre, Lumora Kalamela 2026, C-SHORE Youth Camp, Kottayam Kochi Diocese">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✝️</text></svg>">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Site Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="#home" class="brand-wrap">
+        <div class="brand-emblem">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M7 7h10"/>
+            <circle cx="12" cy="7" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title" data-i18n="metaTitle">Keezhillam - Munnar Centre</span>
+          <span class="brand-subtitle" data-i18n="motto">Lighted to Lighten</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="#home" class="nav-link active" data-i18n="navHome">Home</a></li>
+          <li><a href="#about" class="nav-link" data-i18n="navAbout">About</a></li>
+          <li><a href="#cshore" class="nav-link" data-i18n="navCamp">C-SHORE Camp</a></li>
+          <li><a href="#lumora" class="nav-link" data-i18n="navKalamela">LUMORA 2026</a></li>
+          <li><a href="#parishes" class="nav-link" data-i18n="navParishes">Parishes</a></li>
+          <li><a href="#leadership" class="nav-link" data-i18n="navLeadership">Leadership</a></li>
+          <li><a href="#gallery" class="nav-link" data-i18n="navGallery">Gallery</a></li>
+          <li><a href="#connect" class="nav-link" data-i18n="navConnect">Connect</a></li>
+        </ul>
+      </nav>
+
+      <!-- Language & Theme Controls -->
+      <div class="header-controls">
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" data-lang-val="en">EN</button>
+          <button type="button" class="lang-btn" data-lang-val="ml">മലയാളം</button>
+          <button type="button" class="lang-btn" data-lang-val="mang">Manglish</button>
+        </div>
+
+        <button type="button" class="theme-toggle" aria-label="Toggle Theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <button type="button" class="hamburger-btn" id="mobile-menu-btn" aria-label="Open Menu">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+      <div class="brand-wrap">
+        <div class="brand-emblem">✝️</div>
+        <div class="brand-text">
+          <span class="brand-title" data-i18n="metaTitle">Keezhillam - Munnar Centre</span>
+          <span class="brand-subtitle" data-i18n="motto">Lighted to Lighten</span>
+        </div>
+      </div>
+      <button type="button" class="drawer-close" id="drawer-close" aria-label="Close Menu">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <ul class="drawer-nav">
+      <li><a href="#home" class="nav-link" data-i18n="navHome">Home</a></li>
+      <li><a href="#about" class="nav-link" data-i18n="navAbout">About</a></li>
+      <li><a href="#cshore" class="nav-link" data-i18n="navCamp">C-SHORE Camp</a></li>
+      <li><a href="#lumora" class="nav-link" data-i18n="navKalamela">LUMORA 2026</a></li>
+      <li><a href="#parishes" class="nav-link" data-i18n="navParishes">Parishes</a></li>
+      <li><a href="#leadership" class="nav-link" data-i18n="navLeadership">Leadership</a></li>
+      <li><a href="#gallery" class="nav-link" data-i18n="navGallery">Gallery</a></li>
+      <li><a href="#connect" class="nav-link" data-i18n="navConnect">Connect</a></li>
+    </ul>
+    <div class="drawer-controls">
+      <div class="lang-switcher">
+        <button type="button" class="lang-btn active" data-lang-val="en">EN</button>
+        <button type="button" class="lang-btn" data-lang-val="ml">മലയാളം</button>
+        <button type="button" class="lang-btn" data-lang-val="mang">Manglish</button>
+      </div>
+      <button type="button" class="theme-toggle" aria-label="Toggle Theme" style="align-self: flex-start;">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <main>
+    <!-- Hero Section with Motion Graphics Canvas -->
+    <section class="hero-section" id="home">
+      <canvas id="hero-canvas"></canvas>
+      <div class="hero-aura-light aura-1"></div>
+      <div class="hero-aura-light aura-2"></div>
+
+      <div class="container hero-content-wrap">
+        <div class="hero-text-col">
+          <div class="hero-announcement">
+            <span class="pulse-dot"></span>
+            <span data-i18n="announcementPill">Latest: LUMORA Kalamela 2026 on Nov 14 at Perumbavoor!</span>
+          </div>
+          <h1 class="hero-main-title">
+            <span data-i18n="heroTitle1">Igniting Youth Faith,</span><br>
+            <span class="gradient-text" data-i18n="heroTitle2">Fellowship & Purpose</span>
+          </h1>
+          <p class="hero-desc" data-i18n="heroDesc">
+            Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam unites 15+ dynamic parish fellowships across Kerala's midlands and high ranges, steadfast in worship, study, Christian witness, and community service.
+          </p>
+          <div class="hero-actions">
+            <a href="#lumora" class="btn btn-primary" data-i18n="ctaKalamela">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Explore LUMORA 2026
+            </a>
+            <a href="#cshore" class="btn btn-secondary" data-i18n="ctaCamp">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              C-SHORE Highlights
+            </a>
+            <a href="#parishes" class="btn btn-outline" data-i18n="ctaParishes">
+              Parish Directory
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-visual-col">
+          <div class="hero-visual-card tilt-card">
+            <div class="hero-main-photo-wrap">
+              <img src="assets/images/cshore-camp-grand-group.jpg" alt="C-SHORE Youth Camp 2026 Delegation" id="hero-main-photo" />
+              <div class="photo-overlay-glass">
+                <div class="photo-caption">
+                  <h5>C-SHORE Youth Camp 2026</h5>
+                  <p>MCMAT Perumbavoor | 50+ Youth Delegates</p>
+                </div>
+              </div>
+            </div>
+            <div class="floating-stat-card glass-panel float-motion">
+              <div class="stat-icon-circle">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M7 7h10"/></svg>
+              </div>
+              <div>
+                <h4>Lighted to Lighten</h4>
+                <span>Kottayam - Kochi Diocese</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Stats Bar -->
+    <section class="stats-bar-section">
+      <div class="container">
+        <div class="stats-grid glass-panel">
+          <div class="stat-item">
+            <div class="stat-item-icon">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"/><path d="M2 20h20"/><path d="M14 12v.01"/><path d="M12 2v4"/></svg>
+            </div>
+            <div>
+              <div class="stat-number" data-count="15" data-suffix="+">15+</div>
+              <div class="stat-label" data-i18n="navParishes">Centre Parishes</div>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-item-icon">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <div class="stat-number" data-count="500" data-suffix="+">500+</div>
+              <div class="stat-label">Youth Members</div>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-item-icon">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div>
+              <div class="stat-number" data-count="18" data-suffix=" Items">18 Items</div>
+              <div class="stat-label">Kalamela Competitions</div>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-item-icon">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+            </div>
+            <div>
+              <div class="stat-number" data-count="2" data-suffix="x">2x</div>
+              <div class="stat-label">Diocese Football Champions</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About & Four Pillars Section -->
+    <section class="section-padding" id="about">
+      <div class="container">
+        <!-- Spiritual Theme Verse -->
+        <div class="verse-banner glass-panel">
+          <div class="verse-quote-icon">
+            <svg viewBox="0 0 24 24" width="44" height="44" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+          </div>
+          <p class="verse-text" data-i18n="verseText">
+            “Do not be conformed to this world, but be transformed by the renewal of your mind, that by testing you may discern what is the will of God, what is good and acceptable and perfect.”
+          </p>
+          <span class="verse-reference" data-i18n="verseRef">Romans 12:2 (Contra Mundum)</span>
+        </div>
+
+        <div class="section-header">
+          <span class="section-badge" data-i18n="pillarsHeading">The Four Foundations</span>
+          <h2 class="section-title" data-i18n="pillarsHeading">The Four Foundations</h2>
+          <p class="section-desc" data-i18n="pillarsSubhead">The spiritual pillars that anchor every journey of Mar Thoma Yuvajana Sakhyam.</p>
+        </div>
+
+        <div class="pillars-grid" id="pillars-grid">
+          <!-- Dynamically populated from SAKHYAM_DATA.pillars -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Flagship Feature: C-SHORE Camp 2026 -->
+    <section class="section-padding" id="cshore">
+      <div class="container">
+        <div class="camp-spotlight glass-panel">
+          <div class="camp-grid">
+            <div class="camp-info-col">
+              <div class="camp-meta-ribbon">
+                <span class="meta-chip">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span data-i18n="campDateLabel">Oct 19, 20, 21, 2026</span>
+                </span>
+                <span class="meta-chip">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span data-i18n="campVenueLabel">MCMAT Perumbavoor</span>
+                </span>
+                <span class="meta-chip" style="color:var(--gold-400);">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M7 7h10"/></svg>
+                  <span data-i18n="campThemeLabel">THEME: CHRIST SHORE</span>
+                </span>
+              </div>
+
+              <h2 class="camp-title" data-i18n="campHeading">C-SHORE Youth Camp 2026</h2>
+
+              <div class="camp-guests-box">
+                <h5 data-i18n="campLeadersTitle">Esteemed Guests & Dignitaries</h5>
+                <div class="guest-item">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 10"/></svg>
+                  <strong data-i18n="campInauguration">Inaugurated by Shri. Manoj Moothedan MLA</strong>
+                </div>
+                <div class="guest-item">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 10"/></svg>
+                  <span data-i18n="campChiefGuest">Chief Guest: Rev. Byju Thomas (General Secretary, MTYS)</span>
+                </div>
+                <div class="guest-item">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 10"/></svg>
+                  <span data-i18n="campSpeaker">Main Talk: Rev. Blesson Sam Koshy</span>
+                </div>
+                <div class="guest-item">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 10"/></svg>
+                  <span data-i18n="campSinging">Singing Ministry: Mr. Sanju Abraham & Mrs. Jincy Joy</span>
+                </div>
+              </div>
+
+              <p class="section-desc" style="margin-bottom: 2rem;">
+                Over 50 enthusiastic youth delegates gathered for three unforgettable days of fellowship, life coaching, Bible exploration, lively music, and spiritual re-dedication at the Christ Shore.
+              </p>
+
+              <div class="camp-actions">
+                <button type="button" class="btn btn-primary" onclick="openSingleImage('assets/images/cshore-camp-poster.jpg', 'C-SHORE Youth Camp 2026 Official Poster')">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  View Camp Poster
+                </button>
+              </div>
+            </div>
+
+            <div class="camp-media-col">
+              <div class="camp-visual-stack">
+                <div class="camp-stack-card span-2 tilt-card" onclick="openSingleImage('assets/images/cshore-inauguration-stage.jpg', 'C-SHORE Inauguration Ceremony with Dignitaries')">
+                  <img src="assets/images/cshore-inauguration-stage.jpg" alt="C-SHORE Camp Inauguration" loading="lazy" />
+                </div>
+                <div class="camp-stack-card tilt-card" onclick="openSingleImage('assets/images/cshore-stage-group.jpg', 'C-SHORE Stage Fellowship')">
+                  <img src="assets/images/cshore-stage-group.jpg" alt="C-SHORE Stage Fellowship" loading="lazy" />
+                </div>
+                <div class="camp-video-wrapper">
+                  <video controls poster="assets/images/cshore-courtyard-group.jpg" preload="none">
+                    <source src="assets/videos/camp-moment-1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Talent Festival: LUMORA Kalamela 2026 -->
+    <section class="section-padding" id="lumora">
+      <div class="container">
+        <!-- Hero Kalamela Banner -->
+        <div class="kalamela-hero-banner glass-panel">
+          <div class="kalamela-banner-content">
+            <span class="kalamela-badge-pill" data-i18n="kalamelaBadge">Centre Talent Festival</span>
+            <h2 class="kalamela-banner-title" data-i18n="kalamelaHeading">LUMORA KALAMELA 2026</h2>
+            <div class="kalamela-banner-meta">
+              <div>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <strong data-i18n="kalamelaDate">Saturday, November 14, 2026 | 9:00 AM Onwards</strong>
+              </div>
+              <div>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span data-i18n="kalamelaVenue">St. Paul's Mar Thoma Church, Perumbavoor</span>
+              </div>
+              <div>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span data-i18n="kalamelaManualNote">Judged strictly per the 2026 revised MTYS Prathibha Vedi Manual.</span>
+              </div>
+            </div>
+            <div class="kalamela-banner-actions">
+              <a href="assets/docs/lumora-kalamela-2026-manual.pdf" target="_blank" download class="btn btn-primary" data-i18n="downloadKalamelaManual">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download Official Manual (PDF)
+              </a>
+              <button type="button" class="btn btn-secondary" onclick="openSingleImage('assets/images/kalamela-name-contest.jpg', 'LUMORA Kalamela Name Contest Poster')">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                View Contest Poster
+              </button>
+            </div>
+          </div>
+
+          <div class="kalamela-poster-preview tilt-card" onclick="openSingleImage('assets/images/lumora-kalamela-page1.png', 'LUMORA Kalamela 2026 Official Circular & Manual')">
+            <img src="assets/images/lumora-kalamela-page1.png" alt="LUMORA Kalamela Circular" loading="lazy" />
+            <div class="poster-click-hint">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span>Click to view document</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Competition Category Filter Tabs -->
+        <div class="kalamela-category-tabs">
+          <button type="button" class="kalamela-tab-btn active" data-cat="All" data-i18n="tabAll">All 18 Items</button>
+          <button type="button" class="kalamela-tab-btn" data-cat="Music" data-i18n="tabMusic">Music & Choir</button>
+          <button type="button" class="kalamela-tab-btn" data-cat="Literary" data-i18n="tabLiterary">Literary & Quiz</button>
+          <button type="button" class="kalamela-tab-btn" data-cat="Writing" data-i18n="tabWriting">Creative Writing</button>
+          <button type="button" class="kalamela-tab-btn" data-cat="Fine Arts" data-i18n="tabFineArts">Fine Arts</button>
+          <button type="button" class="kalamela-tab-btn" data-cat="Stage" data-i18n="tabStage">Stage & Drama</button>
+        </div>
+
+        <!-- 18 Competitions Grid -->
+        <div class="kalamela-items-grid" id="kalamela-items-grid">
+          <!-- Dynamically populated from SAKHYAM_DATA.kalamela.items -->
+        </div>
+
+        <!-- Prescribed Themes & Age Groups -->
+        <div class="kalamela-themes-container">
+          <div class="theme-card glass-panel">
+            <h4 data-i18n="kalamelaThemesHeading">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Prescribed Themes
+            </h4>
+            <ul class="theme-list">
+              <li>
+                <span class="theme-label">Mime:</span>
+                <strong>Creation (സൃഷ്ടി)</strong>
+              </li>
+              <li>
+                <span class="theme-label">Choreography:</span>
+                <strong>Hope (പ്രത്യാശ)</strong>
+              </li>
+              <li>
+                <span class="theme-label">Tableau:</span>
+                <strong>Miracle of Jesus (യേശുവിന്റെ അത്ഭുതങ്ങൾ)</strong>
+              </li>
+              <li>
+                <span class="theme-label">Bible Quiz:</span>
+                <strong>1 Chronicles, Philippians, Colossians, 1 & 2 Thessalonians</strong>
+              </li>
+            </ul>
+          </div>
+
+          <div class="theme-card glass-panel">
+            <h4 data-i18n="kalamelaGroupsHeading">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              Competition Age Categories
+            </h4>
+            <ul class="theme-list">
+              <li>
+                <span class="theme-label">Group I:</span>
+                <span>Born on or after January 1, 2009 (2009 ജനുവരി 1 നും അതിനു ശേഷവും ജനിച്ചവർ)</span>
+              </li>
+              <li>
+                <span class="theme-label">Group II:</span>
+                <span>Born between Jan 1, 1992 and Dec 31, 2008 (1992 ജനുവരി 1 നും 2008 ഡിസംബർ 31 നും മദ്ധ്യേ ജനിച്ചവർ)</span>
+              </li>
+              <li>
+                <span class="theme-label">Eligibility:</span>
+                <span>Registered MTYS members for the year 2026 - 2027</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hall of Fame & Achievements Section -->
+    <section class="section-padding" id="achievements">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge" data-i18n="achieveBadge">Pride & Excellence</span>
+          <h2 class="section-title" data-i18n="achieveHeading">Milestones & Hall of Fame</h2>
+          <p class="section-desc" data-i18n="achieveSubhead">Victories on the field, diocesan laurels, and selfless social initiatives.</p>
+        </div>
+
+        <div class="achievements-grid" id="achievements-grid">
+          <!-- Dynamically populated from SAKHYAM_DATA.achievements -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Parishes Directory -->
+    <section class="section-padding" id="parishes">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge" data-i18n="parishesBadge">Parish Directory</span>
+          <h2 class="section-title" data-i18n="parishesHeading">Centres of Faith & Fellowship</h2>
+          <p class="section-desc" data-i18n="parishesSubhead">Explore our 15 parish youth wings spread from valleys to misty high ranges.</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="parish-search-bar">
+          <div class="search-input-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="parish-search-input" class="parish-search-input" placeholder="Search parish name, location..." data-i18n="searchParishPlaceholder" />
+          </div>
+        </div>
+
+        <div class="parishes-grid" id="parishes-grid">
+          <!-- Dynamically populated from SAKHYAM_DATA.parishes -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Leadership / Office Bearers -->
+    <section class="section-padding" id="leadership">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge" data-i18n="leadersBadge">Office Bearers 2026 - 2027</span>
+          <h2 class="section-title" data-i18n="leadersHeading">Leadership & Servanthood</h2>
+          <p class="section-desc" data-i18n="leadersSubhead">Guided by devotion to God and dedication to guiding our youth.</p>
+        </div>
+
+        <div class="leaders-grid" id="leaders-grid">
+          <!-- Dynamically populated from SAKHYAM_DATA.officeBearers -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Audio Player & Fellowship Greeting -->
+    <section class="container">
+      <div class="audio-card-box glass-panel tilt-card">
+        <div class="audio-info">
+          <span class="section-badge" style="margin-bottom:0.85rem;" data-i18n="audioTitle">Fellowship Voice</span>
+          <h4 data-i18n="audioTitle">Centre Audio & Prayer Fellowship</h4>
+          <p data-i18n="audioSubhead">Listen to inspiring words and youth greetings from our community.</p>
+          <button type="button" class="btn-audio-player" id="btn-audio-toggle">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span class="audio-btn-text" data-i18n="audioPlay">Play Audio Snippet</span>
+          </button>
+        </div>
+        <div class="audio-controls">
+          <canvas id="audio-canvas" width="400" height="70"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="section-padding" id="gallery">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge" data-i18n="galleryBadge">Visual Chronicles</span>
+          <h2 class="section-title" data-i18n="galleryHeading">Moments That Inspire</h2>
+          <p class="section-desc" data-i18n="gallerySubhead">Camps, victories, relief missions, and joyful fellowships captured in time.</p>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="gallery-filter-tabs">
+          <button type="button" class="gallery-tab-btn active" data-gallery-filter="all" data-i18n="filterAll">All</button>
+          <button type="button" class="gallery-tab-btn" data-gallery-filter="camp" data-i18n="filterCamp">C-SHORE Camp</button>
+          <button type="button" class="gallery-tab-btn" data-gallery-filter="kalamela" data-i18n="filterKalamela">Kalamela</button>
+          <button type="button" class="gallery-tab-btn" data-gallery-filter="sports" data-i18n="filterSports">Sports & Wins</button>
+          <button type="button" class="gallery-tab-btn" data-gallery-filter="service" data-i18n="filterService">Relief & Service</button>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid">
+          <!-- Dynamically populated from SAKHYAM_DATA.gallery -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Connect & Contact Section -->
+    <section class="section-padding" id="connect">
+      <div class="container">
+        <div class="connect-wrapper">
+          <div class="connect-info">
+            <span class="section-badge" data-i18n="connectBadge">Stay In Touch</span>
+            <h2 class="section-title" data-i18n="connectHeading">Connect With Keezhillam - Munnar Centre</h2>
+            <p class="section-desc" data-i18n="connectSubhead">
+              Have queries about LUMORA Kalamela, parish youth participation, or membership? We'd love to hear from you.
+            </p>
+
+            <div class="connect-channel-item">
+              <div class="channel-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div class="channel-text">
+                <h5>Centre Headquarters</h5>
+                <p>Keezhillam & Kolenchery, Ernakulam District, Kerala</p>
+              </div>
+            </div>
+
+            <div class="connect-channel-item">
+              <div class="channel-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div class="channel-text">
+                <h5>Secretary Contact</h5>
+                <p>Ashin K Santhosh (Centre Secretary)</p>
+              </div>
+            </div>
+
+            <div class="connect-channel-item">
+              <div class="channel-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              </div>
+              <div class="channel-text">
+                <h5>Diocese Affiliation</h5>
+                <p>Kottayam - Kochi Diocese, Malankara Mar Thoma Syrian Church</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="connect-form-card glass-panel tilt-card">
+            <form id="sakhyam-contact-form" class="contact-form">
+              <div class="form-group">
+                <label for="name" data-i18n="formName">Full Name</label>
+                <input type="text" id="name" required class="form-control" placeholder="E.g. Thomas Varghese" />
+              </div>
+              <div class="form-group">
+                <label for="parish" data-i18n="formParish">Your Parish / Sakhyam</label>
+                <input type="text" id="parish" required class="form-control" placeholder="E.g. Perumbavoor St. Paul's MTC" />
+              </div>
+              <div class="form-group">
+                <label for="phone" data-i18n="formPhone">Contact Number</label>
+                <input type="tel" id="phone" required class="form-control" placeholder="+91 98765 43210" />
+              </div>
+              <div class="form-group">
+                <label for="message" data-i18n="formMessage">Your Message or Inquiry</label>
+                <textarea id="message" required class="form-control" placeholder="Type your inquiry or Kalamela query here..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary form-submit-btn" data-i18n="btnSubmit">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-wrap">
+            <div class="brand-emblem">✝️</div>
+            <div class="brand-text">
+              <span class="brand-title" data-i18n="metaTitle">Keezhillam - Munnar Centre</span>
+              <span class="brand-subtitle" data-i18n="motto">Lighted to Lighten</span>
+            </div>
+          </div>
+          <p data-i18n="footerAbout">
+            Mar Thoma Yuvajana Sakhyam is the youth movement of the Malankara Mar Thoma Syrian Church. Keezhillam - Munnar Centre unites vibrant youth from 15+ parishes for worship, study, witness, and selfless service.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <h5 class="footer-heading" data-i18n="footerLinks">Quick Navigation</h5>
+          <ul class="footer-links-list">
+            <li><a href="#home" data-i18n="navHome">Home</a></li>
+            <li><a href="#about" data-i18n="navAbout">About & Pillars</a></li>
+            <li><a href="#cshore" data-i18n="navCamp">C-SHORE Camp 2026</a></li>
+            <li><a href="#lumora" data-i18n="navKalamela">LUMORA Kalamela</a></li>
+            <li><a href="#parishes" data-i18n="navParishes">Parishes Directory</a></li>
+            <li><a href="#leadership" data-i18n="navLeadership">Leadership</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-resources">
+          <h5 class="footer-heading" data-i18n="footerResources">Official Documents</h5>
+          <ul class="footer-links-list">
+            <li><a href="assets/docs/lumora-kalamela-2026-manual.pdf" target="_blank" download>LUMORA Kalamela Manual (PDF)</a></li>
+            <li><a href="assets/docs/youth-sunday-worship-order-en.pdf" target="_blank" download>Youth Sunday Worship Order (English)</a></li>
+            <li><a href="assets/docs/youth-sunday-worship-order-mal.pdf" target="_blank" download>Youth Sunday Worship Order (Malayalam)</a></li>
+            <li><a href="assets/docs/anti-drug-bike-rally.pdf" target="_blank" download>Anti-Drug Rally Circular (PDF)</a></li>
+            <li><a href="assets/docs/contra-mundum-magazine.pdf" target="_blank" download>Contra Mundum Magazine (PDF)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span data-i18n="footerCopyright">© 2026 Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam. All rights reserved.</span>
+        <span>Malankara Mar Thoma Syrian Church | Kottayam - Kochi Diocese</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox-modal" id="lightbox-modal">
+    <div class="lightbox-inner">
+      <button type="button" class="lightbox-close-btn" id="lightbox-close" aria-label="Close Lightbox">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <button type="button" class="lightbox-nav-btn" id="lightbox-prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <img id="lightbox-img" src="" alt="Enlarged gallery photo" />
+      <h4 id="lightbox-caption"></h4>
+      <button type="button" class="lightbox-nav-btn" id="lightbox-next" aria-label="Next">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toast-notification"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/motion.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
