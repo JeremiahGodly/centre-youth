@@ -15,6 +15,7 @@ const I18N = {
     navParishes: "Parishes",
     navLeadership: "Leadership",
     navGallery: "Gallery",
+    navLectionary: "Lectionary",
     navConnect: "Connect",
     quickRegister: "Join Sakhyam",
 
@@ -118,7 +119,31 @@ const I18N = {
     cartoon1Title: "“When Centre Sakhyam Wins The Cup!”",
     cartoon1Desc: "“Final whistle blows: Half the team drops to their knees thanking God, the other half lifting the trophy chanting parish slogans at the top of their lungs!”",
     cartoon2Title: "“Youth Camp Arrival Protocol”",
-    cartoon2Desc: "“Bags packed in 5 minutes, acoustic guitar ready, steaming hot Chaya kettle & banana chips in hand, with 0% sleep planned for the next 3 days!”"
+    cartoon2Desc: "“Bags packed in 5 minutes, acoustic guitar ready, steaming hot Chaya kettle & banana chips in hand, with 0% sleep planned for the next 3 days!”",
+
+    // Lectionary Page Translations
+    lectionaryHeroBadge: "Malankara Mar Thoma Liturgical Lectionary",
+    lectionaryHeroTitle: "Sunday Lectionary & Readings",
+    lectionaryHeroSubtitle: "Official liturgical Bible readings and weekly themes of the Mar Thoma Syrian Church. Highlighting the upcoming Sunday service automatically.",
+    jumpToUpcoming: "⚡ Jump to Next Week's Service",
+    searchLectionaryPlaceholder: "Search by scripture (e.g. Luke, Isaiah), theme, or title...",
+    filterAll: "All Readings",
+    filterNov: "November 2026",
+    filterDec: "December 2026",
+    filterUpcoming2027: "2027 Calendar",
+    nextUpcomingBadge: "⚡ NEXT UPCOMING SUNDAY",
+    lesson1Label: "Lesson 1 (OT)",
+    lesson2Label: "Lesson 2",
+    epistleLabel: "Epistle",
+    gospelLabel: "Gospel",
+    evening1Label: "Evening 1",
+    evening2Label: "Evening 2",
+    shareToWhatsapp: "Share Readings",
+    copyReadings: "Copy Readings",
+    copiedSuccess: "Scripture readings copied to clipboard!",
+    homeUpcomingWidgetTitle: "Next Sunday's Liturgical Readings",
+    openFullLectionary: "Open Full Lectionary 📖",
+    backToHome: "Back to Home"
   },
 
   ml: {
@@ -134,6 +159,7 @@ const I18N = {
     navParishes: "ഇടവകകൾ",
     navLeadership: "ഭാരവാഹികൾ",
     navGallery: "ഗാലറി",
+    navLectionary: "വേദഭാഗ ക്രമം",
     navConnect: "ബന്ധപ്പെടുക",
     quickRegister: "സഖ്യത്തിൽ ചേരുക",
 
@@ -237,7 +263,31 @@ const I18N = {
     cartoon1Title: "“കീഴില്ലം - മൂന്നാർ സെന്റർ കിരീടം നേടുമ്പോൾ!”",
     cartoon1Desc: "“ഫൈനൽ വിസിൽ മുഴങ്ങുമ്പോൾ: പകുതിപ്പേർ ദൈവത്തിന് സ്തുതി പാടുന്നു, ബാക്കി പകുതി ട്രോഫിയും ഉയർത്തിപ്പിടിച്ച് ജയ് വിളിക്കുന്നു!”",
     cartoon2Title: "“യൂത്ത് ക്യാമ്പിലേക്ക് എത്തുമ്പോൾ”",
-    cartoon2Desc: "“അഞ്ചു മിനിറ്റിൽ ബാഗ് പാക്ക് ചെയ്തു, ഗിത്താറും കട്ടൻ ചായയും കായവറുത്തതും റെഡി, അടുത്ത 3 ദിവസത്തേക്ക് ഉറക്കമൊന്നുമില്ല!”"
+    cartoon2Desc: "“അഞ്ചു മിനിറ്റിൽ ബാഗ് പാക്ക് ചെയ്തു, ഗിത്താറും കട്ടൻ ചായയും കായവറുത്തതും റെഡി, അടുത്ത 3 ദിവസത്തേക്ക് ഉറക്കമൊന്നുമില്ല!”",
+
+    // Lectionary Page Translations
+    lectionaryHeroBadge: "മാർത്തോമ്മാ സഭാ വേദഭാഗ ക്രമം",
+    lectionaryHeroTitle: "വേദഭാഗ ക്രമം & തിരുവചന വായനകൾ",
+    lectionaryHeroSubtitle: "മാർത്തോമ്മാ സഭയുടെ ആരാധനാ ക്രമപ്രകാരമുള്ള തിരുവചന വായനകളും ആഴ്ചയിലെ പ്രമേയങ്ങളും. അടുത്ത ഞായറാഴ്ച വേദഭാഗം സ്വയമേവ തിളങ്ങി നിൽക്കുന്നു.",
+    jumpToUpcoming: "⚡ അടുത്ത ഞായറാഴ്ചയിലേക്ക് പോകുക",
+    searchLectionaryPlaceholder: "വേദഭാഗമോ പ്രമേയമോ തിരയുക (ഉദാ: ലൂക്കോസ്, യെശയ്യാവ്)...",
+    filterAll: "എല്ലാ വായനകളും",
+    filterNov: "നവംബർ 2026",
+    filterDec: "ഡിസംബർ 2026",
+    filterUpcoming2027: "2027 ക്രമം",
+    nextUpcomingBadge: "⚡ അടുത്ത ഞായറാഴ്ച ശുശ്രൂഷ",
+    lesson1Label: "വേദഭാഗം 1 (പഴയ നിയമം)",
+    lesson2Label: "വേദഭാഗം 2",
+    epistleLabel: "ലേഖനം",
+    gospelLabel: "സുവിശേഷം",
+    evening1Label: "സന്ധ്യാ വേദഭാഗം 1",
+    evening2Label: "സന്ധ്യാ വേദഭാഗം 2",
+    shareToWhatsapp: "വാട്സാപ്പിൽ പങ്കിടുക",
+    copyReadings: "പകർത്തുക",
+    copiedSuccess: "വേദഭാഗങ്ങൾ ക്ലിപ്ബോർഡിലേക്ക് പകർത്തി!",
+    homeUpcomingWidgetTitle: "അടുത്ത ഞായറാഴ്ചയിലെ വേദഭാഗ ക്രമം",
+    openFullLectionary: "പൂർണ്ണ വേദഭാഗ ക്രമം കാണുക 📖",
+    backToHome: "പ്രധാന പേജിലേക്ക്"
   },
 
   mang: {
@@ -253,6 +303,7 @@ const I18N = {
     navParishes: "Idavakakal",
     navLeadership: "Bhaaravaahikal",
     navGallery: "Gallery",
+    navLectionary: "Lectionary",
     navConnect: "Connect",
     quickRegister: "Join Sakhyam",
 
@@ -356,6 +407,30 @@ const I18N = {
     cartoon1Title: "“Centre Sakhyam Trophy Adikkumbol!”",
     cartoon1Desc: "“Final whistle adikkumbol: Paathi aalukal daivathinnu sthuthi parayunnu, bakki aalukal cup pokki parish slogans chanthi celebration!”",
     cartoon2Title: "“Youth Camp-lekku Ethumbol”",
-    cartoon2Desc: "“5 min-il bag pack cheythu, guitar-um chaya-yum ready, adutha 3 divasathekk urakkam onnumilla!”"
+    cartoon2Desc: "“5 min-il bag pack cheythu, guitar-um chaya-yum ready, adutha 3 divasathekk urakkam onnumilla!”",
+
+    // Lectionary Page Translations
+    lectionaryHeroBadge: "Mar Thoma Sabha Vedabhaga Kramam",
+    lectionaryHeroTitle: "Sunday Lectionary & Readings",
+    lectionaryHeroSubtitle: "Mar Thoma Sabhayude aaraadhana kramaprakaarulla vachanangalum weekly themes-um. Adutha Njayarazhcha vedabhagam automatically glow aayirikunnu.",
+    jumpToUpcoming: "⚡ Adutha Njayarazhchayilekku Pokuka",
+    searchLectionaryPlaceholder: "Vedabhagamo theme-o thirayuka (eg: Luke, Isaiah)...",
+    filterAll: "All Readings",
+    filterNov: "November 2026",
+    filterDec: "December 2026",
+    filterUpcoming2027: "2027 Year",
+    nextUpcomingBadge: "⚡ NEXT UPCOMING SUNDAY",
+    lesson1Label: "Lesson 1 (OT)",
+    lesson2Label: "Lesson 2",
+    epistleLabel: "Epistle",
+    gospelLabel: "Gospel",
+    evening1Label: "Evening 1",
+    evening2Label: "Evening 2",
+    shareToWhatsapp: "WhatsApp-il Share Cheyyuka",
+    copyReadings: "Copy Readings",
+    copiedSuccess: "Readings clipboard-ilekku copy cheythu!",
+    homeUpcomingWidgetTitle: "Adutha Njayarazhchayile Vedabhaga Kramam",
+    openFullLectionary: "Full Lectionary Kaanuka 📖",
+    backToHome: "Back to Home"
   }
 };

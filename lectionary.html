@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title data-i18n="metaTitle">Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam | Liturgical Lectionary</title>
+  <meta name="description" content="Malankara Mar Thoma Syrian Church Liturgical Lectionary & Sunday Bible Readings. Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam." />
+  <link rel="icon" type="image/png" href="assets/images/keezhillam-munnar-centre-logo.png" />
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body class="lectionary-page">
+  <!-- Interactive Ambient Canvas Background -->
+  <canvas id="hero-canvas" class="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Sticky Luxury Navigation Header -->
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-wrap" aria-label="Keezhillam - Munnar Centre Yuvajana Sakhyam Home">
+        <div class="brand-emblem">
+          <img src="assets/images/keezhillam-munnar-centre-logo.png" alt="Keezhillam - Munnar Centre Logo" class="brand-emblem-img" />
+        </div>
+        <div class="brand-text">
+          <span class="brand-title" data-i18n="navBrandTitle">Keezhillam - Munnar Centre</span>
+          <span class="brand-subtitle" data-i18n="motto">Lighted to Lighten</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html#home" class="nav-link" data-i18n="navHome">Home</a></li>
+          <li><a href="index.html#about" class="nav-link" data-i18n="navAbout">About</a></li>
+          <li><a href="index.html#cshore" class="nav-link" data-i18n="navCamp">C-SHORE Camp</a></li>
+          <li><a href="index.html#lumora" class="nav-link" data-i18n="navKalamela">LUMORA 2026</a></li>
+          <li><a href="index.html#parishes" class="nav-link" data-i18n="navParishes">Parishes</a></li>
+          <li><a href="index.html#leadership" class="nav-link" data-i18n="navLeadership">Leadership</a></li>
+          <li><a href="index.html#gallery" class="nav-link" data-i18n="navGallery">Gallery</a></li>
+          <li><a href="lectionary.html" class="nav-link active" data-i18n="navLectionary">Lectionary</a></li>
+          <li><a href="index.html#connect" class="nav-link" data-i18n="navConnect">Connect</a></li>
+        </ul>
+      </nav>
+
+      <!-- Language & Theme Controls -->
+      <div class="header-controls">
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" data-lang-val="en">EN</button>
+          <button type="button" class="lang-btn" data-lang-val="ml">മലയാളം</button>
+          <button type="button" class="lang-btn" data-lang-val="mang">Manglish</button>
+        </div>
+
+        <button type="button" class="theme-toggle" aria-label="Toggle Theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <button type="button" class="hamburger-btn" id="mobile-menu-btn" aria-label="Open Menu">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+      <div class="brand-wrap">
+        <div class="brand-emblem">
+          <img src="assets/images/keezhillam-munnar-centre-logo.png" alt="Keezhillam - Munnar Centre Logo" class="brand-emblem-img" />
+        </div>
+        <div class="brand-text">
+          <span class="brand-title" data-i18n="navBrandTitle">Keezhillam - Munnar Centre</span>
+          <span class="brand-subtitle" data-i18n="motto">Lighted to Lighten</span>
+        </div>
+      </div>
+      <button type="button" class="drawer-close" id="drawer-close" aria-label="Close Menu">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <ul class="drawer-nav">
+      <li><a href="index.html#home" class="nav-link" data-i18n="navHome">Home</a></li>
+      <li><a href="index.html#about" class="nav-link" data-i18n="navAbout">About</a></li>
+      <li><a href="index.html#cshore" class="nav-link" data-i18n="navCamp">C-SHORE Camp</a></li>
+      <li><a href="index.html#lumora" class="nav-link" data-i18n="navKalamela">LUMORA 2026</a></li>
+      <li><a href="index.html#parishes" class="nav-link" data-i18n="navParishes">Parishes</a></li>
+      <li><a href="index.html#leadership" class="nav-link" data-i18n="navLeadership">Leadership</a></li>
+      <li><a href="index.html#gallery" class="nav-link" data-i18n="navGallery">Gallery</a></li>
+      <li><a href="lectionary.html" class="nav-link active" data-i18n="navLectionary">Lectionary</a></li>
+      <li><a href="index.html#connect" class="nav-link" data-i18n="navConnect">Connect</a></li>
+    </ul>
+    <div class="drawer-controls">
+      <div class="lang-switcher">
+        <button type="button" class="lang-btn active" data-lang-val="en">EN</button>
+        <button type="button" class="lang-btn" data-lang-val="ml">മലയാളം</button>
+        <button type="button" class="lang-btn" data-lang-val="mang">Manglish</button>
+      </div>
+      <button type="button" class="theme-toggle" aria-label="Toggle Theme" style="align-self: flex-start;">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <main>
+    <!-- Lectionary Hero Section -->
+    <section class="lectionary-hero">
+      <div class="container">
+        <div class="lectionary-date-indicator">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span id="lectionary-live-calendar-date">Liturgical Year 2026 - 2027</span>
+        </div>
+
+        <h1 class="section-title" data-i18n="lectionaryHeroTitle" style="font-size: clamp(2rem, 4vw, 3.2rem);">
+          Sunday Lectionary & Readings
+        </h1>
+        <p class="section-desc" data-i18n="lectionaryHeroSubtitle" style="max-width: 680px; margin: 0 auto 1.75rem;">
+          Official liturgical Bible readings and weekly themes of the Mar Thoma Syrian Church. Highlighting the upcoming Sunday automatically.
+        </p>
+
+        <!-- Quick Jump to Glowing Upcoming Sunday Button -->
+        <button type="button" class="btn-jump-next" id="btn-jump-next">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span data-i18n="jumpToUpcoming">⚡ Jump to Next Week's Service</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Lectionary Content Section -->
+    <section class="container" style="padding-top: 1rem;">
+      <!-- Controls & Filter Bar -->
+      <div class="lectionary-controls-bar">
+        <div class="lectionary-filter-tabs">
+          <button type="button" class="lectionary-filter-btn active" data-month-filter="all" data-i18n="filterAll">All Readings</button>
+          <button type="button" class="lectionary-filter-btn" data-month-filter="2026-11" data-i18n="filterNov">November 2026</button>
+          <button type="button" class="lectionary-filter-btn" data-month-filter="2026-12" data-i18n="filterDec">December 2026</button>
+          <button type="button" class="lectionary-filter-btn" data-month-filter="2027-01" data-i18n="filterUpcoming2027">2027 Calendar</button>
+        </div>
+
+        <div class="lectionary-search-wrapper">
+          <svg class="lectionary-search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="lectionary-search-input" class="lectionary-search-input" placeholder="Search scripture, theme, or Sunday..." data-i18n="searchLectionaryPlaceholder" />
+        </div>
+      </div>
+
+      <!-- Lectionary Cards Grid (Upcoming Card Automatically Glows) -->
+      <div class="lectionary-grid" id="lectionary-items-grid">
+        <!-- Dynamically populated by renderLectionary() -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-grid">
+        <div class="footer-col footer-col-brand">
+          <div class="brand-wrap">
+            <div class="brand-emblem">
+              <img src="assets/images/keezhillam-munnar-centre-logo.png" alt="Emblem" class="brand-emblem-img" />
+            </div>
+            <div class="brand-text">
+              <span class="brand-title" data-i18n="navBrandTitle">Keezhillam - Munnar Centre</span>
+              <span class="brand-subtitle" data-i18n="motto">Lighted to Lighten</span>
+            </div>
+          </div>
+          <p class="footer-about" data-i18n="footerAbout">
+            Mar Thoma Yuvajana Sakhyam is the youth movement of the Malankara Mar Thoma Syrian Church. Keezhillam - Munnar Centre empowers young believers to lead lives dedicated to Jesus Christ.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="footerLinks">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#home" data-i18n="navHome">Home</a></li>
+            <li><a href="index.html#about" data-i18n="navAbout">About Us</a></li>
+            <li><a href="index.html#cshore" data-i18n="navCamp">C-SHORE Camp</a></li>
+            <li><a href="index.html#lumora" data-i18n="navKalamela">LUMORA Kalamela</a></li>
+            <li><a href="lectionary.html" data-i18n="navLectionary">Liturgical Lectionary</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="footerResources">Resources & Diocese</h4>
+          <ul class="footer-links">
+            <li><a href="assets/docs/lumora-kalamela-2026-manual.pdf" target="_blank" download>Kalamela Manual PDF</a></li>
+            <li><a href="index.html#parishes" data-i18n="navParishes">15 Centre Parishes</a></li>
+            <li><a href="index.html#leadership" data-i18n="navLeadership">Office Bearers</a></li>
+            <li><a href="index.html#connect" data-i18n="navConnect">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span data-i18n="footerCopyright">© 2026 Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam. All rights reserved.</span>
+        <span>Malankara Mar Thoma Syrian Church | Kottayam - Kochi Diocese</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toast-notification"></div>
+
+  <!-- Floating WhatsApp Quick Connect Button (+918078041809) -->
+  <a href="https://wa.me/918078041809?text=Hello%20Keezhillam%20-%20Munnar%20Centre%20Yuvajana%20Sakhyam!" target="_blank" rel="noopener" class="floating-whatsapp-btn" aria-label="Chat on WhatsApp (+918078041809)">
+    <div class="whatsapp-btn-inner">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+        <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.28-2.42 5.84-1.56 1.56-3.64 2.41-5.83 2.41-1.45 0-2.87-.39-4.13-1.12l-.3-.18-3.07.81.82-2.99-.19-.32c-.8-1.32-1.23-2.84-1.23-4.44 0-4.54 3.7-8.24 8.23-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.25-1.5-1.4-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.59.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.3z"/>
+      </svg>
+      <span class="whatsapp-btn-label">WhatsApp</span>
+    </div>
+    <span class="whatsapp-badge-pulse"></span>
+  </a>
+
+  <!-- Mobile Bottom Menu Navigation Bar -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile Navigation Bar">
+    <a href="index.html#home" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="index.html#cshore" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Camp</span>
+    </a>
+    <a href="index.html#lumora" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+      <span>Kalamela</span>
+    </a>
+    <a href="lectionary.html" class="mobile-nav-item active">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Lectionary</span>
+    </a>
+    <a href="index.html#parishes" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"/><path d="M2 20h20"/></svg>
+      <span>Parishes</span>
+    </a>
+    <button type="button" class="mobile-nav-item theme-toggle mobile-theme-btn" aria-label="Toggle Light/Dark Theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span class="theme-label-txt">Theme</span>
+    </button>
+    <button type="button" class="mobile-nav-item" id="mobile-bottom-menu-toggle" aria-label="Open Full Menu">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <span>Menu</span>
+    </button>
+  </nav>
+
+  <!-- JavaScript Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/motion.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

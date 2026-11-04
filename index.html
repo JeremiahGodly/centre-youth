@@ -37,6 +37,7 @@
           <li><a href="#parishes" class="nav-link" data-i18n="navParishes">Parishes</a></li>
           <li><a href="#leadership" class="nav-link" data-i18n="navLeadership">Leadership</a></li>
           <li><a href="#gallery" class="nav-link" data-i18n="navGallery">Gallery</a></li>
+          <li><a href="lectionary.html" class="nav-link" data-i18n="navLectionary">Lectionary</a></li>
           <li><a href="#connect" class="nav-link" data-i18n="navConnect">Connect</a></li>
         </ul>
       </nav>
@@ -104,6 +105,7 @@
       <li><a href="#parishes" class="nav-link" data-i18n="navParishes">Parishes</a></li>
       <li><a href="#leadership" class="nav-link" data-i18n="navLeadership">Leadership</a></li>
       <li><a href="#gallery" class="nav-link" data-i18n="navGallery">Gallery</a></li>
+      <li><a href="lectionary.html" class="nav-link" data-i18n="navLectionary">Lectionary</a></li>
       <li><a href="#connect" class="nav-link" data-i18n="navConnect">Connect</a></li>
     </ul>
     <div class="drawer-controls">
@@ -463,6 +465,30 @@
       </div>
     </section>
 
+    <!-- Liturgical Lectionary Section (Automated Upcoming Sunday Glow) -->
+    <section class="section-padding home-lectionary-widget" id="lectionary">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-badge" data-i18n="lectionaryHeroBadge">Malankara Mar Thoma Liturgical Lectionary</span>
+          <h2 class="section-title" data-i18n="homeUpcomingWidgetTitle">Next Sunday's Liturgical Readings</h2>
+          <p class="section-desc" data-i18n="lectionaryHeroSubtitle">
+            Official liturgical Bible readings and weekly themes of the Mar Thoma Syrian Church. Highlighting the upcoming Sunday automatically.
+          </p>
+        </div>
+
+        <div class="home-lectionary-card-wrapper" id="home-upcoming-lectionary-widget">
+          <!-- Dynamically populated by renderUpcomingLectionaryWidget() with glow effect -->
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="lectionary.html" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;" data-i18n="openFullLectionary">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Open Full Lectionary 📖
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- Hall of Fame & Achievements Section -->
     <section class="section-padding" id="achievements">
       <div class="container">
@@ -768,6 +794,10 @@
     <a href="#lumora" class="mobile-nav-item">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
       <span>Kalamela</span>
+    </a>
+    <a href="lectionary.html" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Lectionary</span>
     </a>
     <a href="#parishes" class="mobile-nav-item">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"/><path d="M2 20h20"/></svg>
