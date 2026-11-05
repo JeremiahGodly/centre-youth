@@ -2325,36 +2325,59 @@ textarea.form-control {
   height: 230px;
   margin: 0 auto;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, rgba(15, 23, 42, 0.5) 80%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 20px 50px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+/* Half-Circle Spotlight & Shadow Ring (Rotates in sync with scroll) */
+.logo-spotlight-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from var(--spotlight-angle, 0deg),
+    #fbbf24 0deg,
+    #f59e0b 55deg,
+    rgba(245, 158, 11, 0.4) 95deg,
+    transparent 145deg,
+    transparent 215deg,
+    rgba(0, 0, 0, 0.65) 270deg,
+    #fbbf24 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #fff calc(100% - 5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #fff calc(100% - 5px));
+  pointer-events: none;
+  filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.65));
+  z-index: 2;
+  will-change: transform;
+}
+
+[data-theme="light"] .logo-spotlight-ring {
+  background: conic-gradient(
+    from var(--spotlight-angle, 0deg),
+    #d97706 0deg,
+    #f59e0b 55deg,
+    rgba(217, 119, 6, 0.4) 95deg,
+    transparent 145deg,
+    transparent 215deg,
+    rgba(0, 0, 0, 0.3) 270deg,
+    #d97706 360deg
+  );
 }
 
 .flying-logo-img {
-  width: 200px;
-  height: 200px;
+  width: 195px;
+  height: 195px;
   object-fit: contain;
   filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.5));
-  animation: floatLogo3D 6s ease-in-out infinite;
-}
-
-@keyframes floatLogo3D {
-  0%, 100% {
-    transform: translateY(0px) rotateY(0deg) rotateX(0deg);
-  }
-  25% {
-    transform: translateY(-10px) rotateY(12deg) rotateX(6deg) scale(1.03);
-  }
-  50% {
-    transform: translateY(-4px) rotateY(-8deg) rotateX(-4deg) scale(1.01);
-  }
-  75% {
-    transform: translateY(-12px) rotateY(6deg) rotateX(8deg) scale(1.04);
-  }
+  transform-style: preserve-3d;
+  z-index: 3;
+  will-change: transform, filter;
 }
 
 .logo-aura-glow {

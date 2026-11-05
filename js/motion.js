@@ -354,26 +354,88 @@ class Lightbox {
   }
 }
 
-// 3D Flying Logo Scroll Effect
+// 3D Flying Logo & Synchronous Spotlight Scroll Controller
 function initFlyingLogoScroll() {
-  const logoEl = document.getElementById('flying-logo-element');
+  const logoBox = document.getElementById('flying-logo-element');
   const section = document.getElementById('emblem-3d');
-  if (!logoEl || !section) return;
+  const logoImg = document.getElementById('flying-logo-img');
+  if (!logoBox || !section) return;
 
-  window.addEventListener('scroll', () => {
+  let currentProgress = 0.5;
+  let targetProgress = 0.5;
+  let currentAngle = 0;
+  let targetAngle = 0;
+  let isVisible = false;
+  let idleTime = 0;
+
+  // Use IntersectionObserver to only compute when section is in or near viewport
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      isVisible = entries[0].isIntersecting;
+    }, { rootMargin: '120px 0px 120px 0px', threshold: 0 });
+    observer.observe(section);
+  } else {
+    isVisible = true;
+  }
+
+  function computeScrollTargets() {
     const rect = section.getBoundingClientRect();
     const windowHeight = window.innerHeight;
 
-    if (rect.top < windowHeight && rect.bottom > 0) {
-      const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
-      const clamped = Math.max(0, Math.min(1, progress));
+    // Calculate normalized progress as section travels through viewport
+    // 0 = section entering bottom, 0.5 = centered, 1 = leaving top
+    const rawProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
+    targetProgress = Math.max(0, Math.min(1, rawProgress));
 
-      const rotateY = (clamped - 0.5) * 36;
-      const rotateX = Math.sin(clamped * Math.PI) * 14;
-      const translateY = (1 - Math.sin(clamped * Math.PI)) * -35;
-      const scale = 0.94 + Math.sin(clamped * Math.PI) * 0.14;
+    // Continuous 360-degree rotation of spotlight half-circle synced directly with scroll
+    // Starts at -45deg and rotates smoothly to +315deg
+    targetAngle = -45 + targetProgress * 360;
+  }
 
-      logoEl.style.transform = `perspective(1000px) translateY(${translateY}px) rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale3d(${scale}, ${scale}, ${scale})`;
+  window.addEventListener('scroll', computeScrollTargets, { passive: true });
+  window.addEventListener('resize', computeScrollTargets);
+  computeScrollTargets();
+  currentProgress = targetProgress;
+  currentAngle = targetAngle;
+
+  function renderLoop() {
+    if (isVisible) {
+      // Smooth linear interpolation (lerp) eliminates discrete stepping
+      const ease = 0.085;
+      currentProgress += (targetProgress - currentProgress) * ease;
+      currentAngle += (targetAngle - currentAngle) * ease;
+
+      idleTime += 0.02;
+      const subtleBreathe = Math.sin(idleTime) * 1.5;
+
+      // 3D rotation angles smoothly driven by scroll progress
+      const rotateY = (currentProgress - 0.5) * 34 + subtleBreathe;
+      const rotateX = Math.sin(currentProgress * Math.PI) * 12 + Math.cos(idleTime) * 1.2;
+      const translateY = (1 - Math.sin(currentProgress * Math.PI)) * -28;
+      const scale = 0.94 + Math.sin(currentProgress * Math.PI) * 0.12;
+
+      // Dynamic spotlight half-circle angle
+      logoBox.style.setProperty('--spotlight-angle', `${currentAngle.toFixed(2)}deg`);
+
+      // Dynamic cast shadow: moves in opposite direction of spotlight
+      // Spotlight at angle θ casts shadow at θ + 180°
+      const shadowRad = (currentAngle + 180) * (Math.PI / 180);
+      const shadowDist = 26;
+      const shadowX = (Math.cos(shadowRad) * shadowDist).toFixed(1);
+      const shadowY = (Math.sin(shadowRad) * shadowDist + 14).toFixed(1);
+      const shadowBlur = (35 + Math.sin(currentProgress * Math.PI) * 15).toFixed(1);
+
+      logoBox.style.boxShadow = `${shadowX}px ${shadowY}px ${shadowBlur}px rgba(0, 0, 0, 0.55), 0 0 35px rgba(245, 158, 11, 0.25)`;
+
+      if (logoImg) {
+        logoImg.style.filter = `drop-shadow(${(shadowX * 0.55).toFixed(1)}px ${(shadowY * 0.55).toFixed(1)}px 18px rgba(0, 0, 0, 0.6))`;
+      }
+
+      logoBox.style.transform = `perspective(1000px) translateY(${translateY.toFixed(1)}px) rotateY(${rotateY.toFixed(2)}deg) rotateX(${rotateX.toFixed(2)}deg) scale3d(${scale.toFixed(3)}, ${scale.toFixed(3)}, ${scale.toFixed(3)})`;
     }
-  }, { passive: true });
+
+    requestAnimationFrame(renderLoop);
+  }
+
+  requestAnimationFrame(renderLoop);
 }
