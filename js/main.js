@@ -325,6 +325,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Gallery
   let activeGalleryCategory = 'all';
+  let galleryDisplayCount = 6;
+
   function renderGallery() {
     const container = document.getElementById('gallery-grid');
     if (!container) return;
@@ -334,10 +336,11 @@ document.addEventListener('DOMContentLoaded', () => {
       : SAKHYAM_DATA.gallery.filter(g => g.category === activeGalleryCategory);
 
     const titleKey = currentLang === 'ml' ? 'titleMl' : (currentLang === 'mang' ? 'titleMang' : 'titleEn');
+    const visibleItems = filtered.slice(0, galleryDisplayCount);
 
-    container.innerHTML = filtered.map((item, index) => `
+    let html = visibleItems.map((item, index) => `
       <div class="gallery-item glass-panel" onclick="openGalleryItem(${index})">
-        <img src="${item.src}" alt="${item[titleKey]}" loading="lazy" />
+        <img src="${item.src}" alt="${item[titleKey]}" loading="lazy" decoding="async" />
         <div class="gallery-overlay">
           <span class="gallery-cat">${item.category.toUpperCase()}</span>
           <h5 class="gallery-item-title">${item[titleKey]}</h5>
@@ -347,7 +350,26 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
     `).join('');
+
+    if (filtered.length > galleryDisplayCount) {
+      const remaining = filtered.length - galleryDisplayCount;
+      html += `
+        <div class="gallery-load-more-wrap">
+          <button type="button" class="btn-load-more" onclick="loadMoreGallery()">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="8 12 12 16 16 12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+            <span>Load More Photos (${remaining} More) 📸</span>
+          </button>
+        </div>
+      `;
+    }
+
+    container.innerHTML = html;
   }
+
+  window.loadMoreGallery = function() {
+    galleryDisplayCount += 6;
+    renderGallery();
+  };
 
   // Gallery Filter Tabs
   document.querySelectorAll('.gallery-tab-btn').forEach(btn => {
@@ -355,6 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.gallery-tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       activeGalleryCategory = btn.getAttribute('data-gallery-filter');
+      galleryDisplayCount = 6;
       renderGallery();
     });
   });
@@ -661,12 +684,111 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 8. YOUTH SONGS EXPLORER & AUDIO CONTROLLER
+  // 8. YOUTH SONGS REAL AUDIO ENGINE & CONTROLLER
   // ==========================================
   let activeSongCategory = 'all';
   let songSearchQuery = '';
   let currentPlayingSongIndex = -1;
   let isSongAudioPlaying = false;
+  let songsDisplayCount = 12;
+
+  // Real HTML5 Audio Engine
+  let audioEngine = document.getElementById('sakhyam-audio-engine');
+  if (!audioEngine) {
+    audioEngine = new Audio();
+    audioEngine.id = 'sakhyam-audio-engine';
+    audioEngine.preload = 'none';
+    document.body.appendChild(audioEngine);
+  }
+
+  function formatAudioTime(seconds) {
+    if (isNaN(seconds) || seconds < 0) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+
+  // Audio Engine Real-time Events
+  audioEngine.addEventListener('play', () => {
+    isSongAudioPlaying = true;
+    updateBarPlayPauseIcons(true);
+    const floatingBar = document.getElementById('floating-audio-bar');
+    if (floatingBar) floatingBar.classList.add('is-playing', 'active');
+    updateAllSongCardButtons();
+  });
+
+  audioEngine.addEventListener('pause', () => {
+    isSongAudioPlaying = false;
+    updateBarPlayPauseIcons(false);
+    const floatingBar = document.getElementById('floating-audio-bar');
+    if (floatingBar) floatingBar.classList.remove('is-playing');
+    updateAllSongCardButtons();
+  });
+
+  audioEngine.addEventListener('timeupdate', () => {
+    const cur = audioEngine.currentTime || 0;
+    const dur = audioEngine.duration || 0;
+    const pct = dur > 0 ? (cur / dur) * 100 : 0;
+
+    const progressFill = document.getElementById('audio-progress-fill');
+    if (progressFill) progressFill.style.width = `${pct}%`;
+
+    const scrubber = document.getElementById('audio-scrubber');
+    if (scrubber && !scrubber.matches(':active')) {
+      scrubber.value = pct;
+    }
+
+    const timeCur = document.getElementById('audio-time-current');
+    if (timeCur) timeCur.textContent = formatAudioTime(cur);
+
+    const timeDur = document.getElementById('audio-time-duration');
+    if (timeDur && dur > 0) timeDur.textContent = formatAudioTime(dur);
+  });
+
+  audioEngine.addEventListener('loadedmetadata', () => {
+    const timeDur = document.getElementById('audio-time-duration');
+    if (timeDur && audioEngine.duration > 0) {
+      timeDur.textContent = formatAudioTime(audioEngine.duration);
+    }
+  });
+
+  audioEngine.addEventListener('ended', () => {
+    nextSong();
+  });
+
+  audioEngine.addEventListener('error', () => {
+    console.warn('Audio streaming encountered error, opening embedded preview player modal.');
+    const toast = document.getElementById('toast-notification');
+    if (toast) {
+      toast.textContent = "Connecting to Google Drive Audio Stream...";
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+    openSongModal();
+  });
+
+  // Scrubber user input seek
+  const audioScrubber = document.getElementById('audio-scrubber');
+  if (audioScrubber) {
+    audioScrubber.addEventListener('input', (e) => {
+      const pct = parseFloat(e.target.value) || 0;
+      if (audioEngine.duration) {
+        audioEngine.currentTime = (pct / 100) * audioEngine.duration;
+      }
+    });
+  }
+
+  const audioProgressTrack = document.querySelector('.audio-bar-progress-track');
+  if (audioProgressTrack) {
+    audioProgressTrack.addEventListener('click', (e) => {
+      const rect = audioProgressTrack.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+      if (audioEngine.duration) {
+        audioEngine.currentTime = pct * audioEngine.duration;
+      }
+    });
+  }
 
   function renderSongs() {
     const grid = document.getElementById('songs-grid');
@@ -690,9 +812,12 @@ document.addEventListener('DOMContentLoaded', () => {
       return matchCat && (titleMatch || catMatch || trackMatch || artistMatch);
     });
 
+    const isSearching = songSearchQuery.trim().length > 0;
+    const visibleSongs = isSearching ? filtered : filtered.slice(0, songsDisplayCount);
+
     const countIndicator = document.getElementById('songs-count-indicator');
     if (countIndicator) {
-      countIndicator.textContent = `Showing ${filtered.length} of ${SAKHYAM_DATA.songs.length} Tracks`;
+      countIndicator.textContent = `Showing ${visibleSongs.length} of ${filtered.length} Tracks`;
     }
 
     if (filtered.length === 0) {
@@ -706,13 +831,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    grid.innerHTML = filtered.map((song) => {
+    let cardsHtml = visibleSongs.map((song) => {
       const globalIdx = SAKHYAM_DATA.songs.findIndex(s => s.id === song.id);
       const isCurrent = globalIdx === currentPlayingSongIndex;
+      const isPlaying = isCurrent && !audioEngine.paused;
       const padNo = String(song.trackNo).padStart(2, '0');
 
       return `
-        <article class="song-card ${isCurrent ? 'is-playing' : ''}" id="song-card-${globalIdx}">
+        <article class="song-card ${isCurrent ? 'is-playing' : ''}" data-song-index="${globalIdx}" id="song-card-${globalIdx}">
           <div class="song-card-header">
             <span class="song-track-badge">#${padNo}</span>
             <span class="song-category-pill">${song.category}</span>
@@ -726,12 +852,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <div class="song-card-actions">
             <button type="button" class="btn-song-action btn-song-play" onclick="playSong(${globalIdx})">
-              ${isCurrent && isSongAudioPlaying ? `
+              ${isPlaying ? `
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                <span>${dict.pauseTrack}</span>
+                <span>${dict.pauseTrack || "Pause"}</span>
               ` : `
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-                <span>${dict.playTrack}</span>
+                <span>${dict.playTrack || "Play Track"}</span>
               `}
             </button>
             <a href="${song.driveUrl}" target="_blank" rel="noopener" class="btn-song-action" title="Open in Google Drive">
@@ -746,7 +872,26 @@ document.addEventListener('DOMContentLoaded', () => {
         </article>
       `;
     }).join('');
+
+    if (!isSearching && filtered.length > songsDisplayCount) {
+      const remaining = filtered.length - songsDisplayCount;
+      cardsHtml += `
+        <div class="songs-load-more-wrap">
+          <button type="button" class="btn-load-more" onclick="loadMoreSongs()">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="8 12 12 16 16 12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+            <span>Load More Songs (${remaining} More) 🎵</span>
+          </button>
+        </div>
+      `;
+    }
+
+    grid.innerHTML = cardsHtml;
   }
+
+  window.loadMoreSongs = function() {
+    songsDisplayCount += 12;
+    renderSongs();
+  };
 
   function renderHomeSongsWidget() {
     const container = document.getElementById('home-songs-widget');
@@ -758,9 +903,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const sampleSongs = SAKHYAM_DATA.songs.slice(0, 4);
 
     container.innerHTML = sampleSongs.map((song) => {
+      const globalIdx = SAKHYAM_DATA.songs.findIndex(s => s.id === song.id);
+      const isCurrent = globalIdx === currentPlayingSongIndex;
+      const isPlaying = isCurrent && !audioEngine.paused;
       const padNo = String(song.trackNo).padStart(2, '0');
+
       return `
-        <article class="song-card">
+        <article class="song-card ${isCurrent ? 'is-playing' : ''}" data-song-index="${globalIdx}">
           <div class="song-card-header">
             <span class="song-track-badge">#${padNo}</span>
             <span class="song-category-pill">${song.category}</span>
@@ -772,10 +921,15 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <div class="song-card-actions">
-            <a href="songs.html" class="btn-song-action btn-song-play" style="text-align: center;">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-              <span>Play Track</span>
-            </a>
+            <button type="button" class="btn-song-action btn-song-play" onclick="playSong(${globalIdx})">
+              ${isPlaying ? `
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                <span>${dict.pauseTrack || "Pause"}</span>
+              ` : `
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                <span>${dict.playTrack || "Play Track"}</span>
+              `}
+            </button>
             <a href="${song.driveUrl}" target="_blank" rel="noopener" class="btn-song-action" title="Open in Google Drive">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
               <span>Drive</span>
@@ -799,20 +953,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     currentPlayingSongIndex = index;
-    isSongAudioPlaying = true;
 
     // Update bottom floating audio bar
     const floatingBar = document.getElementById('floating-audio-bar');
     if (floatingBar) {
-      floatingBar.classList.add('active', 'is-playing');
+      floatingBar.classList.add('active');
       const barTitle = document.getElementById('bar-track-title');
       const barArtist = document.getElementById('bar-track-artist');
       const barDrive = document.getElementById('bar-drive-link');
       if (barTitle) barTitle.textContent = `${title} (#${String(song.trackNo).padStart(2, '0')})`;
       if (barArtist) barArtist.textContent = song.artist;
       if (barDrive) barDrive.href = song.driveUrl;
-
-      updateBarPlayPauseIcons(true);
     }
 
     // Set embedded preview iframe
@@ -836,7 +987,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalBtnDownload) modalBtnDownload.href = song.streamUrl;
     if (modalBtnShare) modalBtnShare.onclick = () => shareSongWhatsApp(index);
 
-    renderSongs();
+    // Play via HTML5 Audio Engine
+    audioEngine.src = song.streamUrl;
+    audioEngine.load();
+    const playPromise = audioEngine.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        console.warn('Direct stream playback autoplay or CORS issue:', err);
+        openSongModal();
+      });
+    }
+
+    updateAllSongCardButtons();
   };
 
   function toggleSongPlay() {
@@ -847,13 +1009,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    isSongAudioPlaying = !isSongAudioPlaying;
-    const floatingBar = document.getElementById('floating-audio-bar');
-    if (floatingBar) {
-      floatingBar.classList.toggle('is-playing', isSongAudioPlaying);
-      updateBarPlayPauseIcons(isSongAudioPlaying);
+    if (audioEngine.paused) {
+      audioEngine.play().catch(() => openSongModal());
+    } else {
+      audioEngine.pause();
     }
-    renderSongs();
   }
 
   function updateBarPlayPauseIcons(playing) {
@@ -863,6 +1023,31 @@ document.addEventListener('DOMContentLoaded', () => {
       iconPlay.style.display = playing ? 'none' : 'block';
       iconPause.style.display = playing ? 'block' : 'none';
     }
+  }
+
+  function updateAllSongCardButtons() {
+    const dict = I18N[currentLang] || I18N.en;
+    document.querySelectorAll('.song-card').forEach(card => {
+      const cardIdx = parseInt(card.getAttribute('data-song-index'));
+      const isCurrent = cardIdx === currentPlayingSongIndex;
+      const isPlaying = isCurrent && !audioEngine.paused;
+
+      card.classList.toggle('is-playing', isCurrent);
+      const playBtn = card.querySelector('.btn-song-play');
+      if (playBtn) {
+        if (isPlaying) {
+          playBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            <span>${dict.pauseTrack || "Pause"}</span>
+          `;
+        } else {
+          playBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+            <span>${dict.playTrack || "Play Track"}</span>
+          `;
+        }
+      }
+    });
   }
 
   window.prevSong = function() {
@@ -913,6 +1098,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.resetSongSearch = function() {
     activeSongCategory = 'all';
     songSearchQuery = '';
+    songsDisplayCount = 12;
     const searchInput = document.getElementById('songs-search-input');
     const clearBtn = document.getElementById('songs-clear-search');
     if (searchInput) searchInput.value = '';
@@ -931,6 +1117,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.song-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       activeSongCategory = btn.getAttribute('data-song-filter');
+      songsDisplayCount = 12;
       renderSongs();
     });
   });
@@ -1000,6 +1187,53 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Progressive Section Hydration (Loads heavy sections part by part on scroll)
+  function initProgressiveHydration() {
+    if (document.getElementById('songs-grid')) {
+      renderSongs();
+      return;
+    }
+    if (document.getElementById('lectionary-items-grid')) {
+      renderLectionary();
+      return;
+    }
+
+    const lazySections = [
+      { id: 'lectionary', render: renderUpcomingLectionaryWidget },
+      { id: 'songs', render: renderHomeSongsWidget },
+      { id: 'achievements', render: renderAchievements },
+      { id: 'parishes', render: renderParishes },
+      { id: 'leadership', render: renderOfficeBearers },
+      { id: 'gallery', render: renderGallery }
+    ];
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const section = lazySections.find(s => s.id === entry.target.id);
+            if (section && typeof section.render === 'function') {
+              section.render();
+            }
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '300px 0px' });
+
+      lazySections.forEach(s => {
+        const el = document.getElementById(s.id);
+        if (el) observer.observe(el);
+      });
+    } else {
+      renderUpcomingLectionaryWidget();
+      renderHomeSongsWidget();
+      renderAchievements();
+      renderParishes();
+      renderOfficeBearers();
+      renderGallery();
+    }
+  }
+
   // 8. Contact / Registration Form Handler
   const contactForm = document.getElementById('sakhyam-contact-form');
   const toastNotification = document.getElementById('toast-notification');
@@ -1028,18 +1262,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 9. Initial Renders
+  // 9. Initial Renders (Part-by-part progressive hydration for instant loading)
   applyTranslations();
   renderPillars();
   renderKalamelaItems();
-  renderParishes();
-  renderOfficeBearers();
-  renderAchievements();
-  renderGallery();
-  renderLectionary();
-  renderUpcomingLectionaryWidget();
-  renderSongs();
-  renderHomeSongsWidget();
+  initProgressiveHydration();
   initCounters();
   initTiltEffect();
   if (typeof initFlyingLogoScroll === 'function') {

@@ -415,16 +415,6 @@ const SAKHYAM_DATA = {
       badge: "Sports Victory"
     },
     {
-      titleEn: "KCC Executive Committee Representation",
-      titleMl: "കേരള കൗൺസിൽ ഓഫ് ചർച്ചസ് (KCC) എക്സിക്യൂട്ടീവ് അംഗമായി അഡ്വ. തേജസ് തോമസ് കാറ്റാടി",
-      titleMang: "KCC Executive Committee Representation - Adv. Thejas Thomas Kattady",
-      descEn: "Adv. Thejas Thomas Kattady elected as Executive Committee Member of Kerala Council of Churches representing Malankara Mar Thoma Syrian Church.",
-      descMl: "മാർത്തോമ്മാ സഭയെ പ്രതിനിധീകരിച്ച് കെസിസി എക്സിക്യൂട്ടീവ് കമ്മിറ്റി അംഗമായി തിരഞ്ഞെടുക്കപ്പെട്ടതിൽ അഭിമാനം കൊള്ളുന്നു.",
-      descMang: "Mar Thoma Church-ine represent cheythu KCC executive committee-yil theeranjedukkappetta Adv. Thejas Kattady-kku aashamsakal.",
-      image: "assets/images/thejas-kcc-election.jpg",
-      badge: "Ecumenical Leadership"
-    },
-    {
       titleEn: "Muvattupuzha Flood Relief & Social Action",
       titleMl: "മൂവാറ്റുപുഴയാർ തീരത്തെ പ്രളയ ദുരിതാശ്വാസ പ്രവർത്തനങ്ങൾ",
       titleMang: "Muvattupuzha Pralaya Durithaaswaasa Sevanangal",
