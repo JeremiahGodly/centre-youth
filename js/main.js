@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderGallery();
     renderLectionary();
     renderUpcomingLectionaryWidget();
+    renderSongs();
+    renderHomeSongsWidget();
   }
 
   function applyTranslations() {
@@ -658,6 +660,346 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ==========================================
+  // 8. YOUTH SONGS EXPLORER & AUDIO CONTROLLER
+  // ==========================================
+  let activeSongCategory = 'all';
+  let songSearchQuery = '';
+  let currentPlayingSongIndex = -1;
+  let isSongAudioPlaying = false;
+
+  function renderSongs() {
+    const grid = document.getElementById('songs-grid');
+    if (!grid || !SAKHYAM_DATA.songs) return;
+
+    const dict = I18N[currentLang] || I18N.en;
+    const titleKey = currentLang === 'ml' ? 'titleMl' : (currentLang === 'mang' ? 'titleMang' : 'titleEn');
+
+    const filtered = SAKHYAM_DATA.songs.filter(song => {
+      const matchCat = activeSongCategory === 'all' || song.category.toLowerCase() === activeSongCategory.toLowerCase();
+      const q = songSearchQuery.trim().toLowerCase();
+      if (!q) return matchCat;
+
+      const titleMatch = (song.titleEn && song.titleEn.toLowerCase().includes(q)) ||
+                         (song.titleMl && song.titleMl.toLowerCase().includes(q)) ||
+                         (song.titleMang && song.titleMang.toLowerCase().includes(q));
+      const catMatch = song.category && song.category.toLowerCase().includes(q);
+      const trackMatch = String(song.trackNo).includes(q) || String(song.rawNumber).includes(q);
+      const artistMatch = song.artist && song.artist.toLowerCase().includes(q);
+
+      return matchCat && (titleMatch || catMatch || trackMatch || artistMatch);
+    });
+
+    const countIndicator = document.getElementById('songs-count-indicator');
+    if (countIndicator) {
+      countIndicator.textContent = `Showing ${filtered.length} of ${SAKHYAM_DATA.songs.length} Tracks`;
+    }
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 0.75rem; opacity: 0.6;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <p style="font-size: 1rem; font-weight: 600;">No audio tracks found matching "${songSearchQuery}"</p>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="resetSongSearch()" style="margin-top: 0.75rem;">Clear Filter</button>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = filtered.map((song) => {
+      const globalIdx = SAKHYAM_DATA.songs.findIndex(s => s.id === song.id);
+      const isCurrent = globalIdx === currentPlayingSongIndex;
+      const padNo = String(song.trackNo).padStart(2, '0');
+
+      return `
+        <article class="song-card ${isCurrent ? 'is-playing' : ''}" id="song-card-${globalIdx}">
+          <div class="song-card-header">
+            <span class="song-track-badge">#${padNo}</span>
+            <span class="song-category-pill">${song.category}</span>
+          </div>
+
+          <div class="song-card-body">
+            <h3 class="song-card-title">${song[titleKey] || song.titleEn}</h3>
+            <span class="song-card-artist">${song.artist}</span>
+            <span class="song-card-collection">${song.collection}</span>
+          </div>
+
+          <div class="song-card-actions">
+            <button type="button" class="btn-song-action btn-song-play" onclick="playSong(${globalIdx})">
+              ${isCurrent && isSongAudioPlaying ? `
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                <span>${dict.pauseTrack}</span>
+              ` : `
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                <span>${dict.playTrack}</span>
+              `}
+            </button>
+            <a href="${song.driveUrl}" target="_blank" rel="noopener" class="btn-song-action" title="Open in Google Drive">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+              <span>Drive</span>
+            </a>
+            <button type="button" class="btn-song-action" onclick="shareSongWhatsApp(${globalIdx})" title="Share to WhatsApp">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.28-2.42 5.84-1.56 1.56-3.64 2.41-5.83 2.41-1.45 0-2.87-.39-4.13-1.12l-.3-.18-3.07.81.82-2.99-.19-.32c-.8-1.32-1.23-2.84-1.23-4.44 0-4.54 3.7-8.24 8.23-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.25-1.5-1.4-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.59.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.3z"/></svg>
+              <span>Share</span>
+            </button>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  function renderHomeSongsWidget() {
+    const container = document.getElementById('home-songs-widget');
+    if (!container || !SAKHYAM_DATA.songs) return;
+
+    const dict = I18N[currentLang] || I18N.en;
+    const titleKey = currentLang === 'ml' ? 'titleMl' : (currentLang === 'mang' ? 'titleMang' : 'titleEn');
+
+    const sampleSongs = SAKHYAM_DATA.songs.slice(0, 4);
+
+    container.innerHTML = sampleSongs.map((song) => {
+      const padNo = String(song.trackNo).padStart(2, '0');
+      return `
+        <article class="song-card">
+          <div class="song-card-header">
+            <span class="song-track-badge">#${padNo}</span>
+            <span class="song-category-pill">${song.category}</span>
+          </div>
+
+          <div class="song-card-body">
+            <h3 class="song-card-title">${song[titleKey] || song.titleEn}</h3>
+            <span class="song-card-artist">${song.artist}</span>
+          </div>
+
+          <div class="song-card-actions">
+            <a href="songs.html" class="btn-song-action btn-song-play" style="text-align: center;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+              <span>Play Track</span>
+            </a>
+            <a href="${song.driveUrl}" target="_blank" rel="noopener" class="btn-song-action" title="Open in Google Drive">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+              <span>Drive</span>
+            </a>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  window.playSong = function(index) {
+    if (!SAKHYAM_DATA.songs || !SAKHYAM_DATA.songs[index]) return;
+
+    const song = SAKHYAM_DATA.songs[index];
+    const titleKey = currentLang === 'ml' ? 'titleMl' : (currentLang === 'mang' ? 'titleMang' : 'titleEn');
+    const title = song[titleKey] || song.titleEn;
+
+    if (currentPlayingSongIndex === index) {
+      toggleSongPlay();
+      return;
+    }
+
+    currentPlayingSongIndex = index;
+    isSongAudioPlaying = true;
+
+    // Update bottom floating audio bar
+    const floatingBar = document.getElementById('floating-audio-bar');
+    if (floatingBar) {
+      floatingBar.classList.add('active', 'is-playing');
+      const barTitle = document.getElementById('bar-track-title');
+      const barArtist = document.getElementById('bar-track-artist');
+      const barDrive = document.getElementById('bar-drive-link');
+      if (barTitle) barTitle.textContent = `${title} (#${String(song.trackNo).padStart(2, '0')})`;
+      if (barArtist) barArtist.textContent = song.artist;
+      if (barDrive) barDrive.href = song.driveUrl;
+
+      updateBarPlayPauseIcons(true);
+    }
+
+    // Set embedded preview iframe
+    const playerIframe = document.getElementById('song-player-iframe');
+    if (playerIframe) {
+      playerIframe.src = song.previewUrl;
+    }
+
+    // Update modal details
+    const modalTrackBadge = document.getElementById('modal-track-badge');
+    const modalTrackTitle = document.getElementById('modal-track-title');
+    const modalTrackArtist = document.getElementById('modal-track-artist');
+    const modalBtnDrive = document.getElementById('modal-btn-drive');
+    const modalBtnDownload = document.getElementById('modal-btn-download');
+    const modalBtnShare = document.getElementById('modal-btn-share');
+
+    if (modalTrackBadge) modalTrackBadge.textContent = `Track #${String(song.trackNo).padStart(2, '0')} • ${song.category}`;
+    if (modalTrackTitle) modalTrackTitle.textContent = title;
+    if (modalTrackArtist) modalTrackArtist.textContent = `${song.artist} • ${song.collection}`;
+    if (modalBtnDrive) modalBtnDrive.href = song.driveUrl;
+    if (modalBtnDownload) modalBtnDownload.href = song.streamUrl;
+    if (modalBtnShare) modalBtnShare.onclick = () => shareSongWhatsApp(index);
+
+    renderSongs();
+  };
+
+  function toggleSongPlay() {
+    if (currentPlayingSongIndex === -1) {
+      if (SAKHYAM_DATA.songs && SAKHYAM_DATA.songs.length > 0) {
+        playSong(0);
+      }
+      return;
+    }
+
+    isSongAudioPlaying = !isSongAudioPlaying;
+    const floatingBar = document.getElementById('floating-audio-bar');
+    if (floatingBar) {
+      floatingBar.classList.toggle('is-playing', isSongAudioPlaying);
+      updateBarPlayPauseIcons(isSongAudioPlaying);
+    }
+    renderSongs();
+  }
+
+  function updateBarPlayPauseIcons(playing) {
+    const iconPlay = document.querySelector('.bar-icon-play');
+    const iconPause = document.querySelector('.bar-icon-pause');
+    if (iconPlay && iconPause) {
+      iconPlay.style.display = playing ? 'none' : 'block';
+      iconPause.style.display = playing ? 'block' : 'none';
+    }
+  }
+
+  window.prevSong = function() {
+    if (!SAKHYAM_DATA.songs) return;
+    let nextIdx = currentPlayingSongIndex - 1;
+    if (nextIdx < 0) nextIdx = SAKHYAM_DATA.songs.length - 1;
+    playSong(nextIdx);
+  };
+
+  window.nextSong = function() {
+    if (!SAKHYAM_DATA.songs) return;
+    let nextIdx = currentPlayingSongIndex + 1;
+    if (nextIdx >= SAKHYAM_DATA.songs.length) nextIdx = 0;
+    playSong(nextIdx);
+  };
+
+  window.openSongModal = function() {
+    const modal = document.getElementById('song-player-modal');
+    if (modal) {
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+  };
+
+  window.closeSongModal = function() {
+    const modal = document.getElementById('song-player-modal');
+    if (modal) {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  };
+
+  window.shareSongWhatsApp = function(index) {
+    if (!SAKHYAM_DATA.songs || !SAKHYAM_DATA.songs[index]) return;
+    const song = SAKHYAM_DATA.songs[index];
+    const titleKey = currentLang === 'ml' ? 'titleMl' : (currentLang === 'mang' ? 'titleMang' : 'titleEn');
+    const title = song[titleKey] || song.titleEn;
+
+    const msg = `🎵 *${title}* (Track #${String(song.trackNo).padStart(2, '0')})\n` +
+      `Category: ${song.category}\n` +
+      `Curator: ${song.artist}\n` +
+      `📁 Listen / Download on Google Drive: ${song.driveUrl}\n\n` +
+      `Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam`;
+
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+  };
+
+  window.resetSongSearch = function() {
+    activeSongCategory = 'all';
+    songSearchQuery = '';
+    const searchInput = document.getElementById('songs-search-input');
+    const clearBtn = document.getElementById('songs-clear-search');
+    if (searchInput) searchInput.value = '';
+    if (clearBtn) clearBtn.style.display = 'none';
+
+    document.querySelectorAll('.song-filter-btn').forEach(b => {
+      b.classList.toggle('active', b.getAttribute('data-song-filter') === 'all');
+    });
+
+    renderSongs();
+  };
+
+  // Songs Category Filter Buttons
+  document.querySelectorAll('.song-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.song-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeSongCategory = btn.getAttribute('data-song-filter');
+      renderSongs();
+    });
+  });
+
+  // Songs Search Input & Clear
+  const songsSearchInput = document.getElementById('songs-search-input');
+  const songsClearSearch = document.getElementById('songs-clear-search');
+  if (songsSearchInput) {
+    songsSearchInput.addEventListener('input', (e) => {
+      songSearchQuery = e.target.value;
+      if (songsClearSearch) {
+        songsClearSearch.style.display = songSearchQuery ? 'block' : 'none';
+      }
+      renderSongs();
+    });
+  }
+
+  if (songsClearSearch) {
+    songsClearSearch.addEventListener('click', () => {
+      resetSongSearch();
+    });
+  }
+
+  // Floating Audio Bar Controls
+  const barPlayToggle = document.getElementById('bar-play-toggle');
+  if (barPlayToggle) {
+    barPlayToggle.addEventListener('click', toggleSongPlay);
+  }
+
+  const barPrevBtn = document.getElementById('bar-prev-btn');
+  if (barPrevBtn) {
+    barPrevBtn.addEventListener('click', prevSong);
+  }
+
+  const barNextBtn = document.getElementById('bar-next-btn');
+  if (barNextBtn) {
+    barNextBtn.addEventListener('click', nextSong);
+  }
+
+  const barExpandModal = document.getElementById('bar-expand-modal');
+  if (barExpandModal) {
+    barExpandModal.addEventListener('click', openSongModal);
+  }
+
+  const barCloseBtn = document.getElementById('bar-close-btn');
+  if (barCloseBtn) {
+    barCloseBtn.addEventListener('click', () => {
+      const floatingBar = document.getElementById('floating-audio-bar');
+      if (floatingBar) {
+        floatingBar.classList.remove('active');
+      }
+    });
+  }
+
+  // Modal Close Listeners
+  const songModalClose = document.getElementById('song-modal-close');
+  if (songModalClose) {
+    songModalClose.addEventListener('click', closeSongModal);
+  }
+
+  const songPlayerModal = document.getElementById('song-player-modal');
+  if (songPlayerModal) {
+    songPlayerModal.addEventListener('click', (e) => {
+      if (e.target === songPlayerModal) {
+        closeSongModal();
+      }
+    });
+  }
+
   // 8. Contact / Registration Form Handler
   const contactForm = document.getElementById('sakhyam-contact-form');
   const toastNotification = document.getElementById('toast-notification');
@@ -696,6 +1038,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderGallery();
   renderLectionary();
   renderUpcomingLectionaryWidget();
+  renderSongs();
+  renderHomeSongsWidget();
   initCounters();
   initTiltEffect();
   if (typeof initFlyingLogoScroll === 'function') {

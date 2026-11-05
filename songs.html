@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title data-i18n="songsHeroTitle">Youth Praise & Worship Songs | Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam</title>
+  <meta name="description" content="50 authentic youth praise, worship, and camp audio tracks curated by Godly Alackal Korath Varghese for Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam." />
+  <link rel="icon" type="image/png" href="assets/images/keezhillam-munnar-centre-logo.png" />
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body class="songs-page">
+  <!-- Interactive Ambient Canvas Background -->
+  <canvas id="hero-canvas" class="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Sticky Luxury Navigation Header -->
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-wrap" aria-label="Keezhillam - Munnar Centre Yuvajana Sakhyam Home">
+        <div class="brand-emblem">
+          <img src="assets/images/keezhillam-munnar-centre-logo.png" alt="Keezhillam - Munnar Centre Logo" class="brand-emblem-img" />
+        </div>
+        <div class="brand-text">
+          <span class="brand-title" data-i18n="navBrandTitle">Keezhillam - Munnar Centre</span>
+          <span class="brand-subtitle" data-i18n="motto">Lighted to Lighten</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html#home" class="nav-link" data-i18n="navHome">Home</a></li>
+          <li><a href="index.html#about" class="nav-link" data-i18n="navAbout">About</a></li>
+          <li><a href="index.html#cshore" class="nav-link" data-i18n="navCamp">C-SHORE Camp</a></li>
+          <li><a href="index.html#lumora" class="nav-link" data-i18n="navKalamela">LUMORA 2026</a></li>
+          <li><a href="index.html#parishes" class="nav-link" data-i18n="navParishes">Parishes</a></li>
+          <li><a href="index.html#leadership" class="nav-link" data-i18n="navLeadership">Leadership</a></li>
+          <li><a href="index.html#gallery" class="nav-link" data-i18n="navGallery">Gallery</a></li>
+          <li><a href="lectionary.html" class="nav-link" data-i18n="navLectionary">Lectionary</a></li>
+          <li><a href="songs.html" class="nav-link active" data-i18n="navSongs">Songs</a></li>
+          <li><a href="index.html#connect" class="nav-link" data-i18n="navConnect">Connect</a></li>
+        </ul>
+      </nav>
+
+      <!-- Language & Theme Controls -->
+      <div class="header-controls">
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" data-lang-val="en">EN</button>
+          <button type="button" class="lang-btn" data-lang-val="ml">മലയാളം</button>
+          <button type="button" class="lang-btn" data-lang-val="mang">Manglish</button>
+        </div>
+
+        <button type="button" class="theme-toggle" aria-label="Toggle Theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <button type="button" class="hamburger-btn" id="mobile-menu-btn" aria-label="Open Menu">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+      <div class="brand-wrap">
+        <div class="brand-emblem">
+          <img src="assets/images/keezhillam-munnar-centre-logo.png" alt="Keezhillam - Munnar Centre Logo" class="brand-emblem-img" />
+        </div>
+        <div class="brand-text">
+          <span class="brand-title" data-i18n="navBrandTitle">Keezhillam - Munnar Centre</span>
+          <span class="brand-subtitle" data-i18n="motto">Lighted to Lighten</span>
+        </div>
+      </div>
+      <button type="button" class="drawer-close" id="drawer-close" aria-label="Close Menu">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <ul class="drawer-nav">
+      <li><a href="index.html#home" class="nav-link" data-i18n="navHome">Home</a></li>
+      <li><a href="songs.html" class="nav-link active" data-i18n="navSongs">🎵 Youth Songs</a></li>
+      <li><a href="lectionary.html" class="nav-link" data-i18n="navLectionary">📖 Lectionary</a></li>
+      <li><a href="index.html#about" class="nav-link" data-i18n="navAbout">About Us</a></li>
+      <li><a href="index.html#cshore" class="nav-link" data-i18n="navCamp">C-SHORE Camp</a></li>
+      <li><a href="index.html#lumora" class="nav-link" data-i18n="navKalamela">LUMORA 2026</a></li>
+      <li><a href="index.html#parishes" class="nav-link" data-i18n="navParishes">Parishes</a></li>
+      <li><a href="index.html#leadership" class="nav-link" data-i18n="navLeadership">Leadership</a></li>
+      <li><a href="index.html#gallery" class="nav-link" data-i18n="navGallery">Gallery</a></li>
+      <li><a href="index.html#connect" class="nav-link" data-i18n="navConnect">Connect</a></li>
+    </ul>
+    <div class="drawer-controls">
+      <div class="lang-switcher">
+        <button type="button" class="lang-btn active" data-lang-val="en">EN</button>
+        <button type="button" class="lang-btn" data-lang-val="ml">മലയാളം</button>
+        <button type="button" class="lang-btn" data-lang-val="mang">Manglish</button>
+      </div>
+      <button type="button" class="theme-toggle" aria-label="Toggle Theme" style="align-self: flex-start;">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <main>
+    <!-- Songs Hero Section -->
+    <section class="songs-hero">
+      <div class="container">
+        <div class="songs-hero-badge">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+          </svg>
+          <span data-i18n="songsHeroBadge">Centre Sakhyam Audio Archives • 50 Tracks</span>
+        </div>
+
+        <h1 class="section-title" data-i18n="songsHeroTitle" style="font-size: clamp(2rem, 4vw, 3.2rem);">
+          Youth Praise & Worship Songs
+        </h1>
+        <p class="section-desc" data-i18n="songsHeroSubtitle" style="max-width: 720px; margin: 0 auto 1.75rem;">
+          50 authentic praise, worship, and camp audio tracks curated by Godly Alackal Korath Varghese for Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam.
+        </p>
+
+        <!-- Hero Action Buttons -->
+        <div class="songs-hero-actions">
+          <a href="https://drive.google.com/drive/folders/1mWNWxKdSMTGE-YZIJyjCrbmaBRB3qj88?usp=sharing" target="_blank" rel="noopener" class="btn btn-primary" id="btn-open-gdrive">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span data-i18n="openGdriveFolder">Open Google Drive Folder 📂</span>
+          </a>
+          <a href="index.html" class="btn btn-secondary">
+            <span data-i18n="backToHome">Back to Home</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Songs Explorer Section -->
+    <section class="container" style="padding-top: 1rem; padding-bottom: 5rem;">
+      <!-- Controls & Filter Bar -->
+      <div class="songs-controls-bar">
+        <div class="songs-filter-tabs">
+          <button type="button" class="song-filter-btn active" data-song-filter="all" data-i18n="filterAllSongs">All 50 Tracks</button>
+          <button type="button" class="song-filter-btn" data-song-filter="Camp & Fellowship" data-i18n="filterCamp">Camp & Fellowship</button>
+          <button type="button" class="song-filter-btn" data-song-filter="Worship & Hymns" data-i18n="filterWorship">Worship & Hymns</button>
+          <button type="button" class="song-filter-btn" data-song-filter="Praise & Youth" data-i18n="filterPraise">Praise & Youth</button>
+          <button type="button" class="song-filter-btn" data-song-filter="Devotional & Liturgy" data-i18n="filterDevotional">Devotional & Liturgy</button>
+          <button type="button" class="song-filter-btn" data-song-filter="Choral & Special" data-i18n="filterChoral">Choral & Special</button>
+        </div>
+
+        <div class="songs-search-wrapper">
+          <svg class="songs-search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="songs-search-input" class="songs-search-input" placeholder="Search by track title, number, or category..." data-i18n="searchSongsPlaceholder" />
+          <button type="button" id="songs-clear-search" class="songs-clear-search" aria-label="Clear Search" style="display: none;">&times;</button>
+        </div>
+      </div>
+
+      <!-- Stats Bar: Track Counter -->
+      <div class="songs-status-bar">
+        <span id="songs-count-indicator">Showing 50 of 50 Tracks</span>
+        <span class="songs-curator-tag">Curated by Godly Alackal Korath Varghese</span>
+      </div>
+
+      <!-- 50 Songs Responsive Grid -->
+      <div class="songs-grid" id="songs-grid">
+        <!-- Rendered dynamically by main.js -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Interactive Song Player Modal / In-Page Player -->
+  <div class="song-modal-overlay" id="song-player-modal" aria-hidden="true">
+    <div class="song-modal-card">
+      <div class="song-modal-header">
+        <div class="song-modal-info">
+          <span class="song-modal-badge" id="modal-track-badge">Track #01</span>
+          <h3 class="song-modal-title" id="modal-track-title">Youth Praise Track 01</h3>
+          <p class="song-modal-artist" id="modal-track-artist">Godly Alackal Korath Varghese • Centre Sakhyam Archives</p>
+        </div>
+        <button type="button" class="song-modal-close" id="song-modal-close" aria-label="Close Player">&times;</button>
+      </div>
+
+      <!-- Embedded Google Drive Preview Player -->
+      <div class="song-modal-player-wrap">
+        <iframe id="song-player-iframe" src="" title="Song Audio Preview" allow="autoplay" loading="lazy"></iframe>
+      </div>
+
+      <div class="song-modal-actions">
+        <a id="modal-btn-drive" href="#" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+          </svg>
+          <span data-i18n="openInDrive">Google Drive</span>
+        </a>
+        <a id="modal-btn-download" href="#" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span data-i18n="downloadTrack">Download</span>
+        </a>
+        <button type="button" id="modal-btn-share" class="btn btn-secondary btn-sm">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/>
+          </svg>
+          <span data-i18n="shareSong">Share</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Floating Sticky Audio Bar -->
+  <aside class="floating-audio-bar" id="floating-audio-bar" aria-label="Audio Playback Console">
+    <div class="audio-bar-inner">
+      <!-- Track Meta & Equalizer -->
+      <div class="audio-bar-meta">
+        <div class="audio-bar-visualizer">
+          <span class="bar-col col-1"></span>
+          <span class="bar-col col-2"></span>
+          <span class="bar-col col-3"></span>
+          <span class="bar-col col-4"></span>
+        </div>
+        <div class="audio-bar-text">
+          <span class="audio-bar-badge" data-i18n="nowPlaying">NOW PLAYING</span>
+          <h4 class="audio-bar-title" id="bar-track-title">Youth Praise Track 01</h4>
+          <span class="audio-bar-artist" id="bar-track-artist">Godly Alackal Korath Varghese</span>
+        </div>
+      </div>
+
+      <!-- Playback Controls -->
+      <div class="audio-bar-controls">
+        <button type="button" class="bar-ctrl-btn" id="bar-prev-btn" aria-label="Previous Track">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5"/></svg>
+        </button>
+
+        <button type="button" class="bar-play-btn" id="bar-play-toggle" aria-label="Play or Pause Track">
+          <svg class="bar-icon-play" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          <svg class="bar-icon-pause" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+
+        <button type="button" class="bar-ctrl-btn" id="bar-next-btn" aria-label="Next Track">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5"/></svg>
+        </button>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="audio-bar-actions">
+        <button type="button" class="bar-action-btn" id="bar-expand-modal" title="Open Full Player">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          <span class="bar-btn-text">Player</span>
+        </button>
+        <a id="bar-drive-link" href="#" target="_blank" rel="noopener" class="bar-action-btn" title="Open in Google Drive">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+          <span class="bar-btn-text">Drive</span>
+        </a>
+        <button type="button" class="bar-close-btn" id="bar-close-btn" aria-label="Close Bottom Bar">&times;</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-col-wide">
+          <div class="brand-wrap">
+            <div class="brand-emblem">
+              <img src="assets/images/keezhillam-munnar-centre-logo.png" alt="Keezhillam - Munnar Centre Logo" class="brand-emblem-img" />
+            </div>
+            <div class="brand-text">
+              <span class="brand-title" data-i18n="navBrandTitle">Keezhillam - Munnar Centre</span>
+              <span class="brand-subtitle" data-i18n="motto">Lighted to Lighten</span>
+            </div>
+          </div>
+          <p class="footer-bio" data-i18n="footerBio">
+            Malankara Mar Thoma Yuvajana Sakhyam uniting youth across Keezhillam, Kolenchery, Muvattupuzha, and Munnar region for worship, witness, and service.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="footerQuickLinks">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#home" data-i18n="navHome">Home</a></li>
+            <li><a href="songs.html" data-i18n="navSongs">Youth Songs (50 Tracks)</a></li>
+            <li><a href="lectionary.html" data-i18n="navLectionary">Liturgical Lectionary</a></li>
+            <li><a href="index.html#cshore" data-i18n="navCamp">C-SHORE Camp</a></li>
+            <li><a href="index.html#lumora" data-i18n="navKalamela">LUMORA 2026 Kalamela</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="footerResources">Resources & Diocese</h4>
+          <ul class="footer-links">
+            <li><a href="https://drive.google.com/drive/folders/1mWNWxKdSMTGE-YZIJyjCrbmaBRB3qj88?usp=sharing" target="_blank" rel="noopener">Google Drive Songs Archive</a></li>
+            <li><a href="assets/docs/lumora-kalamela-2026-manual.pdf" target="_blank" download>Kalamela Manual PDF</a></li>
+            <li><a href="index.html#parishes" data-i18n="navParishes">15 Centre Parishes</a></li>
+            <li><a href="index.html#leadership" data-i18n="navLeadership">Office Bearers</a></li>
+            <li><a href="index.html#connect" data-i18n="navConnect">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span data-i18n="footerCopyright">© 2026 Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam. All rights reserved.</span>
+        <span>Malankara Mar Thoma Syrian Church | Kottayam - Kochi Diocese</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toast-notification"></div>
+
+  <!-- Floating WhatsApp Quick Connect Button (+918078041809) -->
+  <a href="https://wa.me/918078041809?text=Hello%20Keezhillam%20-%20Munnar%20Centre%20Yuvajana%20Sakhyam!" target="_blank" rel="noopener" class="floating-whatsapp-btn" aria-label="Chat on WhatsApp (+918078041809)">
+    <div class="whatsapp-btn-inner">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+        <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.28-2.42 5.84-1.56 1.56-3.64 2.41-5.83 2.41-1.45 0-2.87-.39-4.13-1.12l-.3-.18-3.07.81.82-2.99-.19-.32c-.8-1.32-1.23-2.84-1.23-4.44 0-4.54 3.7-8.24 8.23-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.25-1.5-1.4-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.59.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.3z"/>
+      </svg>
+      <span class="whatsapp-btn-label">WhatsApp</span>
+    </div>
+    <span class="whatsapp-badge-pulse"></span>
+  </a>
+
+  <!-- Mobile Bottom Menu Navigation Bar -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile Navigation Bar">
+    <a href="index.html#home" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="songs.html" class="mobile-nav-item active">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      <span>Songs</span>
+    </a>
+    <a href="index.html#cshore" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Camp</span>
+    </a>
+    <a href="index.html#lumora" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+      <span>Kalamela</span>
+    </a>
+    <a href="lectionary.html" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Lectionary</span>
+    </a>
+    <button type="button" class="mobile-nav-item theme-toggle mobile-theme-btn" aria-label="Toggle Light/Dark Theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span class="theme-label-txt">Theme</span>
+    </button>
+    <button type="button" class="mobile-nav-item" id="mobile-bottom-menu-toggle" aria-label="Open Full Menu">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <span>Menu</span>
+    </button>
+  </nav>
+
+  <!-- JavaScript Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/motion.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

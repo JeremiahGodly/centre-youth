@@ -16,6 +16,7 @@ const I18N = {
     navLeadership: "Leadership",
     navGallery: "Gallery",
     navLectionary: "Lectionary",
+    navSongs: "Songs",
     navConnect: "Connect",
     quickRegister: "Join Sakhyam",
 
@@ -143,7 +144,28 @@ const I18N = {
     copiedSuccess: "Scripture readings copied to clipboard!",
     homeUpcomingWidgetTitle: "Next Sunday's Liturgical Readings",
     openFullLectionary: "Open Full Lectionary 📖",
-    backToHome: "Back to Home"
+    backToHome: "Back to Home",
+
+    // Songs Page Translations
+    songsHeroBadge: "Centre Sakhyam Audio Archives • 50 Tracks",
+    songsHeroTitle: "Youth Praise & Worship Songs",
+    songsHeroSubtitle: "50 authentic praise, worship, and camp audio tracks curated by Godly Alackal Korath Varghese for Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam.",
+    openGdriveFolder: "Open Google Drive Folder 📂",
+    searchSongsPlaceholder: "Search by track title, number, or category...",
+    filterAllSongs: "All 50 Tracks",
+    filterCamp: "Camp & Fellowship",
+    filterWorship: "Worship & Hymns",
+    filterPraise: "Praise & Youth",
+    filterDevotional: "Devotional & Liturgy",
+    filterChoral: "Choral & Special",
+    playTrack: "Play Track",
+    pauseTrack: "Pause",
+    openInDrive: "Google Drive",
+    downloadTrack: "Download",
+    shareSong: "Share",
+    nowPlaying: "NOW PLAYING",
+    homeSongsWidgetTitle: "Youth Praise & Camp Songs",
+    exploreAllSongs: "Explore All 50 Songs 🎵"
   },
 
   ml: {
@@ -160,6 +182,7 @@ const I18N = {
     navLeadership: "ഭാരവാഹികൾ",
     navGallery: "ഗാലറി",
     navLectionary: "വേദഭാഗ ക്രമം",
+    navSongs: "ഗാനങ്ങൾ",
     navConnect: "ബന്ധപ്പെടുക",
     quickRegister: "സഖ്യത്തിൽ ചേരുക",
 
@@ -287,7 +310,28 @@ const I18N = {
     copiedSuccess: "വേദഭാഗങ്ങൾ ക്ലിപ്ബോർഡിലേക്ക് പകർത്തി!",
     homeUpcomingWidgetTitle: "അടുത്ത ഞായറാഴ്ചയിലെ വേദഭാഗ ക്രമം",
     openFullLectionary: "പൂർണ്ണ വേദഭാഗ ക്രമം കാണുക 📖",
-    backToHome: "പ്രധാന പേജിലേക്ക്"
+    backToHome: "പ്രധാന പേജിലേക്ക്",
+
+    // Songs Page Translations
+    songsHeroBadge: "സെന്റർ സഖ്യം ഓഡിയോ ശേഖരം • 50 ഗാനങ്ങൾ",
+    songsHeroTitle: "യുവജന ആരാധനാ & ക്യാമ്പ് ഗാനങ്ങൾ",
+    songsHeroSubtitle: "കീഴില്ലം - മൂന്നാർ സെന്റർ മാർത്തോമ്മാ യുവജനസഖ്യത്തിനായി ഗോഡ്ലി അലക്കൽ കോരത് വർഗീസ് ചിട്ടപ്പെടുത്തിയ 50 ആധികാരിക ആരാധന, സ്തുതി, ക്യാമ്പ് ഗാനങ്ങൾ.",
+    openGdriveFolder: "ഗൂഗിൾ ഡ്രൈവ് ഫോൾഡർ തുറക്കുക 📂",
+    searchSongsPlaceholder: "ഗാനത്തിന്റെ പേരോ, നമ്പറോ, വിഭാഗമോ തിരയുക...",
+    filterAllSongs: "എല്ലാ 50 ഗാനങ്ങളും",
+    filterCamp: "ക്യാമ്പ് & ഫെലോഷിപ്പ്",
+    filterWorship: "ആരാധന & ഗീതങ്ങൾ",
+    filterPraise: "സ്തോത്ര ഗീതങ്ങൾ",
+    filterDevotional: "ഭക്തിഗാനങ്ങൾ & ക്രമം",
+    filterChoral: "ഗായകസംഘം & സ്പെഷ്യൽ",
+    playTrack: "പ്ലേ ചെയ്യുക",
+    pauseTrack: "പോസ് ചെയ്യുക",
+    openInDrive: "ഗൂഗിൾ ഡ്രൈവ്",
+    downloadTrack: "ഡൗൺലോഡ്",
+    shareSong: "പങ്കിടുക",
+    nowPlaying: "ഇപ്പോൾ പ്ലേ ചെയ്യുന്നത്",
+    homeSongsWidgetTitle: "യുവജന ആരാധനാ & ക്യാമ്പ് ഗാനങ്ങൾ",
+    exploreAllSongs: "50 ഗാനങ്ങളും കേൾക്കുക 🎵"
   },
 
   mang: {
@@ -304,6 +348,7 @@ const I18N = {
     navLeadership: "Bhaaravaahikal",
     navGallery: "Gallery",
     navLectionary: "Lectionary",
+    navSongs: "Songs",
     navConnect: "Connect",
     quickRegister: "Join Sakhyam",
 
@@ -431,6 +476,27 @@ const I18N = {
     copiedSuccess: "Readings clipboard-ilekku copy cheythu!",
     homeUpcomingWidgetTitle: "Adutha Njayarazhchayile Vedabhaga Kramam",
     openFullLectionary: "Full Lectionary Kaanuka 📖",
-    backToHome: "Back to Home"
+    backToHome: "Back to Home",
+
+    // Songs Page Translations
+    songsHeroBadge: "Centre Sakhyam Audio Archives • 50 Tracks",
+    songsHeroTitle: "Youth Praise & Worship Songs",
+    songsHeroSubtitle: "Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyathinaayi Godly Alackal Korath Varghese tharandutha 50 prasaada, aaradhana, camp gaanangal.",
+    openGdriveFolder: "Google Drive Folder Thurakkuka 📂",
+    searchSongsPlaceholder: "Gaanathinte peyaro, number-o, category-o search cheyyuka...",
+    filterAllSongs: "All 50 Tracks",
+    filterCamp: "Camp & Fellowship",
+    filterWorship: "Worship & Hymns",
+    filterPraise: "Praise & Youth",
+    filterDevotional: "Devotional & Liturgy",
+    filterChoral: "Choral & Special",
+    playTrack: "Play Track",
+    pauseTrack: "Pause",
+    openInDrive: "Google Drive",
+    downloadTrack: "Download",
+    shareSong: "Share",
+    nowPlaying: "NOW PLAYING",
+    homeSongsWidgetTitle: "Youth Praise & Camp Songs",
+    exploreAllSongs: "Explore All 50 Songs 🎵"
   }
 };
