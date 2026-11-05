@@ -757,14 +757,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   audioEngine.addEventListener('error', () => {
-    console.warn('Audio streaming encountered error, opening embedded preview player modal.');
-    const toast = document.getElementById('toast-notification');
-    if (toast) {
-      toast.textContent = "Connecting to Google Drive Audio Stream...";
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3500);
+    console.warn('Audio streaming encountered error, attempting fallback URL.');
+    if (currentPlayingSongIndex >= 0 && SAKHYAM_DATA.songs[currentPlayingSongIndex]) {
+      const song = SAKHYAM_DATA.songs[currentPlayingSongIndex];
+      const fallbackUrl = `https://docs.google.com/uc?export=download&id=${song.fileId}`;
+      if (audioEngine.src !== fallbackUrl) {
+        audioEngine.src = fallbackUrl;
+        audioEngine.load();
+        audioEngine.play().catch(e => console.warn('Fallback stream error:', e));
+      }
     }
-    openSongModal();
   });
 
   // Scrubber user input seek
@@ -987,14 +989,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalBtnDownload) modalBtnDownload.href = song.streamUrl;
     if (modalBtnShare) modalBtnShare.onclick = () => shareSongWhatsApp(index);
 
-    // Play via HTML5 Audio Engine
-    audioEngine.src = song.streamUrl;
+    // Play via HTML5 Audio Engine (Direct Usercontent Stream with Docs fallback)
+    const primaryStreamUrl = `https://drive.usercontent.google.com/download?id=${song.fileId}&export=download`;
+    audioEngine.src = primaryStreamUrl;
     audioEngine.load();
     const playPromise = audioEngine.play();
     if (playPromise !== undefined) {
       playPromise.catch(err => {
-        console.warn('Direct stream playback autoplay or CORS issue:', err);
-        openSongModal();
+        console.warn('Primary stream playback error, trying fallback:', err);
+        audioEngine.src = `https://docs.google.com/uc?export=download&id=${song.fileId}`;
+        audioEngine.load();
+        audioEngine.play().catch(e => console.warn('Fallback stream error:', e));
       });
     }
 
@@ -1010,7 +1015,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (audioEngine.paused) {
-      audioEngine.play().catch(() => openSongModal());
+      audioEngine.play().catch(e => console.warn('Play error:', e));
     } else {
       audioEngine.pause();
     }

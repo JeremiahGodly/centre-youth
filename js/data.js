@@ -1134,7 +1134,7 @@ const SAKHYAM_DATA = {
     "fileId": "1SIO0knOOQeB_-ZqJ_WtCwIKxoWCHx2gv",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (2).mp3",
     "driveUrl": "https://drive.google.com/file/d/1SIO0knOOQeB_-ZqJ_WtCwIKxoWCHx2gv/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1SIO0knOOQeB_-ZqJ_WtCwIKxoWCHx2gv",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1SIO0knOOQeB_-ZqJ_WtCwIKxoWCHx2gv",
     "previewUrl": "https://drive.google.com/file/d/1SIO0knOOQeB_-ZqJ_WtCwIKxoWCHx2gv/preview"
   },
   {
@@ -1150,7 +1150,7 @@ const SAKHYAM_DATA = {
     "fileId": "1yFxCJId7zwny3XOJpoC925farKgg11ea",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (3).mp3",
     "driveUrl": "https://drive.google.com/file/d/1yFxCJId7zwny3XOJpoC925farKgg11ea/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1yFxCJId7zwny3XOJpoC925farKgg11ea",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1yFxCJId7zwny3XOJpoC925farKgg11ea",
     "previewUrl": "https://drive.google.com/file/d/1yFxCJId7zwny3XOJpoC925farKgg11ea/preview"
   },
   {
@@ -1166,7 +1166,7 @@ const SAKHYAM_DATA = {
     "fileId": "1f_D_qVqfgQDW9sCvgQKnGJq2XI4vcJYI",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (5).mp3",
     "driveUrl": "https://drive.google.com/file/d/1f_D_qVqfgQDW9sCvgQKnGJq2XI4vcJYI/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1f_D_qVqfgQDW9sCvgQKnGJq2XI4vcJYI",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1f_D_qVqfgQDW9sCvgQKnGJq2XI4vcJYI",
     "previewUrl": "https://drive.google.com/file/d/1f_D_qVqfgQDW9sCvgQKnGJq2XI4vcJYI/preview"
   },
   {
@@ -1182,7 +1182,7 @@ const SAKHYAM_DATA = {
     "fileId": "1vyoRQhnuSC1qgMZSz6rD6scCNKQTcu3p",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (6).mp3",
     "driveUrl": "https://drive.google.com/file/d/1vyoRQhnuSC1qgMZSz6rD6scCNKQTcu3p/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1vyoRQhnuSC1qgMZSz6rD6scCNKQTcu3p",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1vyoRQhnuSC1qgMZSz6rD6scCNKQTcu3p",
     "previewUrl": "https://drive.google.com/file/d/1vyoRQhnuSC1qgMZSz6rD6scCNKQTcu3p/preview"
   },
   {
@@ -1198,7 +1198,7 @@ const SAKHYAM_DATA = {
     "fileId": "1TcTD-cm3hVaSVN-aQXFPIMbcFTPlKrCp",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (7).mp3",
     "driveUrl": "https://drive.google.com/file/d/1TcTD-cm3hVaSVN-aQXFPIMbcFTPlKrCp/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1TcTD-cm3hVaSVN-aQXFPIMbcFTPlKrCp",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1TcTD-cm3hVaSVN-aQXFPIMbcFTPlKrCp",
     "previewUrl": "https://drive.google.com/file/d/1TcTD-cm3hVaSVN-aQXFPIMbcFTPlKrCp/preview"
   },
   {
@@ -1214,7 +1214,7 @@ const SAKHYAM_DATA = {
     "fileId": "1bvnYEzqEnTYVgpZFKYFp1J0LDxlmdd9j",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (8).mp3",
     "driveUrl": "https://drive.google.com/file/d/1bvnYEzqEnTYVgpZFKYFp1J0LDxlmdd9j/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1bvnYEzqEnTYVgpZFKYFp1J0LDxlmdd9j",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1bvnYEzqEnTYVgpZFKYFp1J0LDxlmdd9j",
     "previewUrl": "https://drive.google.com/file/d/1bvnYEzqEnTYVgpZFKYFp1J0LDxlmdd9j/preview"
   },
   {
@@ -1230,7 +1230,7 @@ const SAKHYAM_DATA = {
     "fileId": "1LGoUVXBP-CtYqCpr_UdVBlEjQM9qbt95",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (9).mp3",
     "driveUrl": "https://drive.google.com/file/d/1LGoUVXBP-CtYqCpr_UdVBlEjQM9qbt95/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1LGoUVXBP-CtYqCpr_UdVBlEjQM9qbt95",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1LGoUVXBP-CtYqCpr_UdVBlEjQM9qbt95",
     "previewUrl": "https://drive.google.com/file/d/1LGoUVXBP-CtYqCpr_UdVBlEjQM9qbt95/preview"
   },
   {
@@ -1246,7 +1246,7 @@ const SAKHYAM_DATA = {
     "fileId": "1Mkyxs92sFZIxYdXyMN1Hhp5XmRg-Smq3",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (10).mp3",
     "driveUrl": "https://drive.google.com/file/d/1Mkyxs92sFZIxYdXyMN1Hhp5XmRg-Smq3/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1Mkyxs92sFZIxYdXyMN1Hhp5XmRg-Smq3",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1Mkyxs92sFZIxYdXyMN1Hhp5XmRg-Smq3",
     "previewUrl": "https://drive.google.com/file/d/1Mkyxs92sFZIxYdXyMN1Hhp5XmRg-Smq3/preview"
   },
   {
@@ -1262,7 +1262,7 @@ const SAKHYAM_DATA = {
     "fileId": "1xTB35NsngQwpMvoQY8LndBeiIrnMARcH",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (11).mp3",
     "driveUrl": "https://drive.google.com/file/d/1xTB35NsngQwpMvoQY8LndBeiIrnMARcH/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1xTB35NsngQwpMvoQY8LndBeiIrnMARcH",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1xTB35NsngQwpMvoQY8LndBeiIrnMARcH",
     "previewUrl": "https://drive.google.com/file/d/1xTB35NsngQwpMvoQY8LndBeiIrnMARcH/preview"
   },
   {
@@ -1278,7 +1278,7 @@ const SAKHYAM_DATA = {
     "fileId": "145t0qBtPBLTWOG657nVLdlG2VeQm_kHN",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (12).mp3",
     "driveUrl": "https://drive.google.com/file/d/145t0qBtPBLTWOG657nVLdlG2VeQm_kHN/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=145t0qBtPBLTWOG657nVLdlG2VeQm_kHN",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=145t0qBtPBLTWOG657nVLdlG2VeQm_kHN",
     "previewUrl": "https://drive.google.com/file/d/145t0qBtPBLTWOG657nVLdlG2VeQm_kHN/preview"
   },
   {
@@ -1294,7 +1294,7 @@ const SAKHYAM_DATA = {
     "fileId": "19EbTo1OwSfrWz3HPE2vUVJFP0BO7NkYx",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (13).mp3",
     "driveUrl": "https://drive.google.com/file/d/19EbTo1OwSfrWz3HPE2vUVJFP0BO7NkYx/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=19EbTo1OwSfrWz3HPE2vUVJFP0BO7NkYx",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=19EbTo1OwSfrWz3HPE2vUVJFP0BO7NkYx",
     "previewUrl": "https://drive.google.com/file/d/19EbTo1OwSfrWz3HPE2vUVJFP0BO7NkYx/preview"
   },
   {
@@ -1310,7 +1310,7 @@ const SAKHYAM_DATA = {
     "fileId": "1cYKWorNqovsi9BBEStZx_ctocQk-NeXh",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (14).mp3",
     "driveUrl": "https://drive.google.com/file/d/1cYKWorNqovsi9BBEStZx_ctocQk-NeXh/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1cYKWorNqovsi9BBEStZx_ctocQk-NeXh",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1cYKWorNqovsi9BBEStZx_ctocQk-NeXh",
     "previewUrl": "https://drive.google.com/file/d/1cYKWorNqovsi9BBEStZx_ctocQk-NeXh/preview"
   },
   {
@@ -1326,7 +1326,7 @@ const SAKHYAM_DATA = {
     "fileId": "18MTX9xahLYoocy2UyziqYXYWboY86vGj",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (17).mp3",
     "driveUrl": "https://drive.google.com/file/d/18MTX9xahLYoocy2UyziqYXYWboY86vGj/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=18MTX9xahLYoocy2UyziqYXYWboY86vGj",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=18MTX9xahLYoocy2UyziqYXYWboY86vGj",
     "previewUrl": "https://drive.google.com/file/d/18MTX9xahLYoocy2UyziqYXYWboY86vGj/preview"
   },
   {
@@ -1342,7 +1342,7 @@ const SAKHYAM_DATA = {
     "fileId": "1h2x_i56L4aSlBL2FUXrK4idwLbygmPn1",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (18).mp3",
     "driveUrl": "https://drive.google.com/file/d/1h2x_i56L4aSlBL2FUXrK4idwLbygmPn1/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1h2x_i56L4aSlBL2FUXrK4idwLbygmPn1",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1h2x_i56L4aSlBL2FUXrK4idwLbygmPn1",
     "previewUrl": "https://drive.google.com/file/d/1h2x_i56L4aSlBL2FUXrK4idwLbygmPn1/preview"
   },
   {
@@ -1358,7 +1358,7 @@ const SAKHYAM_DATA = {
     "fileId": "1M59-exmNRwg6j6vbfpZQElpj1zkHHlbT",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (19).mp3",
     "driveUrl": "https://drive.google.com/file/d/1M59-exmNRwg6j6vbfpZQElpj1zkHHlbT/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1M59-exmNRwg6j6vbfpZQElpj1zkHHlbT",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1M59-exmNRwg6j6vbfpZQElpj1zkHHlbT",
     "previewUrl": "https://drive.google.com/file/d/1M59-exmNRwg6j6vbfpZQElpj1zkHHlbT/preview"
   },
   {
@@ -1374,7 +1374,7 @@ const SAKHYAM_DATA = {
     "fileId": "1RsFX6SZT1wrWOoQs79k9T33F6rhQrAqu",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (21).mp3",
     "driveUrl": "https://drive.google.com/file/d/1RsFX6SZT1wrWOoQs79k9T33F6rhQrAqu/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1RsFX6SZT1wrWOoQs79k9T33F6rhQrAqu",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1RsFX6SZT1wrWOoQs79k9T33F6rhQrAqu",
     "previewUrl": "https://drive.google.com/file/d/1RsFX6SZT1wrWOoQs79k9T33F6rhQrAqu/preview"
   },
   {
@@ -1390,7 +1390,7 @@ const SAKHYAM_DATA = {
     "fileId": "1Y0gMTWMpaw4bgZLazpEtbQm_WTO_Gyff",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (22).mp3",
     "driveUrl": "https://drive.google.com/file/d/1Y0gMTWMpaw4bgZLazpEtbQm_WTO_Gyff/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1Y0gMTWMpaw4bgZLazpEtbQm_WTO_Gyff",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1Y0gMTWMpaw4bgZLazpEtbQm_WTO_Gyff",
     "previewUrl": "https://drive.google.com/file/d/1Y0gMTWMpaw4bgZLazpEtbQm_WTO_Gyff/preview"
   },
   {
@@ -1406,7 +1406,7 @@ const SAKHYAM_DATA = {
     "fileId": "1gQ6n_m0nU21QLyAluEO0Zg6tQJkOp2oU",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (23).mp3",
     "driveUrl": "https://drive.google.com/file/d/1gQ6n_m0nU21QLyAluEO0Zg6tQJkOp2oU/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1gQ6n_m0nU21QLyAluEO0Zg6tQJkOp2oU",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1gQ6n_m0nU21QLyAluEO0Zg6tQJkOp2oU",
     "previewUrl": "https://drive.google.com/file/d/1gQ6n_m0nU21QLyAluEO0Zg6tQJkOp2oU/preview"
   },
   {
@@ -1422,7 +1422,7 @@ const SAKHYAM_DATA = {
     "fileId": "1CKq3eXIhXKHqiXMivaED7v4ZRUSW7jEv",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (24).mp3",
     "driveUrl": "https://drive.google.com/file/d/1CKq3eXIhXKHqiXMivaED7v4ZRUSW7jEv/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1CKq3eXIhXKHqiXMivaED7v4ZRUSW7jEv",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1CKq3eXIhXKHqiXMivaED7v4ZRUSW7jEv",
     "previewUrl": "https://drive.google.com/file/d/1CKq3eXIhXKHqiXMivaED7v4ZRUSW7jEv/preview"
   },
   {
@@ -1438,7 +1438,7 @@ const SAKHYAM_DATA = {
     "fileId": "111hOrOXgPW9q2HHFWR_vJpyHgTlNxz8p",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (25).mp3",
     "driveUrl": "https://drive.google.com/file/d/111hOrOXgPW9q2HHFWR_vJpyHgTlNxz8p/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=111hOrOXgPW9q2HHFWR_vJpyHgTlNxz8p",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=111hOrOXgPW9q2HHFWR_vJpyHgTlNxz8p",
     "previewUrl": "https://drive.google.com/file/d/111hOrOXgPW9q2HHFWR_vJpyHgTlNxz8p/preview"
   },
   {
@@ -1454,7 +1454,7 @@ const SAKHYAM_DATA = {
     "fileId": "1useA5qcO5LmCv3pS2vmSXzNbOwTzPYee",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (27).mp3",
     "driveUrl": "https://drive.google.com/file/d/1useA5qcO5LmCv3pS2vmSXzNbOwTzPYee/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1useA5qcO5LmCv3pS2vmSXzNbOwTzPYee",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1useA5qcO5LmCv3pS2vmSXzNbOwTzPYee",
     "previewUrl": "https://drive.google.com/file/d/1useA5qcO5LmCv3pS2vmSXzNbOwTzPYee/preview"
   },
   {
@@ -1470,7 +1470,7 @@ const SAKHYAM_DATA = {
     "fileId": "1CUVtKPkSHB4GC0l6XbvE7WBaoZFpepcC",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (28).mp3",
     "driveUrl": "https://drive.google.com/file/d/1CUVtKPkSHB4GC0l6XbvE7WBaoZFpepcC/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1CUVtKPkSHB4GC0l6XbvE7WBaoZFpepcC",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1CUVtKPkSHB4GC0l6XbvE7WBaoZFpepcC",
     "previewUrl": "https://drive.google.com/file/d/1CUVtKPkSHB4GC0l6XbvE7WBaoZFpepcC/preview"
   },
   {
@@ -1486,7 +1486,7 @@ const SAKHYAM_DATA = {
     "fileId": "1UrVwOgK-_vqJBw_h3Frs97i9rFrsc0kK",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (30).mp3",
     "driveUrl": "https://drive.google.com/file/d/1UrVwOgK-_vqJBw_h3Frs97i9rFrsc0kK/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1UrVwOgK-_vqJBw_h3Frs97i9rFrsc0kK",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1UrVwOgK-_vqJBw_h3Frs97i9rFrsc0kK",
     "previewUrl": "https://drive.google.com/file/d/1UrVwOgK-_vqJBw_h3Frs97i9rFrsc0kK/preview"
   },
   {
@@ -1502,7 +1502,7 @@ const SAKHYAM_DATA = {
     "fileId": "1tQT0wkRUqnLxVRwtM0wsHQlc8MuGlxEC",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (31).mp3",
     "driveUrl": "https://drive.google.com/file/d/1tQT0wkRUqnLxVRwtM0wsHQlc8MuGlxEC/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1tQT0wkRUqnLxVRwtM0wsHQlc8MuGlxEC",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1tQT0wkRUqnLxVRwtM0wsHQlc8MuGlxEC",
     "previewUrl": "https://drive.google.com/file/d/1tQT0wkRUqnLxVRwtM0wsHQlc8MuGlxEC/preview"
   },
   {
@@ -1518,7 +1518,7 @@ const SAKHYAM_DATA = {
     "fileId": "1zAWvDNKCA4qDzw9EoaOmWlyfq0CpocIa",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (32).mp3",
     "driveUrl": "https://drive.google.com/file/d/1zAWvDNKCA4qDzw9EoaOmWlyfq0CpocIa/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1zAWvDNKCA4qDzw9EoaOmWlyfq0CpocIa",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1zAWvDNKCA4qDzw9EoaOmWlyfq0CpocIa",
     "previewUrl": "https://drive.google.com/file/d/1zAWvDNKCA4qDzw9EoaOmWlyfq0CpocIa/preview"
   },
   {
@@ -1534,7 +1534,7 @@ const SAKHYAM_DATA = {
     "fileId": "1flNRi-xlsZJwqXRAB0SKywlDu3RrzPek",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (33).mp3",
     "driveUrl": "https://drive.google.com/file/d/1flNRi-xlsZJwqXRAB0SKywlDu3RrzPek/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1flNRi-xlsZJwqXRAB0SKywlDu3RrzPek",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1flNRi-xlsZJwqXRAB0SKywlDu3RrzPek",
     "previewUrl": "https://drive.google.com/file/d/1flNRi-xlsZJwqXRAB0SKywlDu3RrzPek/preview"
   },
   {
@@ -1550,7 +1550,7 @@ const SAKHYAM_DATA = {
     "fileId": "1BVKAOTPpd-ONBvDdEMzwjVLUSmp7_wPa",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (34).mp3",
     "driveUrl": "https://drive.google.com/file/d/1BVKAOTPpd-ONBvDdEMzwjVLUSmp7_wPa/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1BVKAOTPpd-ONBvDdEMzwjVLUSmp7_wPa",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1BVKAOTPpd-ONBvDdEMzwjVLUSmp7_wPa",
     "previewUrl": "https://drive.google.com/file/d/1BVKAOTPpd-ONBvDdEMzwjVLUSmp7_wPa/preview"
   },
   {
@@ -1566,7 +1566,7 @@ const SAKHYAM_DATA = {
     "fileId": "14XxHZChzkOEWbKgvtGqdlfy-eIKZULXj",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (35).mp3",
     "driveUrl": "https://drive.google.com/file/d/14XxHZChzkOEWbKgvtGqdlfy-eIKZULXj/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=14XxHZChzkOEWbKgvtGqdlfy-eIKZULXj",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=14XxHZChzkOEWbKgvtGqdlfy-eIKZULXj",
     "previewUrl": "https://drive.google.com/file/d/14XxHZChzkOEWbKgvtGqdlfy-eIKZULXj/preview"
   },
   {
@@ -1582,7 +1582,7 @@ const SAKHYAM_DATA = {
     "fileId": "1bJ4sTikrC6BkdC0xM0j0Yk0nMtkwIISv",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (36).mp3",
     "driveUrl": "https://drive.google.com/file/d/1bJ4sTikrC6BkdC0xM0j0Yk0nMtkwIISv/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1bJ4sTikrC6BkdC0xM0j0Yk0nMtkwIISv",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1bJ4sTikrC6BkdC0xM0j0Yk0nMtkwIISv",
     "previewUrl": "https://drive.google.com/file/d/1bJ4sTikrC6BkdC0xM0j0Yk0nMtkwIISv/preview"
   },
   {
@@ -1598,7 +1598,7 @@ const SAKHYAM_DATA = {
     "fileId": "1vrPuHt_ooCROiUqxRLuxCye_d0yt09Ev",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (37).mp3",
     "driveUrl": "https://drive.google.com/file/d/1vrPuHt_ooCROiUqxRLuxCye_d0yt09Ev/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1vrPuHt_ooCROiUqxRLuxCye_d0yt09Ev",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1vrPuHt_ooCROiUqxRLuxCye_d0yt09Ev",
     "previewUrl": "https://drive.google.com/file/d/1vrPuHt_ooCROiUqxRLuxCye_d0yt09Ev/preview"
   },
   {
@@ -1614,7 +1614,7 @@ const SAKHYAM_DATA = {
     "fileId": "1KkLjeUs5WcxPKYJvfSy7cji6aV73zW-a",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (39).mp3",
     "driveUrl": "https://drive.google.com/file/d/1KkLjeUs5WcxPKYJvfSy7cji6aV73zW-a/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1KkLjeUs5WcxPKYJvfSy7cji6aV73zW-a",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1KkLjeUs5WcxPKYJvfSy7cji6aV73zW-a",
     "previewUrl": "https://drive.google.com/file/d/1KkLjeUs5WcxPKYJvfSy7cji6aV73zW-a/preview"
   },
   {
@@ -1630,7 +1630,7 @@ const SAKHYAM_DATA = {
     "fileId": "1LsqtBOeQgyW7hbvhp7o5KUUAh3tlCdce",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (40).mp3",
     "driveUrl": "https://drive.google.com/file/d/1LsqtBOeQgyW7hbvhp7o5KUUAh3tlCdce/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1LsqtBOeQgyW7hbvhp7o5KUUAh3tlCdce",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1LsqtBOeQgyW7hbvhp7o5KUUAh3tlCdce",
     "previewUrl": "https://drive.google.com/file/d/1LsqtBOeQgyW7hbvhp7o5KUUAh3tlCdce/preview"
   },
   {
@@ -1646,7 +1646,7 @@ const SAKHYAM_DATA = {
     "fileId": "13Hoc_CUzfH_MIiu4f7qPY8OrjtqUfwf9",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (41).mp3",
     "driveUrl": "https://drive.google.com/file/d/13Hoc_CUzfH_MIiu4f7qPY8OrjtqUfwf9/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=13Hoc_CUzfH_MIiu4f7qPY8OrjtqUfwf9",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=13Hoc_CUzfH_MIiu4f7qPY8OrjtqUfwf9",
     "previewUrl": "https://drive.google.com/file/d/13Hoc_CUzfH_MIiu4f7qPY8OrjtqUfwf9/preview"
   },
   {
@@ -1662,7 +1662,7 @@ const SAKHYAM_DATA = {
     "fileId": "1QxlJwNv1-i3-NjtWzOBaJcOJVn2sTJUT",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (42).mp3",
     "driveUrl": "https://drive.google.com/file/d/1QxlJwNv1-i3-NjtWzOBaJcOJVn2sTJUT/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1QxlJwNv1-i3-NjtWzOBaJcOJVn2sTJUT",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1QxlJwNv1-i3-NjtWzOBaJcOJVn2sTJUT",
     "previewUrl": "https://drive.google.com/file/d/1QxlJwNv1-i3-NjtWzOBaJcOJVn2sTJUT/preview"
   },
   {
@@ -1678,7 +1678,7 @@ const SAKHYAM_DATA = {
     "fileId": "1CH4F-Z2lxQZzxg9bLnDrmC_tLF3W6TMt",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (43).mp3",
     "driveUrl": "https://drive.google.com/file/d/1CH4F-Z2lxQZzxg9bLnDrmC_tLF3W6TMt/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1CH4F-Z2lxQZzxg9bLnDrmC_tLF3W6TMt",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1CH4F-Z2lxQZzxg9bLnDrmC_tLF3W6TMt",
     "previewUrl": "https://drive.google.com/file/d/1CH4F-Z2lxQZzxg9bLnDrmC_tLF3W6TMt/preview"
   },
   {
@@ -1694,7 +1694,7 @@ const SAKHYAM_DATA = {
     "fileId": "1yoCmbpChTrNiBG18h-OFnGZuMV3Q2O9s",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (44).mp3",
     "driveUrl": "https://drive.google.com/file/d/1yoCmbpChTrNiBG18h-OFnGZuMV3Q2O9s/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1yoCmbpChTrNiBG18h-OFnGZuMV3Q2O9s",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1yoCmbpChTrNiBG18h-OFnGZuMV3Q2O9s",
     "previewUrl": "https://drive.google.com/file/d/1yoCmbpChTrNiBG18h-OFnGZuMV3Q2O9s/preview"
   },
   {
@@ -1710,7 +1710,7 @@ const SAKHYAM_DATA = {
     "fileId": "1W4alvCWv16KhlAiFnqFssQGqrC5OJSK0",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (46).mp3",
     "driveUrl": "https://drive.google.com/file/d/1W4alvCWv16KhlAiFnqFssQGqrC5OJSK0/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1W4alvCWv16KhlAiFnqFssQGqrC5OJSK0",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1W4alvCWv16KhlAiFnqFssQGqrC5OJSK0",
     "previewUrl": "https://drive.google.com/file/d/1W4alvCWv16KhlAiFnqFssQGqrC5OJSK0/preview"
   },
   {
@@ -1726,7 +1726,7 @@ const SAKHYAM_DATA = {
     "fileId": "1HlEg56fI8LZ1zPDd19zuQGvY-upBmh11",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (48).mp3",
     "driveUrl": "https://drive.google.com/file/d/1HlEg56fI8LZ1zPDd19zuQGvY-upBmh11/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1HlEg56fI8LZ1zPDd19zuQGvY-upBmh11",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1HlEg56fI8LZ1zPDd19zuQGvY-upBmh11",
     "previewUrl": "https://drive.google.com/file/d/1HlEg56fI8LZ1zPDd19zuQGvY-upBmh11/preview"
   },
   {
@@ -1742,7 +1742,7 @@ const SAKHYAM_DATA = {
     "fileId": "1cCHdzdTJgyFhjVVbcjPEnD4u4gJo8Li7",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (49).mp3",
     "driveUrl": "https://drive.google.com/file/d/1cCHdzdTJgyFhjVVbcjPEnD4u4gJo8Li7/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1cCHdzdTJgyFhjVVbcjPEnD4u4gJo8Li7",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1cCHdzdTJgyFhjVVbcjPEnD4u4gJo8Li7",
     "previewUrl": "https://drive.google.com/file/d/1cCHdzdTJgyFhjVVbcjPEnD4u4gJo8Li7/preview"
   },
   {
@@ -1758,7 +1758,7 @@ const SAKHYAM_DATA = {
     "fileId": "1FQjpmHGJKvBmHOt1wWeOjnY6Lv5eHw5B",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (50).mp3",
     "driveUrl": "https://drive.google.com/file/d/1FQjpmHGJKvBmHOt1wWeOjnY6Lv5eHw5B/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1FQjpmHGJKvBmHOt1wWeOjnY6Lv5eHw5B",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1FQjpmHGJKvBmHOt1wWeOjnY6Lv5eHw5B",
     "previewUrl": "https://drive.google.com/file/d/1FQjpmHGJKvBmHOt1wWeOjnY6Lv5eHw5B/preview"
   },
   {
@@ -1774,7 +1774,7 @@ const SAKHYAM_DATA = {
     "fileId": "1KXjdWjjh9kE2QUDjuyBbXq4X4r5Hs3GE",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (51).mp3",
     "driveUrl": "https://drive.google.com/file/d/1KXjdWjjh9kE2QUDjuyBbXq4X4r5Hs3GE/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1KXjdWjjh9kE2QUDjuyBbXq4X4r5Hs3GE",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1KXjdWjjh9kE2QUDjuyBbXq4X4r5Hs3GE",
     "previewUrl": "https://drive.google.com/file/d/1KXjdWjjh9kE2QUDjuyBbXq4X4r5Hs3GE/preview"
   },
   {
@@ -1790,7 +1790,7 @@ const SAKHYAM_DATA = {
     "fileId": "1Ju08UX2nr0xuMb_YOyxIG8Bwz3QjM01F",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (52).mp3",
     "driveUrl": "https://drive.google.com/file/d/1Ju08UX2nr0xuMb_YOyxIG8Bwz3QjM01F/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1Ju08UX2nr0xuMb_YOyxIG8Bwz3QjM01F",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1Ju08UX2nr0xuMb_YOyxIG8Bwz3QjM01F",
     "previewUrl": "https://drive.google.com/file/d/1Ju08UX2nr0xuMb_YOyxIG8Bwz3QjM01F/preview"
   },
   {
@@ -1806,7 +1806,7 @@ const SAKHYAM_DATA = {
     "fileId": "1wdfagvQ3LRU1pIxITFCHfDakk_mNlwrY",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (53).mp3",
     "driveUrl": "https://drive.google.com/file/d/1wdfagvQ3LRU1pIxITFCHfDakk_mNlwrY/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1wdfagvQ3LRU1pIxITFCHfDakk_mNlwrY",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1wdfagvQ3LRU1pIxITFCHfDakk_mNlwrY",
     "previewUrl": "https://drive.google.com/file/d/1wdfagvQ3LRU1pIxITFCHfDakk_mNlwrY/preview"
   },
   {
@@ -1822,7 +1822,7 @@ const SAKHYAM_DATA = {
     "fileId": "1d0M3sMBo99KHHmdIGe-0WI7wRo5LLvy-",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (54).mp3",
     "driveUrl": "https://drive.google.com/file/d/1d0M3sMBo99KHHmdIGe-0WI7wRo5LLvy-/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1d0M3sMBo99KHHmdIGe-0WI7wRo5LLvy-",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1d0M3sMBo99KHHmdIGe-0WI7wRo5LLvy-",
     "previewUrl": "https://drive.google.com/file/d/1d0M3sMBo99KHHmdIGe-0WI7wRo5LLvy-/preview"
   },
   {
@@ -1838,7 +1838,7 @@ const SAKHYAM_DATA = {
     "fileId": "1NiLlKsujV-t4Pw7sa1BBCHQKcp39MUwF",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (55).mp3",
     "driveUrl": "https://drive.google.com/file/d/1NiLlKsujV-t4Pw7sa1BBCHQKcp39MUwF/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1NiLlKsujV-t4Pw7sa1BBCHQKcp39MUwF",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1NiLlKsujV-t4Pw7sa1BBCHQKcp39MUwF",
     "previewUrl": "https://drive.google.com/file/d/1NiLlKsujV-t4Pw7sa1BBCHQKcp39MUwF/preview"
   },
   {
@@ -1854,7 +1854,7 @@ const SAKHYAM_DATA = {
     "fileId": "1hnOw9T2gxyl-0O3McK94ztsAtDBJZDtj",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (56).mp3",
     "driveUrl": "https://drive.google.com/file/d/1hnOw9T2gxyl-0O3McK94ztsAtDBJZDtj/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1hnOw9T2gxyl-0O3McK94ztsAtDBJZDtj",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1hnOw9T2gxyl-0O3McK94ztsAtDBJZDtj",
     "previewUrl": "https://drive.google.com/file/d/1hnOw9T2gxyl-0O3McK94ztsAtDBJZDtj/preview"
   },
   {
@@ -1870,7 +1870,7 @@ const SAKHYAM_DATA = {
     "fileId": "1PQciQ-u_-CKoeRxsm2_TVu3NCP4f7l_p",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (57).mp3",
     "driveUrl": "https://drive.google.com/file/d/1PQciQ-u_-CKoeRxsm2_TVu3NCP4f7l_p/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1PQciQ-u_-CKoeRxsm2_TVu3NCP4f7l_p",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1PQciQ-u_-CKoeRxsm2_TVu3NCP4f7l_p",
     "previewUrl": "https://drive.google.com/file/d/1PQciQ-u_-CKoeRxsm2_TVu3NCP4f7l_p/preview"
   },
   {
@@ -1886,7 +1886,7 @@ const SAKHYAM_DATA = {
     "fileId": "1bwir0uxEhlE2fN1dbhzywmnjdFZ9VUxS",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (58).mp3",
     "driveUrl": "https://drive.google.com/file/d/1bwir0uxEhlE2fN1dbhzywmnjdFZ9VUxS/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1bwir0uxEhlE2fN1dbhzywmnjdFZ9VUxS",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1bwir0uxEhlE2fN1dbhzywmnjdFZ9VUxS",
     "previewUrl": "https://drive.google.com/file/d/1bwir0uxEhlE2fN1dbhzywmnjdFZ9VUxS/preview"
   },
   {
@@ -1902,7 +1902,7 @@ const SAKHYAM_DATA = {
     "fileId": "11VJqhDee0tQNG1titSeF07EuC_Oop-Qj",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (59).mp3",
     "driveUrl": "https://drive.google.com/file/d/11VJqhDee0tQNG1titSeF07EuC_Oop-Qj/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=11VJqhDee0tQNG1titSeF07EuC_Oop-Qj",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=11VJqhDee0tQNG1titSeF07EuC_Oop-Qj",
     "previewUrl": "https://drive.google.com/file/d/11VJqhDee0tQNG1titSeF07EuC_Oop-Qj/preview"
   },
   {
@@ -1918,7 +1918,7 @@ const SAKHYAM_DATA = {
     "fileId": "1O9AP2N-0xmZkobRAIwN8zH6DLsBeA9GB",
     "fileName": "WhatsApp Audio GODLY at 6.35.40 AM (60).mp3",
     "driveUrl": "https://drive.google.com/file/d/1O9AP2N-0xmZkobRAIwN8zH6DLsBeA9GB/view",
-    "streamUrl": "https://docs.google.com/uc?export=download&id=1O9AP2N-0xmZkobRAIwN8zH6DLsBeA9GB",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1O9AP2N-0xmZkobRAIwN8zH6DLsBeA9GB",
     "previewUrl": "https://drive.google.com/file/d/1O9AP2N-0xmZkobRAIwN8zH6DLsBeA9GB/preview"
   }
 ]
