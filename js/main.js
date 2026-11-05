@@ -840,7 +840,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const padNo = String(song.trackNo).padStart(2, '0');
 
       return `
-        <article class="song-card ${isCurrent ? 'is-playing' : ''}" data-song-index="${globalIdx}" id="song-card-${globalIdx}">
+        <article class="song-card ${isCurrent ? 'is-playing is-active-player' : ''}" data-song-index="${globalIdx}" id="song-card-${globalIdx}">
           <div class="song-card-header">
             <span class="song-track-badge">#${padNo}</span>
             <span class="song-category-pill">${song.category}</span>
@@ -852,11 +852,16 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="song-card-collection">${song.collection}</span>
           </div>
 
+          <!-- Inline Docked Google Drive Audio Player -->
+          <div class="song-card-docked-player" id="card-docked-player-${globalIdx}">
+            ${isCurrent ? `<iframe src="${song.previewUrl}" title="${song[titleKey] || song.titleEn}" allow="autoplay; encrypted-media" frameborder="0"></iframe>` : ''}
+          </div>
+
           <div class="song-card-actions">
             <button type="button" class="btn-song-action btn-song-play" onclick="playSong(${globalIdx})">
               ${isPlaying ? `
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                <span>${dict.pauseTrack || "Pause"}</span>
+                <span>${dict.pauseTrack || "Stop"}</span>
               ` : `
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
                 <span>${dict.playTrack || "Play Track"}</span>
@@ -907,11 +912,10 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = sampleSongs.map((song) => {
       const globalIdx = SAKHYAM_DATA.songs.findIndex(s => s.id === song.id);
       const isCurrent = globalIdx === currentPlayingSongIndex;
-      const isPlaying = isCurrent && !audioEngine.paused;
       const padNo = String(song.trackNo).padStart(2, '0');
 
       return `
-        <article class="song-card ${isCurrent ? 'is-playing' : ''}" data-song-index="${globalIdx}">
+        <article class="song-card ${isCurrent ? 'is-playing is-active-player' : ''}" data-song-index="${globalIdx}" id="song-card-home-${globalIdx}">
           <div class="song-card-header">
             <span class="song-track-badge">#${padNo}</span>
             <span class="song-category-pill">${song.category}</span>
@@ -922,11 +926,16 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="song-card-artist">${song.artist}</span>
           </div>
 
+          <!-- Inline Docked Google Drive Audio Player -->
+          <div class="song-card-docked-player" id="card-docked-player-home-${globalIdx}">
+            ${isCurrent ? `<iframe src="${song.previewUrl}" title="${song[titleKey] || song.titleEn}" allow="autoplay; encrypted-media" frameborder="0"></iframe>` : ''}
+          </div>
+
           <div class="song-card-actions">
             <button type="button" class="btn-song-action btn-song-play" onclick="playSong(${globalIdx})">
-              ${isPlaying ? `
+              ${isCurrent ? `
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                <span>${dict.pauseTrack || "Pause"}</span>
+                <span>${dict.pauseTrack || "Stop"}</span>
               ` : `
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
                 <span>${dict.playTrack || "Play Track"}</span>
@@ -949,6 +958,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const titleKey = currentLang === 'ml' ? 'titleMl' : (currentLang === 'mang' ? 'titleMang' : 'titleEn');
     const title = song[titleKey] || song.titleEn;
 
+    // Toggle off if currently playing song is clicked again
     if (currentPlayingSongIndex === index) {
       toggleSongPlay();
       return;
@@ -956,51 +966,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     currentPlayingSongIndex = index;
 
+    // Update docked player in all matching cards
+    document.querySelectorAll('.song-card').forEach(card => {
+      const idx = parseInt(card.getAttribute('data-song-index'));
+      const dockedWrap = card.querySelector('.song-card-docked-player');
+      if (idx === index) {
+        card.classList.add('is-playing', 'is-active-player');
+        if (dockedWrap) {
+          dockedWrap.innerHTML = `<iframe src="${song.previewUrl}" title="${title}" allow="autoplay; encrypted-media" frameborder="0"></iframe>`;
+        }
+      } else {
+        card.classList.remove('is-playing', 'is-active-player');
+        if (dockedWrap) {
+          dockedWrap.innerHTML = '';
+        }
+      }
+    });
+
     // Update bottom floating audio bar
     const floatingBar = document.getElementById('floating-audio-bar');
     if (floatingBar) {
-      floatingBar.classList.add('active');
+      floatingBar.classList.add('active', 'is-playing');
       const barTitle = document.getElementById('bar-track-title');
       const barArtist = document.getElementById('bar-track-artist');
       const barDrive = document.getElementById('bar-drive-link');
       if (barTitle) barTitle.textContent = `${title} (#${String(song.trackNo).padStart(2, '0')})`;
       if (barArtist) barArtist.textContent = song.artist;
       if (barDrive) barDrive.href = song.driveUrl;
-    }
 
-    // Set embedded preview iframe
-    const playerIframe = document.getElementById('song-player-iframe');
-    if (playerIframe) {
-      playerIframe.src = song.previewUrl;
-    }
-
-    // Update modal details
-    const modalTrackBadge = document.getElementById('modal-track-badge');
-    const modalTrackTitle = document.getElementById('modal-track-title');
-    const modalTrackArtist = document.getElementById('modal-track-artist');
-    const modalBtnDrive = document.getElementById('modal-btn-drive');
-    const modalBtnDownload = document.getElementById('modal-btn-download');
-    const modalBtnShare = document.getElementById('modal-btn-share');
-
-    if (modalTrackBadge) modalTrackBadge.textContent = `Track #${String(song.trackNo).padStart(2, '0')} • ${song.category}`;
-    if (modalTrackTitle) modalTrackTitle.textContent = title;
-    if (modalTrackArtist) modalTrackArtist.textContent = `${song.artist} • ${song.collection}`;
-    if (modalBtnDrive) modalBtnDrive.href = song.driveUrl;
-    if (modalBtnDownload) modalBtnDownload.href = song.streamUrl;
-    if (modalBtnShare) modalBtnShare.onclick = () => shareSongWhatsApp(index);
-
-    // Play via HTML5 Audio Engine (Direct Usercontent Stream with Docs fallback)
-    const primaryStreamUrl = `https://drive.usercontent.google.com/download?id=${song.fileId}&export=download`;
-    audioEngine.src = primaryStreamUrl;
-    audioEngine.load();
-    const playPromise = audioEngine.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(err => {
-        console.warn('Primary stream playback error, trying fallback:', err);
-        audioEngine.src = `https://docs.google.com/uc?export=download&id=${song.fileId}`;
-        audioEngine.load();
-        audioEngine.play().catch(e => console.warn('Fallback stream error:', e));
-      });
+      // Update bottom bar docked player iframe
+      const barFrameWrap = document.getElementById('bar-player-frame-wrap');
+      const barFrame = document.getElementById('bar-player-iframe');
+      if (barFrame) {
+        barFrame.src = song.previewUrl;
+        if (barFrameWrap) barFrameWrap.style.display = 'flex';
+      }
     }
 
     updateAllSongCardButtons();
@@ -1014,11 +1014,30 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (audioEngine.paused) {
-      audioEngine.play().catch(e => console.warn('Play error:', e));
+    const activeCards = document.querySelectorAll('.song-card.is-active-player');
+    const floatingBar = document.getElementById('floating-audio-bar');
+    const barFrame = document.getElementById('bar-player-iframe');
+    const barFrameWrap = document.getElementById('bar-player-frame-wrap');
+
+    if (activeCards.length > 0) {
+      // Pause / Stop playback
+      activeCards.forEach(card => {
+        card.classList.remove('is-playing', 'is-active-player');
+        const dockedWrap = card.querySelector('.song-card-docked-player');
+        if (dockedWrap) dockedWrap.innerHTML = '';
+      });
+      if (floatingBar) floatingBar.classList.remove('is-playing');
+      if (barFrame) barFrame.src = '';
+      if (barFrameWrap) barFrameWrap.style.display = 'none';
+      currentPlayingSongIndex = -1;
     } else {
-      audioEngine.pause();
+      // Re-trigger playback of current song
+      const idx = currentPlayingSongIndex;
+      currentPlayingSongIndex = -1;
+      playSong(idx);
     }
+
+    updateAllSongCardButtons();
   }
 
   function updateBarPlayPauseIcons(playing) {
@@ -1035,15 +1054,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.song-card').forEach(card => {
       const cardIdx = parseInt(card.getAttribute('data-song-index'));
       const isCurrent = cardIdx === currentPlayingSongIndex;
-      const isPlaying = isCurrent && !audioEngine.paused;
+      const isActive = isCurrent && card.classList.contains('is-active-player');
 
-      card.classList.toggle('is-playing', isCurrent);
+      card.classList.toggle('is-playing', isActive);
       const playBtn = card.querySelector('.btn-song-play');
       if (playBtn) {
-        if (isPlaying) {
+        if (isActive) {
           playBtn.innerHTML = `
             <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-            <span>${dict.pauseTrack || "Pause"}</span>
+            <span>${dict.pauseTrack || "Stop"}</span>
           `;
         } else {
           playBtn.innerHTML = `
@@ -1053,6 +1072,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
+
+    const isAnyActive = document.querySelectorAll('.song-card.is-active-player').length > 0;
+    updateBarPlayPauseIcons(isAnyActive);
   }
 
   window.prevSong = function() {
@@ -1172,8 +1194,19 @@ document.addEventListener('DOMContentLoaded', () => {
     barCloseBtn.addEventListener('click', () => {
       const floatingBar = document.getElementById('floating-audio-bar');
       if (floatingBar) {
-        floatingBar.classList.remove('active');
+        floatingBar.classList.remove('active', 'is-playing');
       }
+      document.querySelectorAll('.song-card.is-active-player').forEach(card => {
+        card.classList.remove('is-playing', 'is-active-player');
+        const dockedWrap = card.querySelector('.song-card-docked-player');
+        if (dockedWrap) dockedWrap.innerHTML = '';
+      });
+      const barFrame = document.getElementById('bar-player-iframe');
+      if (barFrame) barFrame.src = '';
+      const barFrameWrap = document.getElementById('bar-player-frame-wrap');
+      if (barFrameWrap) barFrameWrap.style.display = 'none';
+      currentPlayingSongIndex = -1;
+      updateAllSongCardButtons();
     });
   }
 

@@ -79,7 +79,8 @@ const SAKHYAM_DATA = {
       designationEn: "Centre Vicar & Youth President",
       designationMl: "സെന്റർ പ്രസിഡന്റ്",
       designationMang: "Centre President",
-      image: "assets/images/cshore-inauguration-stage.jpg",
+      image: "assets/images/leadership/rev-james-george.jpg",
+      phone: "+91 94469 06706",
       badge: "Clergy Leader"
     },
     {
@@ -92,7 +93,8 @@ const SAKHYAM_DATA = {
       designationEn: "Centre Vice President",
       designationMl: "സെന്റർ വൈസ് പ്രസിഡന്റ്",
       designationMang: "Centre Vice President",
-      image: "assets/images/best-centre-trophy.jpg",
+      image: "assets/images/leadership/varghese-sabu.jpg",
+      phone: "+91 85928 59287",
       badge: "Leadership"
     },
     {
@@ -105,7 +107,8 @@ const SAKHYAM_DATA = {
       designationEn: "Centre Secretary (2026-27)",
       designationMl: "സെന്റർ സെക്രട്ടറി",
       designationMang: "Centre Secretary",
-      image: "assets/images/flood-relief-kit-giving.jpg",
+      image: "assets/images/leadership/ashin-k-santhosh.jpg",
+      phone: "+91 94978 82179",
       badge: "Executive"
     },
     {
@@ -118,7 +121,8 @@ const SAKHYAM_DATA = {
       designationEn: "Former Secretary (25-26) & Joint Sec",
       designationMl: "സെന്റർ ജോയിന്റ് സെക്രട്ടറി",
       designationMang: "Centre Joint Secretary",
-      image: "assets/images/best-centre-trophy.jpg",
+      image: "assets/images/leadership/aleena-mariya-joy.jpg",
+      phone: "+91 96561 28738",
       badge: "Executive"
     },
     {
@@ -131,7 +135,8 @@ const SAKHYAM_DATA = {
       designationEn: "Centre Treasurer & Kalamela Convenor",
       designationMl: "സെന്റർ ട്രഷറർ & കലാമേള കൺവീനർ",
       designationMang: "Centre Treasurer & Kalamela Convenor",
-      image: "assets/images/inauguration-valakom.jpg",
+      image: "assets/images/leadership/gibin-saji.jpg",
+      phone: "+91 90613 91963",
       badge: "Finance & Event"
     },
     {
