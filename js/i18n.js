@@ -149,7 +149,7 @@ const I18N = {
     // Songs Page Translations
     songsHeroBadge: "Centre Sakhyam Audio Archives • 50 Tracks",
     songsHeroTitle: "Youth Praise & Worship Songs",
-    songsHeroSubtitle: "50 authentic praise, worship, and camp audio tracks curated by Godly Alackal Korath Varghese for Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam.",
+    songsHeroSubtitle: "50 authentic praise, worship, and camp audio tracks for Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam.",
     openGdriveFolder: "Open Google Drive Folder 📂",
     searchSongsPlaceholder: "Search by track title, number, or category...",
     filterAllSongs: "All 50 Tracks",
@@ -315,7 +315,7 @@ const I18N = {
     // Songs Page Translations
     songsHeroBadge: "സെന്റർ സഖ്യം ഓഡിയോ ശേഖരം • 50 ഗാനങ്ങൾ",
     songsHeroTitle: "യുവജന ആരാധനാ & ക്യാമ്പ് ഗാനങ്ങൾ",
-    songsHeroSubtitle: "കീഴില്ലം - മൂന്നാർ സെന്റർ മാർത്തോമ്മാ യുവജനസഖ്യത്തിനായി ഗോഡ്ലി അലക്കൽ കോരത് വർഗീസ് ചിട്ടപ്പെടുത്തിയ 50 ആധികാരിക ആരാധന, സ്തുതി, ക്യാമ്പ് ഗാനങ്ങൾ.",
+    songsHeroSubtitle: "കീഴില്ലം - മൂന്നാർ സെന്റർ മാർത്തോമ്മാ യുവജനസഖ്യത്തിന്റെ 50 ആധികാരിക ആരാധന, സ്തുതി, ക്യാമ്പ് ഗാനങ്ങൾ.",
     openGdriveFolder: "ഗൂഗിൾ ഡ്രൈവ് ഫോൾഡർ തുറക്കുക 📂",
     searchSongsPlaceholder: "ഗാനത്തിന്റെ പേരോ, നമ്പറോ, വിഭാഗമോ തിരയുക...",
     filterAllSongs: "എല്ലാ 50 ഗാനങ്ങളും",
@@ -481,7 +481,7 @@ const I18N = {
     // Songs Page Translations
     songsHeroBadge: "Centre Sakhyam Audio Archives • 50 Tracks",
     songsHeroTitle: "Youth Praise & Worship Songs",
-    songsHeroSubtitle: "Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyathinaayi Godly Alackal Korath Varghese tharandutha 50 prasaada, aaradhana, camp gaanangal.",
+    songsHeroSubtitle: "Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyathinte 50 prasaada, aaradhana, camp gaanangal.",
     openGdriveFolder: "Google Drive Folder Thurakkuka 📂",
     searchSongsPlaceholder: "Gaanathinte peyaro, number-o, category-o search cheyyuka...",
     filterAllSongs: "All 50 Tracks",

@@ -1322,8 +1322,14 @@ button, input, select, textarea {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  object-position: center top;
   border: 3px solid var(--gold-500);
   box-shadow: 0 8px 25px rgba(245, 158, 11, 0.25);
+  transition: transform var(--transition-fast);
+}
+
+.leader-card:hover .leader-avatar {
+  transform: scale(1.06);
 }
 
 .leader-role-badge {
@@ -1343,15 +1349,104 @@ button, input, select, textarea {
 
 .leader-name {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.25rem;
 }
 
 .leader-designation {
-  font-size: 0.875rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.leader-status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 0.65rem;
+}
+
+[data-theme="light"] .leader-status-chip {
+  color: #059669;
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.status-indicator-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
+}
+
+.leader-contact-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+}
+
+.leader-phone-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glass);
+  padding: 0.32rem 0.65rem;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+[data-theme="light"] .leader-phone-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.leader-phone-btn:hover {
+  background: var(--gold-500);
+  color: #0b0f19;
+  border-color: var(--gold-400);
+  transform: translateY(-2px);
+}
+
+.leader-wa-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.35);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.leader-wa-link:hover {
+  transform: scale(1.15) rotate(6deg);
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.55);
 }
 
 .leader-subtag {
@@ -3536,6 +3631,25 @@ textarea.form-control {
   .leader-designation {
     font-size: 0.72rem;
     margin-bottom: 0.35rem;
+  }
+  .leader-status-chip {
+    font-size: 0.62rem;
+    padding: 0.15rem 0.45rem;
+    margin-bottom: 0.4rem;
+  }
+  .leader-contact-actions {
+    gap: 0.3rem;
+  }
+  .leader-phone-btn {
+    font-size: 0.64rem;
+    padding: 0.22rem 0.45rem;
+  }
+  .leader-phone-btn span {
+    font-size: 0.64rem;
+  }
+  .leader-wa-link {
+    width: 24px;
+    height: 24px;
   }
 
   .achievements-grid {

@@ -278,20 +278,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameKey = currentLang === 'ml' ? 'nameMl' : (currentLang === 'mang' ? 'nameMang' : 'nameEn');
     const roleKey = currentLang === 'ml' ? 'roleMl' : (currentLang === 'mang' ? 'roleMang' : 'roleEn');
     const desigKey = currentLang === 'ml' ? 'designationMl' : (currentLang === 'mang' ? 'designationMang' : 'designationEn');
+    const statusKey = currentLang === 'ml' ? 'statusMl' : (currentLang === 'mang' ? 'statusMang' : 'statusEn');
 
-    container.innerHTML = SAKHYAM_DATA.officeBearers.map(b => `
-      <div class="leader-card glass-panel tilt-card">
-        <div class="leader-avatar-wrap">
-          <img src="${b.image}" alt="${b[nameKey]}" class="leader-avatar" loading="lazy" />
-          <span class="leader-role-badge">${b[roleKey]}</span>
+    container.innerHTML = SAKHYAM_DATA.officeBearers.map(b => {
+      const cleanPhone = b.phone ? b.phone.replace(/\s+/g, '') : '';
+      const waDigits = cleanPhone.replace(/^\+/, '');
+
+      return `
+        <div class="leader-card glass-panel tilt-card">
+          <div class="leader-avatar-wrap">
+            <img src="${b.image}" alt="${b[nameKey]}" class="leader-avatar" loading="lazy" />
+            <span class="leader-role-badge">${b[roleKey]}</span>
+          </div>
+          <div class="leader-details">
+            <h4 class="leader-name">${b[nameKey]}</h4>
+            <p class="leader-designation">${b[desigKey]}</p>
+            <div class="leader-status-chip">
+              <span class="status-indicator-dot"></span>
+              <span>${b[statusKey] || b.badge}</span>
+            </div>
+            ${b.phone ? `
+              <div class="leader-contact-actions">
+                <a href="tel:${cleanPhone}" class="leader-phone-btn" title="Call ${b[nameKey]}">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <span>${b.phone}</span>
+                </a>
+                <a href="https://wa.me/${waDigits}?text=Hello%20${encodeURIComponent(b[nameKey])}" target="_blank" rel="noopener" class="leader-wa-link" aria-label="WhatsApp ${b[nameKey]}" title="Chat on WhatsApp">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.28-2.42 5.84-1.56 1.56-3.64 2.41-5.83 2.41-1.45 0-2.87-.39-4.13-1.12l-.3-.18-3.07.81.82-2.99-.19-.32c-.8-1.32-1.23-2.84-1.23-4.44 0-4.54 3.7-8.24 8.23-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.25-1.5-1.4-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.59.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.3z"/></svg>
+                </a>
+              </div>
+            ` : ''}
+          </div>
         </div>
-        <div class="leader-details">
-          <h4 class="leader-name">${b[nameKey]}</h4>
-          <p class="leader-designation">${b[desigKey]}</p>
-          <span class="leader-subtag">${b.badge}</span>
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
 
     initTiltEffect();
   }
@@ -809,9 +829,8 @@ document.addEventListener('DOMContentLoaded', () => {
                          (song.titleMang && song.titleMang.toLowerCase().includes(q));
       const catMatch = song.category && song.category.toLowerCase().includes(q);
       const trackMatch = String(song.trackNo).includes(q) || String(song.rawNumber).includes(q);
-      const artistMatch = song.artist && song.artist.toLowerCase().includes(q);
 
-      return matchCat && (titleMatch || catMatch || trackMatch || artistMatch);
+      return matchCat && (titleMatch || catMatch || trackMatch);
     });
 
     const isSearching = songSearchQuery.trim().length > 0;
@@ -848,7 +867,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <div class="song-card-body">
             <h3 class="song-card-title">${song[titleKey] || song.titleEn}</h3>
-            <span class="song-card-artist">${song.artist}</span>
             <span class="song-card-collection">${song.collection}</span>
           </div>
 
@@ -923,7 +941,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <div class="song-card-body">
             <h3 class="song-card-title">${song[titleKey] || song.titleEn}</h3>
-            <span class="song-card-artist">${song.artist}</span>
+            <span class="song-card-collection">${song.collection}</span>
           </div>
 
           <!-- Inline Docked Google Drive Audio Player -->
@@ -991,7 +1009,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const barArtist = document.getElementById('bar-track-artist');
       const barDrive = document.getElementById('bar-drive-link');
       if (barTitle) barTitle.textContent = `${title} (#${String(song.trackNo).padStart(2, '0')})`;
-      if (barArtist) barArtist.textContent = song.artist;
+      if (barArtist) barArtist.textContent = song.collection || song.category;
       if (barDrive) barDrive.href = song.driveUrl;
 
       // Update bottom bar docked player iframe
@@ -1115,7 +1133,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const msg = `🎵 *${title}* (Track #${String(song.trackNo).padStart(2, '0')})\n` +
       `Category: ${song.category}\n` +
-      `Curator: ${song.artist}\n` +
       `📁 Listen / Download on Google Drive: ${song.driveUrl}\n\n` +
       `Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam`;
 
