@@ -359,6 +359,7 @@ function initFlyingLogoScroll() {
   const logoBox = document.getElementById('flying-logo-element');
   const section = document.getElementById('emblem-3d');
   const logoImg = document.getElementById('flying-logo-img');
+  const pedestalShadow = document.getElementById('artifact-pedestal-shadow');
   if (!logoBox || !section) return;
 
   let currentProgress = 0.5;
@@ -429,6 +430,13 @@ function initFlyingLogoScroll() {
 
       if (logoImg) {
         logoImg.style.filter = `drop-shadow(${(shadowX * 0.55).toFixed(1)}px ${(shadowY * 0.55).toFixed(1)}px 18px rgba(0, 0, 0, 0.6))`;
+      }
+
+      if (pedestalShadow) {
+        const shadowScale = (0.85 + Math.sin(currentProgress * Math.PI) * 0.25).toFixed(3);
+        const shadowOpacity = (0.45 + Math.sin(currentProgress * Math.PI) * 0.35).toFixed(2);
+        pedestalShadow.style.transform = `scale(${shadowScale})`;
+        pedestalShadow.style.opacity = shadowOpacity;
       }
 
       logoBox.style.transform = `perspective(1000px) translateY(${translateY.toFixed(1)}px) rotateY(${rotateY.toFixed(2)}deg) rotateX(${rotateX.toFixed(2)}deg) scale3d(${scale.toFixed(3)}, ${scale.toFixed(3)}, ${scale.toFixed(3)})`;
