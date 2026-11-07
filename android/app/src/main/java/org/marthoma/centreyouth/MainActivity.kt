@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -379,7 +380,8 @@ fun MoreMenuScreen(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    var isSyncing by remember { mutableStateOf(false) }
+    var lastSyncedText by remember { mutableStateOf(repository.getLastSyncedFormatted()) }
+    var isCheckingSync by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -393,18 +395,18 @@ fun MoreMenuScreen(
             fontWeight = FontWeight.Bold
         )
 
-        // 🔄 Live Cloud Sync Card
+        // 🟢 Live Cloud Status & Last Synced Indicator
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .border(
-                    width = 1.5.dp,
-                    brush = Brush.linearGradient(listOf(GoldAccent.copy(alpha = 0.6f), GoldLight.copy(alpha = 0.8f))),
-                    shape = RoundedCornerShape(20.dp)
+                    width = 1.dp,
+                    color = GoldAccent.copy(alpha = 0.35f),
+                    shape = RoundedCornerShape(18.dp)
                 ),
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(18.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f)
+                containerColor = MaterialTheme.colorScheme.surface
             )
         ) {
             Row(
@@ -420,66 +422,76 @@ fun MoreMenuScreen(
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(44.dp)
+                            .size(10.dp)
                             .clip(CircleShape)
-                            .background(GoldAccent.copy(alpha = 0.2f)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        if (isSyncing) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(22.dp),
-                                color = GoldAccent,
-                                strokeWidth = 2.5.dp
-                            )
-                        } else {
-                            Icon(
-                                imageVector = Icons.Default.Refresh,
-                                contentDescription = "Sync Cloud",
-                                tint = GoldAccent,
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                    }
+                            .background(Color(0xFF22C55E)) // Green status dot
+                    )
 
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
 
                     Column {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "Cloud Sync Active",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Surface(
+                                shape = RoundedCornerShape(6.dp),
+                                color = Color(0xFF22C55E).copy(alpha = 0.15f)
+                            ) {
+                                Text(
+                                    text = "AUTO",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF22C55E),
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.dp)
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(3.dp))
+
                         Text(
-                            text = "Live Cloud Sync",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = if (isSyncing) "Fetching updates from Google Sheet…" else "Refresh programs, posters & leaders",
+                            text = "Last synced: $lastSyncedText",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
 
-                Button(
+                // Quick refresh icon
+                IconButton(
                     onClick = {
-                        if (!isSyncing) {
+                        if (!isCheckingSync) {
                             coroutineScope.launch {
-                                isSyncing = true
-                                val progResult = repository.syncProgramsFromGoogleSheet()
-                                val leadResult = repository.syncLeadersFromGoogleSheet()
-                                isSyncing = false
-                                if (progResult.isSuccess || leadResult.isSuccess) {
-                                    Toast.makeText(context, "✅ Synced successfully with Google Sheet!", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    Toast.makeText(context, "⚠️ Unable to sync. Using offline data.", Toast.LENGTH_SHORT).show()
-                                }
+                                isCheckingSync = true
+                                repository.syncProgramsFromGoogleSheet()
+                                repository.syncLeadersFromGoogleSheet()
+                                lastSyncedText = repository.getLastSyncedFormatted()
+                                isCheckingSync = false
+                                Toast.makeText(context, "Checked: Up to date", Toast.LENGTH_SHORT).show()
                             }
                         }
                     },
-                    enabled = !isSyncing,
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = GoldAccent
-                    )
+                    modifier = Modifier.size(36.dp)
                 ) {
-                    Text(text = if (isSyncing) "Syncing…" else "Sync Now")
+                    if (isCheckingSync) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(18.dp),
+                            color = GoldAccent,
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = "Refresh",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
             }
         }

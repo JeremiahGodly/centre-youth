@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import org.marthoma.centreyouth.data.model.*
+import org.marthoma.centreyouth.notifications.NotificationHelper
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
@@ -237,6 +238,55 @@ class CentreRepository(private val context: Context) {
         prefs.edit().putString(PREF_SHEET_URL, url.trim()).apply()
     }
 
+    fun getLastSyncedFormatted(): String {
+        val timestamp = prefs.getLong("last_synced_timestamp", 0L)
+        if (timestamp == 0L) return "Pending initial sync"
+        val now = System.currentTimeMillis()
+        val diffMs = now - timestamp
+        if (diffMs < 60_000) return "Just now"
+        if (diffMs < 3_600_000) {
+            val mins = diffMs / 60_000
+            return "$mins min${if (mins > 1) "s" else ""} ago"
+        }
+        val cal = Calendar.getInstance().apply { timeInMillis = timestamp }
+        val nowCal = Calendar.getInstance().apply { timeInMillis = now }
+        val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+        return if (cal.get(Calendar.DAY_OF_YEAR) == nowCal.get(Calendar.DAY_OF_YEAR) &&
+            cal.get(Calendar.YEAR) == nowCal.get(Calendar.YEAR)
+        ) {
+            "Today at ${timeFormat.format(Date(timestamp))}"
+        } else {
+            val dateFormat = SimpleDateFormat("MMM d, h:mm a", Locale.getDefault())
+            dateFormat.format(Date(timestamp))
+        }
+    }
+
+    private fun processIncomingPrograms(list: List<ProgramEvent>, rawJson: String) {
+        if (list.isEmpty()) return
+        cachedPrograms = list
+
+        val currentKnown = prefs.getStringSet("known_event_ids", null)
+        val incomingIds = list.map { it.id.ifBlank { it.title } }.toSet()
+
+        if (currentKnown != null) {
+            val newlyAdded = list.filter { it.isActive && !currentKnown.contains(it.id.ifBlank { it.title }) }
+            for (newEvent in newlyAdded) {
+                NotificationHelper.showNewEventNotification(
+                    context = context,
+                    eventTitle = newEvent.title,
+                    eventDate = newEvent.date,
+                    eventVenue = newEvent.venue
+                )
+            }
+        }
+
+        prefs.edit()
+            .putString("cached_programs_json", rawJson)
+            .putStringSet("known_event_ids", incomingIds)
+            .putLong("last_synced_timestamp", System.currentTimeMillis())
+            .apply()
+    }
+
     /**
      * Background sync: pulls the latest specifications, posters & details from the Google Sheet.
      * Supports both direct array of programs and combined { programs: [...], leaders: [...] }
@@ -254,10 +304,7 @@ class CentreRepository(private val context: Context) {
                     val pArray = root.getJSONArray("programs").toString()
                     val progType = object : TypeToken<List<ProgramEvent>>() {}.type
                     val list: List<ProgramEvent> = gson.fromJson(pArray, progType)
-                    if (list.isNotEmpty()) {
-                        cachedPrograms = list
-                        prefs.edit().putString("cached_programs_json", pArray).apply()
-                    }
+                    processIncomingPrograms(list, pArray)
                 }
                 if (root.has("leaders")) {
                     val lArray = root.getJSONArray("leaders").toString()
@@ -265,17 +312,17 @@ class CentreRepository(private val context: Context) {
                     val lList: List<OfficeBearer> = gson.fromJson(lArray, leadType)
                     if (lList.isNotEmpty()) {
                         cachedOfficeBearers = lList
-                        prefs.edit().putString("cached_leaders_json", lArray).apply()
+                        prefs.edit()
+                            .putString("cached_leaders_json", lArray)
+                            .putLong("last_synced_timestamp", System.currentTimeMillis())
+                            .apply()
                     }
                 }
                 Result.success(cachedPrograms)
             } else if (jsonText.startsWith("[")) {
                 val progType = object : TypeToken<List<ProgramEvent>>() {}.type
                 val list: List<ProgramEvent> = gson.fromJson(jsonText, progType)
-                if (list.isNotEmpty()) {
-                    cachedPrograms = list
-                    prefs.edit().putString("cached_programs_json", jsonText).apply()
-                }
+                processIncomingPrograms(list, jsonText)
                 Result.success(list)
             } else {
                 Result.failure(Exception("Invalid JSON response"))
@@ -301,7 +348,10 @@ class CentreRepository(private val context: Context) {
                 val list: List<OfficeBearer> = gson.fromJson(jsonText, leadType)
                 if (list.isNotEmpty()) {
                     cachedOfficeBearers = list
-                    prefs.edit().putString("cached_leaders_json", jsonText).apply()
+                    prefs.edit()
+                        .putString("cached_leaders_json", jsonText)
+                        .putLong("last_synced_timestamp", System.currentTimeMillis())
+                        .apply()
                 }
                 Result.success(list)
             } else if (jsonText.startsWith("{")) {
@@ -312,7 +362,10 @@ class CentreRepository(private val context: Context) {
                     val list: List<OfficeBearer> = gson.fromJson(lArray, leadType)
                     if (list.isNotEmpty()) {
                         cachedOfficeBearers = list
-                        prefs.edit().putString("cached_leaders_json", lArray).apply()
+                        prefs.edit()
+                            .putString("cached_leaders_json", lArray)
+                            .putLong("last_synced_timestamp", System.currentTimeMillis())
+                            .apply()
                     }
                     Result.success(list)
                 } else {

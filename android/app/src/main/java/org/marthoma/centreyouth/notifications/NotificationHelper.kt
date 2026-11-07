@@ -14,7 +14,9 @@ import org.marthoma.centreyouth.R
 object NotificationHelper {
 
     const val CHANNEL_DAILY_SCRIPTURE = "channel_daily_scripture"
+    const val CHANNEL_CENTRE_EVENTS = "channel_centre_events"
     const val NOTIFICATION_ID_SCRIPTURE = 1001
+    const val NOTIFICATION_ID_EVENT = 2001
 
     fun createNotificationChannels(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -27,9 +29,19 @@ object NotificationHelper {
                 enableVibration(true)
             }
 
+            val eventChannel = NotificationChannel(
+                CHANNEL_CENTRE_EVENTS,
+                "Centre Programs & Announcements",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Notifications for new events, camps, kalamela and schedules"
+                enableVibration(true)
+            }
+
             val notificationManager: NotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
+            notificationManager.createNotificationChannel(eventChannel)
         }
     }
 
@@ -79,6 +91,46 @@ object NotificationHelper {
 
         try {
             NotificationManagerCompat.from(context).notify(NOTIFICATION_ID_SCRIPTURE, notification)
+        } catch (e: SecurityException) {
+            // Android 13+ permission not granted
+        }
+    }
+
+    fun showNewEventNotification(
+        context: Context,
+        eventTitle: String,
+        eventDate: String,
+        eventVenue: String
+    ) {
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            102,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val body = if (eventDate.isNotBlank() || eventVenue.isNotBlank()) {
+            "$eventDate • $eventVenue\nTap to view specifications and poster."
+        } else {
+            "Tap to view program specifications, schedule and poster."
+        }
+
+        val notification = NotificationCompat.Builder(context, CHANNEL_CENTRE_EVENTS)
+            .setSmallIcon(R.drawable.ic_stat_scripture)
+            .setContentTitle("📢 New Event: $eventTitle")
+            .setContentText(body)
+            .setStyle(NotificationCompat.BigTextStyle().bigText("📢 $eventTitle\n\n$body"))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+            .build()
+
+        try {
+            NotificationManagerCompat.from(context).notify(NOTIFICATION_ID_EVENT, notification)
         } catch (e: SecurityException) {
             // Android 13+ permission not granted
         }
