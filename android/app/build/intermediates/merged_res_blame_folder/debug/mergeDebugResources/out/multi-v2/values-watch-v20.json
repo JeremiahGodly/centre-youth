@@ -1,10 +1,29 @@
 {
     "logs": [
         {
-            "outputFile": "org.marthoma.centreyouth.app-mergeDebugResources-69:/values-watch-v20/values-watch-v20.xml",
+            "outputFile": "org.marthoma.centreyouth.app-mergeDebugResources-78:/values-watch-v20/values-watch-v20.xml",
             "map": [
                 {
-                    "source": "/Users/godlyvarghese/.gradle/caches/8.10.2/transforms/c88951e1591ac0da27f7b874031f467e/transformed/core-splashscreen-1.0.1/res/values-watch-v20/values-watch-v20.xml",
+                    "source": "/Users/godlyvarghese/.gradle/caches/8.10.2/transforms/bf521de9aae4842e45ff64b979cb051f/transformed/appcompat-1.6.1/res/values-watch-v20/values-watch-v20.xml",
+                    "from": {
+                        "startLines": "2,5,8",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,214,385",
+                        "endLines": "4,7,10",
+                        "endColumns": "12,12,12",
+                        "endOffsets": "209,380,553"
+                    },
+                    "to": {
+                        "startLines": "10,13,16",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "634,793,964",
+                        "endLines": "12,15,18",
+                        "endColumns": "12,12,12",
+                        "endOffsets": "788,959,1132"
+                    }
+                },
+                {
+                    "source": "/Users/godlyvarghese/.gradle/caches/8.10.2/transforms/cbb82a52425038f26277edcf464d027d/transformed/core-splashscreen-1.0.1/res/values-watch-v20/values-watch-v20.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

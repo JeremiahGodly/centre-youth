@@ -74,16 +74,13 @@
     <string name="version">Version 1.0.0 (Build 1)</string>
     <string name="vicar">Vicar</string>
     <string name="whatsapp_connect">WhatsApp</string>
-    <style name="Theme.CentreYouth" parent="Theme.Material3.DayNight.NoActionBar">
-        
-        <item name="colorPrimary">@color/purple_primary</item>
-        <item name="colorSecondary">@color/gold_accent</item>
+    <style name="Theme.CentreYouth" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
     <style name="Theme.CentreYouth.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/bg_light</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/app_logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.CentreYouth</item>
     </style>
 </resources>
