@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "org.marthoma.centreyouth.app-mergeDebugResources-69:/values-night-v8/values-night-v8.xml",
+            "map": [
+                {
+                    "source": "/Users/godlyvarghese/.gradle/caches/8.10.2/transforms/c88951e1591ac0da27f7b874031f467e/transformed/core-splashscreen-1.0.1/res/values-night-v8/values-night-v8.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "85",
+                        "endOffsets": "136"
+                    }
+                },
+                {
+                    "source": "/Users/godlyvarghese/Desktop/centre youth/android/app/src/main/res/values-night/themes.xml",
+                    "from": {
+                        "startLines": "3,10",
+                        "startColumns": "4,4",
+                        "startOffsets": "80,462",
+                        "endLines": "8,14",
+                        "endColumns": "12,12",
+                        "endOffsets": "456,767"
+                    },
+                    "to": {
+                        "startLines": "3,9",
+                        "startColumns": "4,4",
+                        "startOffsets": "141,522",
+                        "endLines": "8,13",
+                        "endColumns": "12,12",
+                        "endOffsets": "517,827"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -20,21 +20,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Make Gradlew Executable
-        run: chmod +x android/gradlew
+      - name: Bootstrap Gradle Wrapper JAR
+        working-directory: android
+        run: |
+          mkdir -p gradle/wrapper
+          curl -sLo gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/v8.10.2/gradle/wrapper/gradle-wrapper.jar || true
+          chmod +x gradlew
 
       - name: Create or Restore Keystore
         working-directory: android
@@ -43,7 +37,7 @@ jobs:
             echo "Restoring keystore from GitHub Secret..."
             echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.keystore
           else
-            echo "Generating automated release signing keystore..."
+            echo "Generating release signing keystore..."
             keytool -genkeypair -v \
               -keystore release.keystore \
               -alias centreyouth \
@@ -76,6 +70,7 @@ jobs:
         with:
           name: Centre-Youth-PlayStore-AAB
           path: android/app/build/outputs/bundle/release/*.aab
+          if-no-files-found: warn
           retention-days: 30
 
       - name: Upload Test APKs
@@ -85,4 +80,5 @@ jobs:
           path: |
             android/app/build/outputs/apk/release/*.apk
             android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: warn
           retention-days: 30

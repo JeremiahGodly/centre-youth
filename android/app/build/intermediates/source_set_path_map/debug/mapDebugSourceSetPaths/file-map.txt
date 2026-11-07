@@ -1,0 +1,73 @@
+org.marthoma.centreyouth.app-navigation-common-2.8.4-0 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/08a85cb98e542a543a41593ea225eaca/transformed/navigation-common-2.8.4/res
+org.marthoma.centreyouth.app-ui-tooling-preview-release-1 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/08ee680d77fc817854494ff798fcfb60/transformed/ui-tooling-preview-release/res
+org.marthoma.centreyouth.app-ui-tooling-release-2 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/109d98c41cc053cec91d6633e90edf84/transformed/ui-tooling-release/res
+org.marthoma.centreyouth.app-work-runtime-2.10.0-3 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/17b6fdaadbcba373de3f3d5833c670e5/transformed/work-runtime-2.10.0/res
+org.marthoma.centreyouth.app-lifecycle-runtime-ktx-release-4 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/18176afd1240e960918dc7a3046d6d3f/transformed/lifecycle-runtime-ktx-release/res
+org.marthoma.centreyouth.app-ui-geometry-release-5 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/2435cb7acfff13c61252fa5fcf53d946/transformed/ui-geometry-release/res
+org.marthoma.centreyouth.app-material-icons-extended-release-6 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/2858a7838bf270829c00e05e7dfe9dce/transformed/material-icons-extended-release/res
+org.marthoma.centreyouth.app-emoji2-1.3.0-7 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/2ae564ee0f4ae9edb666b5d7c6f904df/transformed/emoji2-1.3.0/res
+org.marthoma.centreyouth.app-media3-session-1.5.0-8 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/2b234d0fb4fe716c551d077c8b4bd0b8/transformed/media3-session-1.5.0/res
+org.marthoma.centreyouth.app-startup-runtime-1.1.1-9 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/30855c47a1d3e1185f8ed5cbe5f242c4/transformed/startup-runtime-1.1.1/res
+org.marthoma.centreyouth.app-lifecycle-runtime-release-10 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/30ebd3586efb0d08abb72472ccca22c0/transformed/lifecycle-runtime-release/res
+org.marthoma.centreyouth.app-lifecycle-livedata-2.8.7-11 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/31753206e608b53731b24b339a782721/transformed/lifecycle-livedata-2.8.7/res
+org.marthoma.centreyouth.app-recyclerview-1.3.0-12 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/34666794b63f5bcd80aed5a2ee042166/transformed/recyclerview-1.3.0/res
+org.marthoma.centreyouth.app-lifecycle-process-2.8.7-13 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/3e483419fc86ed5c450366103b5011e4/transformed/lifecycle-process-2.8.7/res
+org.marthoma.centreyouth.app-ui-util-release-14 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/3ec6d6e2522bed1c05ac8b4e24a971fe/transformed/ui-util-release/res
+org.marthoma.centreyouth.app-ui-release-15 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/4100fc31448390ef8752f7d25df5e310/transformed/ui-release/res
+org.marthoma.centreyouth.app-annotation-experimental-1.4.1-16 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/41d4db533a12057408af1d28a95de5b2/transformed/annotation-experimental-1.4.1/res
+org.marthoma.centreyouth.app-work-runtime-ktx-2.10.0-17 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/43425bdee1fa266b0b2543187bdfb34a/transformed/work-runtime-ktx-2.10.0/res
+org.marthoma.centreyouth.app-animation-release-18 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/4a2b6e291ae3a3292c375c91c7b830d6/transformed/animation-release/res
+org.marthoma.centreyouth.app-ui-text-release-19 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/4bceaa6d90096597ba945939b1939f6a/transformed/ui-text-release/res
+org.marthoma.centreyouth.app-runtime-saveable-release-20 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/4c9dfe42d86fcf4ad4420143219d89fc/transformed/runtime-saveable-release/res
+org.marthoma.centreyouth.app-core-ktx-1.15.0-21 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/4da10ecc701e0409e6e8c12c184a4aac/transformed/core-ktx-1.15.0/res
+org.marthoma.centreyouth.app-tracing-1.2.0-22 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/50ce3ad4e4fdadf98503d70b5b5fd92a/transformed/tracing-1.2.0/res
+org.marthoma.centreyouth.app-activity-1.9.3-23 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/51d7fec653e294d0d84c85d0f994eeb0/transformed/activity-1.9.3/res
+org.marthoma.centreyouth.app-savedstate-ktx-1.2.1-24 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/51ff43636effc3ce9d08e7e73b722c39/transformed/savedstate-ktx-1.2.1/res
+org.marthoma.centreyouth.app-sqlite-framework-2.4.0-25 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/529f4f7503742a08f6d01bec5d955fe2/transformed/sqlite-framework-2.4.0/res
+org.marthoma.centreyouth.app-sqlite-2.4.0-26 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/583ea7c24aa163ad4a51fd790753918e/transformed/sqlite-2.4.0/res
+org.marthoma.centreyouth.app-runtime-release-27 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/5adf53ad5529069d3ef39251821ed329/transformed/runtime-release/res
+org.marthoma.centreyouth.app-core-1.15.0-28 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/5f6777c6576ea537149abc157007d457/transformed/core-1.15.0/res
+org.marthoma.centreyouth.app-room-ktx-2.6.1-29 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/60f61070ae475da91716872882ab14bd/transformed/room-ktx-2.6.1/res
+org.marthoma.centreyouth.app-graphics-path-1.0.1-30 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/61c99f41f24a96985724cfa85ab29fea/transformed/graphics-path-1.0.1/res
+org.marthoma.centreyouth.app-activity-compose-1.9.3-31 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/64e25443f86fa8677d2f911973baa2e3/transformed/activity-compose-1.9.3/res
+org.marthoma.centreyouth.app-coil-base-2.7.0-32 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/67a41066556821a550f826583a122abe/transformed/coil-base-2.7.0/res
+org.marthoma.centreyouth.app-lifecycle-livedata-core-2.8.7-33 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/6f2980de3157585fb72d1cc07ba2760c/transformed/lifecycle-livedata-core-2.8.7/res
+org.marthoma.centreyouth.app-core-runtime-2.2.0-34 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/77ccd026ba9b26a05b992a53c497e462/transformed/core-runtime-2.2.0/res
+org.marthoma.centreyouth.app-animation-core-release-35 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/77fe0574f9bc1b69ba6b8c92c527e0d3/transformed/animation-core-release/res
+org.marthoma.centreyouth.app-ui-tooling-data-release-36 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/7915f196ac61490b1ccba75f3fabdf60/transformed/ui-tooling-data-release/res
+org.marthoma.centreyouth.app-navigation-runtime-2.8.4-37 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/888f5e4ff33619cc29b08eb90f32e265/transformed/navigation-runtime-2.8.4/res
+org.marthoma.centreyouth.app-activity-ktx-1.9.3-38 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/8ac59aab2e29a4835b5555f7c61c3619/transformed/activity-ktx-1.9.3/res
+org.marthoma.centreyouth.app-customview-poolingcontainer-1.0.0-39 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/8adb3e01920d0c6cbe38e0b032592c76/transformed/customview-poolingcontainer-1.0.0/res
+org.marthoma.centreyouth.app-foundation-release-40 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/8edffbc6a0a1a1b36e3d3d6519064212/transformed/foundation-release/res
+org.marthoma.centreyouth.app-lifecycle-service-2.8.7-41 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/9255f96bd4cbc4d82a50dca5248050a2/transformed/lifecycle-service-2.8.7/res
+org.marthoma.centreyouth.app-lifecycle-viewmodel-release-42 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/9a74d654bf977d56813e01782c1201b1/transformed/lifecycle-viewmodel-release/res
+org.marthoma.centreyouth.app-savedstate-1.2.1-43 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/9fac74714a3f29869c1a02f18fdcf081/transformed/savedstate-1.2.1/res
+org.marthoma.centreyouth.app-material-icons-core-release-44 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/a9858afa3c8c4dd91335e0fd6cf7ffec/transformed/material-icons-core-release/res
+org.marthoma.centreyouth.app-ui-graphics-release-45 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/aa3033f73bcb5e9ffc5688a74067c16a/transformed/ui-graphics-release/res
+org.marthoma.centreyouth.app-navigation-compose-2.8.4-46 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/ac2b69e63ca5ed5c1c4462d50d8148e0/transformed/navigation-compose-2.8.4/res
+org.marthoma.centreyouth.app-foundation-layout-release-47 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/ade5b5bb3a30bd3b1ce396d6272796f3/transformed/foundation-layout-release/res
+org.marthoma.centreyouth.app-media3-exoplayer-1.5.0-48 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/aee70f62575e307fef96d99192ccae27/transformed/media3-exoplayer-1.5.0/res
+org.marthoma.centreyouth.app-material-ripple-release-49 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/b1b4ba4642639b3b97e8657ec40b7404/transformed/material-ripple-release/res
+org.marthoma.centreyouth.app-navigation-common-ktx-2.8.4-50 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/c1ccef2faf33af09d29c2d1739485fd5/transformed/navigation-common-ktx-2.8.4/res
+org.marthoma.centreyouth.app-media3-ui-1.5.0-51 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/c2d4b9de6cffd37f418dbccb3eb9570b/transformed/media3-ui-1.5.0/res
+org.marthoma.centreyouth.app-core-splashscreen-1.0.1-52 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/c88951e1591ac0da27f7b874031f467e/transformed/core-splashscreen-1.0.1/res
+org.marthoma.centreyouth.app-profileinstaller-1.3.1-53 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/cd746193522e6f54cefa5c4a7b84c531/transformed/profileinstaller-1.3.1/res
+org.marthoma.centreyouth.app-lifecycle-runtime-compose-release-54 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/d5b0ef77d024a80130283f04215448d0/transformed/lifecycle-runtime-compose-release/res
+org.marthoma.centreyouth.app-lifecycle-viewmodel-savedstate-2.8.7-55 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/d73686b8026572ae5d9555c9611d6025/transformed/lifecycle-viewmodel-savedstate-2.8.7/res
+org.marthoma.centreyouth.app-material3-release-56 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/e17724e638759f3cd11c256cb1009d93/transformed/material3-release/res
+org.marthoma.centreyouth.app-lifecycle-livedata-core-ktx-2.8.7-57 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/e3ed1cd12299f328d675eca82deb3ced/transformed/lifecycle-livedata-core-ktx-2.8.7/res
+org.marthoma.centreyouth.app-tracing-ktx-1.2.0-58 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/e71eff75999f21abb43beb09ab631f3c/transformed/tracing-ktx-1.2.0/res
+org.marthoma.centreyouth.app-ui-unit-release-59 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/eb9f6d3628d8a17e0d5d9167d86ca54c/transformed/ui-unit-release/res
+org.marthoma.centreyouth.app-appcompat-resources-1.6.1-60 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/ef68ce8d5c93a3fade40d40f27f9f709/transformed/appcompat-resources-1.6.1/res
+org.marthoma.centreyouth.app-lifecycle-viewmodel-ktx-2.8.7-61 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/efcf80b3f97d44a6707326c045ef1b68/transformed/lifecycle-viewmodel-ktx-2.8.7/res
+org.marthoma.centreyouth.app-navigation-runtime-ktx-2.8.4-62 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/f638dd3c37edc2c79df89c22c9f46736/transformed/navigation-runtime-ktx-2.8.4/res
+org.marthoma.centreyouth.app-room-runtime-2.6.1-63 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/f986f7df97b2b90ff1b657be4552f22a/transformed/room-runtime-2.6.1/res
+org.marthoma.centreyouth.app-lifecycle-viewmodel-compose-release-64 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/f9c1fb6e7a4b92fcc2e9f97d31e3e4e2/transformed/lifecycle-viewmodel-compose-release/res
+org.marthoma.centreyouth.app-media-1.7.0-65 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/fdd70e5c52d05f4eff67e810d4faed79/transformed/media-1.7.0/res
+org.marthoma.centreyouth.app-material-release-66 /Users/godlyvarghese/.gradle/caches/8.10.2/transforms/fed83baf31b0702e0058ca2a5a719126/transformed/material-release/res
+org.marthoma.centreyouth.app-resValues-67 /Users/godlyvarghese/Desktop/centre youth/android/app/build/generated/res/resValues/debug
+org.marthoma.centreyouth.app-packageDebugResources-68 /Users/godlyvarghese/Desktop/centre youth/android/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+org.marthoma.centreyouth.app-packageDebugResources-69 /Users/godlyvarghese/Desktop/centre youth/android/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+org.marthoma.centreyouth.app-debug-70 /Users/godlyvarghese/Desktop/centre youth/android/app/build/intermediates/merged_res/debug/mergeDebugResources
+org.marthoma.centreyouth.app-debug-71 /Users/godlyvarghese/Desktop/centre youth/android/app/src/debug/res
+org.marthoma.centreyouth.app-main-72 /Users/godlyvarghese/Desktop/centre youth/android/app/src/main/res

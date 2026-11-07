@@ -26,8 +26,14 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystoreFile = project.rootProject.file("release.keystore")
-            if (keystoreFile.exists()) {
+            val possibleKeystores = listOf(
+                project.rootProject.file("release.keystore"),
+                project.file("release.keystore"),
+                file("../release.keystore"),
+                file("release.keystore")
+            )
+            val keystoreFile = possibleKeystores.firstOrNull { it.exists() }
+            if (keystoreFile != null) {
                 storeFile = keystoreFile
                 storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "centreYouth2026"
                 keyAlias = System.getenv("KEY_ALIAS") ?: "centreyouth"
@@ -38,15 +44,22 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            val releaseKeystore = project.rootProject.file("release.keystore")
-            if (releaseKeystore.exists()) {
+            val possibleKeystores = listOf(
+                project.rootProject.file("release.keystore"),
+                project.file("release.keystore"),
+                file("../release.keystore"),
+                file("release.keystore")
+            )
+            if (possibleKeystores.any { it.exists() }) {
                 signingConfig = signingConfigs.getByName("release")
+            } else {
+                signingConfig = signingConfigs.getByName("debug")
             }
         }
         debug {
@@ -56,7 +69,6 @@ android {
     }
 
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -77,8 +89,6 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
