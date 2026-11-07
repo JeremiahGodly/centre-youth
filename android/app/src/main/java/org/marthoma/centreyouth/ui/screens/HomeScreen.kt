@@ -237,7 +237,7 @@ fun HomeScreen(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
-                            val gospelText = todayLectionary.gospelReading.ifBlank { todayLectionary.gospel }
+                            val gospelText = todayLectionary.gospelReading
                             if (gospelText.isNotBlank()) {
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Text(
