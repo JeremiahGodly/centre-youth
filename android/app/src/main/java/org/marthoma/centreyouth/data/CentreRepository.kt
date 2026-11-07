@@ -31,7 +31,7 @@ class CentreRepository(private val context: Context) {
 
     // Configurable Google Sheet Web App / JSON URL
     private val PREF_SHEET_URL = "google_sheet_programs_url"
-    private val DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycby_EXAMPLE/exec"
+    private val DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbyfdOFNZ4U3Hmwvi8STt56LHB_VDhiST6T89d1vq8YyZ6gw4IswpEUHsLIH6uBMZdc/exec"
 
     init {
         loadData()
@@ -223,7 +223,10 @@ class CentreRepository(private val context: Context) {
      */
     fun getPrograms(): List<ProgramEvent> = cachedPrograms.filter { it.isActive }
 
-    fun getGoogleSheetUrl(): String = prefs.getString(PREF_SHEET_URL, "") ?: ""
+    fun getGoogleSheetUrl(): String {
+        val saved = prefs.getString(PREF_SHEET_URL, null)
+        return if (!saved.isNullOrBlank()) saved else DEFAULT_SHEET_URL
+    }
 
     fun setGoogleSheetUrl(url: String) {
         prefs.edit().putString(PREF_SHEET_URL, url.trim()).apply()
