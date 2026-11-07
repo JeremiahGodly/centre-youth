@@ -11,7 +11,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Info
@@ -20,8 +23,11 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -54,6 +60,7 @@ enum class Screen(val title: String, val iconRes: Int) {
     POLICY("Policy", R.drawable.ic_stat_scripture)
 }
 
+@OptIn(ExperimentalMaterial3Api::class, UnstableApi::class)
 class MainActivity : ComponentActivity() {
 
     private lateinit var repository: CentreRepository
@@ -72,7 +79,6 @@ class MainActivity : ComponentActivity() {
         // Permission result handled
     }
 
-    @OptIn(UnstableApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -125,7 +131,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @OptIn(UnstableApi::class)
     private fun initializeMediaController() {
         val sessionToken = SessionToken(this, ComponentName(this, AudioPlaybackService::class.java))
         controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
@@ -154,7 +159,6 @@ class MainActivity : ComponentActivity() {
         }, MoreExecutors.directExecutor())
     }
 
-    @OptIn(UnstableApi::class)
     private fun playSong(song: Song) {
         currentSongState.value = song
         val controller = mediaController ?: return
@@ -211,7 +215,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun MainAppScaffold() {
         var currentScreen by activeScreenState
@@ -245,7 +248,7 @@ class MainActivity : ComponentActivity() {
                                     Screen.MORE -> "Explore & More"
                                     Screen.POLICY -> "Policies"
                                 },
-                                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                                fontWeight = FontWeight.Bold
                             )
                         },
                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -378,7 +381,7 @@ fun MoreMenuScreen(
         Text(
             text = "Explore Keezhillam - Munnar Centre",
             style = MaterialTheme.typography.titleLarge,
-            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+            fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(4.dp))
@@ -422,7 +425,7 @@ fun MoreMenuItem(
 ) {
     Surface(
         onClick = onClick,
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(16.dp),
         color = MaterialTheme.colorScheme.surface,
         tonalElevation = 2.dp,
         modifier = Modifier.fillMaxWidth()
@@ -431,14 +434,14 @@ fun MoreMenuItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
                     .size(46.dp)
-                    .androidx.compose.ui.draw.clip(androidx.compose.foundation.shape.CircleShape)
-                    .androidx.compose.foundation.background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = androidx.compose.ui.Alignment.Center
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(id = iconRes),
@@ -454,7 +457,7 @@ fun MoreMenuItem(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                    fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = subtitle,
