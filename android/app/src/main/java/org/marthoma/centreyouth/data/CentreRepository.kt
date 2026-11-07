@@ -58,7 +58,12 @@ class CentreRepository(private val context: Context) {
                 cachedPillars = gson.fromJson(root.getJSONArray("pillars").toString(), type)
             }
 
-            if (root.has("officeBearers")) {
+            // Load Office Bearers: check local cached updates from Google Sheet first, else bundled
+            val cachedLeadersJson = prefs.getString("cached_leaders_json", null)
+            if (!cachedLeadersJson.isNullOrBlank()) {
+                val type = object : TypeToken<List<OfficeBearer>>() {}.type
+                cachedOfficeBearers = gson.fromJson(cachedLeadersJson, type)
+            } else if (root.has("officeBearers")) {
                 val type = object : TypeToken<List<OfficeBearer>>() {}.type
                 cachedOfficeBearers = gson.fromJson(root.getJSONArray("officeBearers").toString(), type)
             }
@@ -233,7 +238,8 @@ class CentreRepository(private val context: Context) {
     }
 
     /**
-     * Background sync: pulls the latest specifications, posters & details from the Google Sheet
+     * Background sync: pulls the latest specifications, posters & details from the Google Sheet.
+     * Supports both direct array of programs and combined { programs: [...], leaders: [...] }
      */
     suspend fun syncProgramsFromGoogleSheet(targetUrl: String? = null): Result<List<ProgramEvent>> = withContext(Dispatchers.IO) {
         val endpoint = targetUrl?.trim().takeUnless { it.isNullOrBlank() }
@@ -241,14 +247,80 @@ class CentreRepository(private val context: Context) {
             ?: return@withContext Result.failure(Exception("No Google Sheet URL configured"))
 
         try {
-            val jsonText = fetchUrlWithRedirects(endpoint)
-            val progType = object : TypeToken<List<ProgramEvent>>() {}.type
-            val list: List<ProgramEvent> = gson.fromJson(jsonText, progType)
-            if (list.isNotEmpty()) {
-                cachedPrograms = list
-                prefs.edit().putString("cached_programs_json", jsonText).apply()
+            val jsonText = fetchUrlWithRedirects(endpoint).trim()
+            if (jsonText.startsWith("{")) {
+                val root = JSONObject(jsonText)
+                if (root.has("programs")) {
+                    val pArray = root.getJSONArray("programs").toString()
+                    val progType = object : TypeToken<List<ProgramEvent>>() {}.type
+                    val list: List<ProgramEvent> = gson.fromJson(pArray, progType)
+                    if (list.isNotEmpty()) {
+                        cachedPrograms = list
+                        prefs.edit().putString("cached_programs_json", pArray).apply()
+                    }
+                }
+                if (root.has("leaders")) {
+                    val lArray = root.getJSONArray("leaders").toString()
+                    val leadType = object : TypeToken<List<OfficeBearer>>() {}.type
+                    val lList: List<OfficeBearer> = gson.fromJson(lArray, leadType)
+                    if (lList.isNotEmpty()) {
+                        cachedOfficeBearers = lList
+                        prefs.edit().putString("cached_leaders_json", lArray).apply()
+                    }
+                }
+                Result.success(cachedPrograms)
+            } else if (jsonText.startsWith("[")) {
+                val progType = object : TypeToken<List<ProgramEvent>>() {}.type
+                val list: List<ProgramEvent> = gson.fromJson(jsonText, progType)
+                if (list.isNotEmpty()) {
+                    cachedPrograms = list
+                    prefs.edit().putString("cached_programs_json", jsonText).apply()
+                }
+                Result.success(list)
+            } else {
+                Result.failure(Exception("Invalid JSON response"))
             }
-            Result.success(list)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Pulls latest leaders & office bearer profiles from Google Sheet (?tab=leaders)
+     */
+    suspend fun syncLeadersFromGoogleSheet(): Result<List<OfficeBearer>> = withContext(Dispatchers.IO) {
+        val baseUrl = getGoogleSheetUrl()
+        if (baseUrl.isBlank()) return@withContext Result.failure(Exception("No Google Sheet URL configured"))
+        val endpoint = if (baseUrl.contains("?")) "$baseUrl&tab=leaders" else "$baseUrl?tab=leaders"
+
+        try {
+            val jsonText = fetchUrlWithRedirects(endpoint).trim()
+            if (jsonText.startsWith("[")) {
+                val leadType = object : TypeToken<List<OfficeBearer>>() {}.type
+                val list: List<OfficeBearer> = gson.fromJson(jsonText, leadType)
+                if (list.isNotEmpty()) {
+                    cachedOfficeBearers = list
+                    prefs.edit().putString("cached_leaders_json", jsonText).apply()
+                }
+                Result.success(list)
+            } else if (jsonText.startsWith("{")) {
+                val root = JSONObject(jsonText)
+                if (root.has("leaders")) {
+                    val lArray = root.getJSONArray("leaders").toString()
+                    val leadType = object : TypeToken<List<OfficeBearer>>() {}.type
+                    val list: List<OfficeBearer> = gson.fromJson(lArray, leadType)
+                    if (list.isNotEmpty()) {
+                        cachedOfficeBearers = list
+                        prefs.edit().putString("cached_leaders_json", lArray).apply()
+                    }
+                    Result.success(list)
+                } else {
+                    Result.failure(Exception("No leaders array in JSON"))
+                }
+            } else {
+                Result.failure(Exception("Invalid leaders JSON"))
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             Result.failure(e)

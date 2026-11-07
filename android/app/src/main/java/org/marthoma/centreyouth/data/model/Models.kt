@@ -44,7 +44,22 @@ data class OfficeBearer(
     val whatsapp: String = "",
     val email: String = "",
     val image: String = ""
-)
+) {
+    val directImageUrl: String
+        get() {
+            if (image.isBlank()) return ""
+            if (image.contains("drive.google.com") || image.contains("drive.usercontent.google.com")) {
+                val fileId = ProgramEvent.extractGoogleDriveFileId(image)
+                if (fileId.isNotBlank()) {
+                    return "https://lh3.googleusercontent.com/d/$fileId"
+                }
+            }
+            if (image.startsWith("http://") || image.startsWith("https://")) {
+                return image
+            }
+            return ""
+        }
+}
 
 data class Parish(
     val id: String = "",

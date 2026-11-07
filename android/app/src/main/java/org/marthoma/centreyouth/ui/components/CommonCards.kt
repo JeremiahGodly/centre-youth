@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import org.marthoma.centreyouth.R
 import org.marthoma.centreyouth.data.model.OfficeBearer
 import org.marthoma.centreyouth.data.model.Parish
@@ -115,14 +116,25 @@ fun OfficeBearerCard(
                     .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(id = getLeaderAvatar(bearer)),
-                    contentDescription = bearer.nameEn,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(CircleShape)
-                )
+                if (bearer.directImageUrl.isNotBlank()) {
+                    AsyncImage(
+                        model = bearer.directImageUrl,
+                        contentDescription = bearer.nameEn,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = getLeaderAvatar(bearer)),
+                        contentDescription = bearer.nameEn,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.width(16.dp))
