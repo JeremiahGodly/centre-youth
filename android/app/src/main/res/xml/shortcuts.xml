@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="lectionary"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_lectionary_short"
+        android:shortcutLongLabel="@string/shortcut_lectionary_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="org.marthoma.centreyouth"
+            android:targetClass="org.marthoma.centreyouth.MainActivity"
+            android:data="centreyouth://lectionary" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="songs"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_songs_short"
+        android:shortcutLongLabel="@string/shortcut_songs_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="org.marthoma.centreyouth"
+            android:targetClass="org.marthoma.centreyouth.MainActivity"
+            android:data="centreyouth://songs" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="leadership"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_leadership_short"
+        android:shortcutLongLabel="@string/shortcut_leadership_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="org.marthoma.centreyouth"
+            android:targetClass="org.marthoma.centreyouth.MainActivity"
+            android:data="centreyouth://leadership" />
+    </shortcut>
+</shortcuts>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Centre Youth</string>
+    <string name="app_full_name">Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam</string>
+    <string name="motto">Lighted to Lighten</string>
+    <string name="diocese">Kottayam - Kochi Diocese</string>
+    <string name="developer_name">Jeremiah Godly Varghese</string>
+    <string name="developer_email">jrmhgodly@gmail.com</string>
+    <string name="developer_credit">Designed &amp; Developed with devotion by Jeremiah Godly Varghese</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_lectionary">Lectionary</string>
+    <string name="nav_songs">Songs</string>
+    <string name="nav_parishes">Parishes</string>
+    <string name="nav_more">More</string>
+
+    <!-- Home -->
+    <string name="daily_scripture">Daily Scripture Reflection</string>
+    <string name="today_lectionary">Today’s Liturgical Lectionary</string>
+    <string name="upcoming_sunday">Upcoming Sunday</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="camp_banner_title">C-SHORE Youth Camp 2026</string>
+    <string name="camp_banner_subtitle">Rooted in Worship, Witness &amp; Fellowship</string>
+    <string name="kalamela_banner_title">LUMORA Kalamela 2026</string>
+    <string name="kalamela_banner_subtitle">Annual Centre Cultural &amp; Youth Festival</string>
+
+    <!-- Lectionary -->
+    <string name="search_lectionary">Search Sunday or Bible passage…</string>
+    <string name="lesson_1">First Lesson</string>
+    <string name="lesson_2">Second Lesson</string>
+    <string name="epistle">Epistle</string>
+    <string name="gospel">Gospel</string>
+    <string name="evening_reading">Evening Reading</string>
+    <string name="share_reading">Share Liturgical Readings</string>
+    <string name="copy_reading">Copy Readings</string>
+
+    <!-- Songs -->
+    <string name="search_songs">Search songs by title or category…</string>
+    <string name="all_categories">All</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="queue">Queue</string>
+    <string name="lyrics">Lyrics</string>
+    <string name="no_lyrics">Lyrics preview available online</string>
+
+    <!-- Parishes -->
+    <string name="search_parishes">Search parishes or vicars…</string>
+    <string name="vicar">Vicar</string>
+    <string name="call">Call</string>
+    <string name="directions">Directions</string>
+
+    <!-- Leadership -->
+    <string name="office_bearers">Office Bearers 2025–26</string>
+    <string name="whatsapp_connect">WhatsApp</string>
+    <string name="phone_call">Call</string>
+
+    <!-- Notifications & Permissions -->
+    <string name="notification_channel_name">Daily Scripture &amp; Feast Days</string>
+    <string name="notification_channel_desc">Daily morning scripture verses and liturgical lectionary reminders</string>
+    <string name="notification_perm_title">Stay Spiritually Connected</string>
+    <string name="notification_perm_desc">Receive uplifting daily Bible verses and Sunday lectionary alerts directly on your device at 7:00 AM.</string>
+    <string name="allow">Allow</string>
+    <string name="not_now">Not Now</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_lectionary_short">Lectionary</string>
+    <string name="shortcut_lectionary_long">Today’s Liturgical Lectionary</string>
+    <string name="shortcut_songs_short">Songs</string>
+    <string name="shortcut_songs_long">Youth Songs &amp; Hymns</string>
+    <string name="shortcut_leadership_short">Leaders</string>
+    <string name="shortcut_leadership_long">Centre Office Bearers</string>
+
+    <!-- Policy & About -->
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="data_safety">Data Safety</string>
+    <string name="about_app">About Centre Youth</string>
+    <string name="version">Version 1.0.0 (Build 1)</string>
+    <string name="app_motto_verse">"Do not conform to the pattern of this world, but be transformed by the renewing of your mind." — Romans 12:2</string>
+</resources>

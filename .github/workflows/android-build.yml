@@ -1,0 +1,88 @@
+name: Build Android App Bundle & APK
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Release AAB & APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Make Gradlew Executable
+        run: chmod +x android/gradlew
+
+      - name: Create or Restore Keystore
+        working-directory: android
+        run: |
+          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "Restoring keystore from GitHub Secret..."
+            echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.keystore
+          else
+            echo "Generating automated release signing keystore..."
+            keytool -genkeypair -v \
+              -keystore release.keystore \
+              -alias centreyouth \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -storepass "centreYouth2026" \
+              -keypass "centreYouth2026" \
+              -dname "CN=Jeremiah Godly Varghese, OU=Centre Youth, O=Mar Thoma Yuvajana Sakhyam, L=Keezhillam, ST=Kerala, C=IN"
+          fi
+
+      - name: Build Android App Bundle (AAB for Google Play Store)
+        working-directory: android
+        env:
+          KEYSTORE_PASSWORD: "centreYouth2026"
+          KEY_ALIAS: "centreyouth"
+          KEY_PASSWORD: "centreYouth2026"
+        run: ./gradlew bundleRelease --stacktrace
+
+      - name: Build Release & Debug APKs
+        working-directory: android
+        env:
+          KEYSTORE_PASSWORD: "centreYouth2026"
+          KEY_ALIAS: "centreyouth"
+          KEY_PASSWORD: "centreYouth2026"
+        run: ./gradlew assembleRelease assembleDebug --stacktrace
+
+      - name: Upload Play Store AAB Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Centre-Youth-PlayStore-AAB
+          path: android/app/build/outputs/bundle/release/*.aab
+          retention-days: 30
+
+      - name: Upload Test APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: Centre-Youth-APKs
+          path: |
+            android/app/build/outputs/apk/release/*.apk
+            android/app/build/outputs/apk/debug/*.apk
+          retention-days: 30
