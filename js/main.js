@@ -1334,4 +1334,73 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollToUpcomingWeek();
     }, 600);
   }
+
+  // 10. Live Google Sheet Synchronization (Dynamic Programs & Leaders)
+  const GOOGLE_SHEET_API = 'https://script.google.com/macros/s/AKfycbyfdOFNZ4U3Hmwvi8STt56LHB_VDhiST6T89d1vq8YyZ6gw4IswpEUHsLIH6uBMZdc/exec';
+
+  function extractDriveDirectUrl(url) {
+    if (!url) return '';
+    if (url.includes('drive.google.com') || url.includes('drive.usercontent.google.com')) {
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        return `https://lh3.googleusercontent.com/d/${match[1]}`;
+      }
+    }
+    return url;
+  }
+
+  async function syncLiveGoogleSheet() {
+    try {
+      const res = await fetch(GOOGLE_SHEET_API);
+      if (!res.ok) return;
+      const data = await res.json();
+
+      let livePrograms = [];
+      let liveLeaders = [];
+
+      if (Array.isArray(data)) {
+        livePrograms = data;
+      } else if (data && typeof data === 'object') {
+        if (Array.isArray(data.programs)) livePrograms = data.programs;
+        if (Array.isArray(data.leaders)) liveLeaders = data.leaders;
+      }
+
+      // If live leaders were updated in Google Sheet
+      if (liveLeaders.length > 0) {
+        liveLeaders.forEach((l, idx) => {
+          if (idx < SAKHYAM_DATA.officeBearers.length) {
+            const b = SAKHYAM_DATA.officeBearers[idx];
+            if (l.nameEn) b.nameEn = l.nameEn;
+            if (l.nameMl) b.nameMl = l.nameMl;
+            if (l.roleEn) b.roleEn = l.roleEn;
+            if (l.roleMl) b.roleMl = l.roleMl;
+            if (l.parishEn) b.parishEn = l.parishEn;
+            if (l.phone) b.phone = l.phone;
+            if (l.image) b.image = extractDriveDirectUrl(l.image);
+          }
+        });
+        renderOfficeBearers();
+      }
+
+      // If live programs were updated in Google Sheet
+      if (livePrograms.length > 0) {
+        const kalamela = livePrograms.find(p => (p.category && p.category.toLowerCase().includes('kalamela')) || (p.title && p.title.toLowerCase().includes('kalamela')));
+        if (kalamela) {
+          const posterImg = document.querySelector('.kalamela-poster-preview img');
+          const previewDiv = document.querySelector('.kalamela-poster-preview');
+          const directUrl = extractDriveDirectUrl(kalamela.imageUrl);
+          if (posterImg && directUrl) {
+            posterImg.src = directUrl;
+          }
+          if (previewDiv && directUrl) {
+            previewDiv.onclick = () => openSingleImage(directUrl, `${kalamela.title} Official Poster`);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Live Google Sheet sync info:", e);
+    }
+  }
+
+  syncLiveGoogleSheet();
 });
