@@ -35,6 +35,8 @@ fun ProgramEventCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var showBigPoster by remember { mutableStateOf(false) }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -50,13 +52,14 @@ fun ProgramEventCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            // Poster Image (if available)
+            // Poster Image (if available) - Tap to enlarge
             if (event.directImageUrl.isNotBlank()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(160.dp)
+                        .height(170.dp)
                         .background(MaterialTheme.colorScheme.primaryContainer)
+                        .clickable { showBigPoster = true }
                 ) {
                     AsyncImage(
                         model = event.directImageUrl,
@@ -80,6 +83,33 @@ fun ProgramEventCard(
                             color = Color.White,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
+                    }
+
+                    // Enlarge Hint Pill
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = Color.Black.copy(alpha = 0.6f),
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .align(Alignment.BottomEnd)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Enlarge",
+                                tint = Color.White,
+                                modifier = Modifier.size(13.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "View Big",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color.White
+                            )
+                        }
                     }
                 }
             }
@@ -180,6 +210,16 @@ fun ProgramEventCard(
             }
         }
     }
+
+    if (showBigPoster) {
+        FullScreenImageViewerDialog(
+            imageUrl = event.directImageUrl,
+            title = event.title,
+            subtitle = if (event.titleMl.isNotBlank()) "${event.titleMl} • ${event.date}" else event.date,
+            roleBadge = event.category,
+            onDismiss = { showBigPoster = false }
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -190,6 +230,7 @@ fun ProgramDetailSheet(
 ) {
     val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var showBigPoster by remember { mutableStateOf(false) }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -202,14 +243,15 @@ fun ProgramDetailSheet(
                 .padding(horizontal = 20.dp)
                 .padding(bottom = 32.dp)
         ) {
-            // Poster image banner
+            // Poster image banner - Tap to view full size
             if (event.directImageUrl.isNotBlank()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)
+                        .height(210.dp)
                         .clip(RoundedCornerShape(18.dp))
                         .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .clickable { showBigPoster = true }
                 ) {
                     AsyncImage(
                         model = event.directImageUrl,
@@ -217,6 +259,32 @@ fun ProgramDetailSheet(
                         contentScale = ContentScale.Fit,
                         modifier = Modifier.fillMaxSize()
                     )
+
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = Color.Black.copy(alpha = 0.65f),
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .align(Alignment.BottomEnd)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Zoom",
+                                tint = Color.White,
+                                modifier = Modifier.size(13.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "Tap for Full Size",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color.White
+                            )
+                        }
+                    }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -336,6 +404,16 @@ fun ProgramDetailSheet(
                 }
             }
         }
+    }
+
+    if (showBigPoster) {
+        FullScreenImageViewerDialog(
+            imageUrl = event.directImageUrl,
+            title = event.title,
+            subtitle = if (event.titleMl.isNotBlank()) "${event.titleMl} • ${event.date}" else event.date,
+            roleBadge = event.category,
+            onDismiss = { showBigPoster = false }
+        )
     }
 }
 

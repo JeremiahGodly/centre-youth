@@ -15,7 +15,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -88,9 +88,12 @@ fun OfficeBearerCard(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    var showBigPhoto by remember { mutableStateOf(false) }
 
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { showBigPhoto = true },
         shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -103,7 +106,7 @@ fun OfficeBearerCard(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Zoomed-in Face Avatar with Gold Border
+            // Natural Balanced Avatar with Gold Border (Tap to Enlarge)
             Box(
                 modifier = Modifier
                     .size(76.dp)
@@ -113,7 +116,8 @@ fun OfficeBearerCard(
                         brush = Brush.linearGradient(listOf(GoldAccent, GoldLight, GoldAccent)),
                         shape = CircleShape
                     )
-                    .background(MaterialTheme.colorScheme.primaryContainer),
+                    .background(MaterialTheme.colorScheme.primaryContainer)
+                    .clickable { showBigPhoto = true },
                 contentAlignment = Alignment.Center
             ) {
                 if (bearer.directImageUrl.isNotBlank()) {
@@ -217,6 +221,17 @@ fun OfficeBearerCard(
                 }
             }
         }
+    }
+
+    if (showBigPhoto) {
+        FullScreenImageViewerDialog(
+            imageUrl = bearer.directImageUrl,
+            fallbackResId = getLeaderAvatar(bearer),
+            title = bearer.nameEn,
+            subtitle = if (bearer.nameMl.isNotBlank()) "${bearer.nameMl} • ${bearer.parishEn}" else bearer.parishEn,
+            roleBadge = bearer.roleEn,
+            onDismiss = { showBigPhoto = false }
+        )
     }
 }
 

@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       return `
         <div class="leader-card glass-panel tilt-card">
-          <div class="leader-avatar-wrap">
+          <div class="leader-avatar-wrap" style="cursor: pointer;" onclick="openSingleImage('${b.image}', '${b[nameKey]} • ${b[roleKey]}')">
             <img src="${b.image}" alt="${b[nameKey]}" class="leader-avatar" loading="lazy" />
             <span class="leader-role-badge">${b[roleKey]}</span>
           </div>
