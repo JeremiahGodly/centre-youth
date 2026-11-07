@@ -6,26 +6,26 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -40,6 +40,7 @@ import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.marthoma.centreyouth.data.CentreRepository
 import org.marthoma.centreyouth.data.model.Song
 import org.marthoma.centreyouth.service.AudioPlaybackService
@@ -47,6 +48,8 @@ import org.marthoma.centreyouth.ui.components.MiniPlayer
 import org.marthoma.centreyouth.ui.components.SongPlayerSheet
 import org.marthoma.centreyouth.ui.screens.*
 import org.marthoma.centreyouth.ui.theme.CentreYouthTheme
+import org.marthoma.centreyouth.ui.theme.GoldAccent
+import org.marthoma.centreyouth.ui.theme.GoldLight
 
 enum class Screen(val title: String, val iconRes: Int) {
     HOME("Home", R.drawable.ic_stat_scripture),
@@ -328,6 +331,7 @@ class MainActivity : ComponentActivity() {
                     )
                     Screen.POLICY -> PolicyScreen(onBack = { currentScreen = Screen.MORE })
                     Screen.MORE -> MoreMenuScreen(
+                        repository = repository,
                         onNavigateToLeadership = { currentScreen = Screen.LEADERSHIP },
                         onNavigateToEvents = { currentScreen = Screen.EVENTS },
                         onNavigateToAbout = { currentScreen = Screen.ABOUT },
@@ -367,16 +371,21 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MoreMenuScreen(
+    repository: CentreRepository,
     onNavigateToLeadership: () -> Unit,
     onNavigateToEvents: () -> Unit,
     onNavigateToAbout: () -> Unit,
     onNavigateToPolicy: () -> Unit
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    var isSyncing by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         Text(
             text = "Explore Keezhillam - Munnar Centre",
@@ -384,7 +393,98 @@ fun MoreMenuScreen(
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier = Modifier.height(4.dp))
+        // 🔄 Live Cloud Sync Card
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.5.dp,
+                    brush = Brush.linearGradient(listOf(GoldAccent.copy(alpha = 0.6f), GoldLight.copy(alpha = 0.8f))),
+                    shape = RoundedCornerShape(20.dp)
+                ),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f)
+            )
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    modifier = Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .clip(CircleShape)
+                            .background(GoldAccent.copy(alpha = 0.2f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (isSyncing) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(22.dp),
+                                color = GoldAccent,
+                                strokeWidth = 2.5.dp
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = "Sync Cloud",
+                                tint = GoldAccent,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Column {
+                        Text(
+                            text = "Live Cloud Sync",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = if (isSyncing) "Fetching updates from Google Sheet…" else "Refresh programs, posters & leaders",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+
+                Button(
+                    onClick = {
+                        if (!isSyncing) {
+                            coroutineScope.launch {
+                                isSyncing = true
+                                val progResult = repository.syncProgramsFromGoogleSheet()
+                                val leadResult = repository.syncLeadersFromGoogleSheet()
+                                isSyncing = false
+                                if (progResult.isSuccess || leadResult.isSuccess) {
+                                    Toast.makeText(context, "✅ Synced successfully with Google Sheet!", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(context, "⚠️ Unable to sync. Using offline data.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    },
+                    enabled = !isSyncing,
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = GoldAccent
+                    )
+                ) {
+                    Text(text = if (isSyncing) "Syncing…" else "Sync Now")
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(2.dp))
 
         MoreMenuItem(
             title = "Leadership & Office Bearers",
