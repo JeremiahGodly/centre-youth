@@ -113,25 +113,38 @@ class CentreRepository(private val context: Context) {
         return isNowFav
     }
 
-    fun getTodayLectionary(): LectionaryEntry? {
+    /**
+     * Returns the upcoming Sunday lectionary entry.
+     */
+    fun getUpcomingSunday(): LectionaryEntry? {
         if (cachedLectionary.isEmpty()) return null
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val todayStr = sdf.format(Date())
-        val exact = cachedLectionary.find { it.date == todayStr }
-        if (exact != null) return exact
 
-        // Otherwise find the upcoming Sunday
-        val now = Date()
-        val parsedEntries = cachedLectionary.mapNotNull { entry ->
-            try {
-                val d = sdf.parse(entry.date)
-                if (d != null && !d.before(now)) Pair(d, entry) else null
-            } catch (e: Exception) {
-                null
-            }
-        }.sortedBy { it.first }
+        val upcomingList = cachedLectionary
+            .filter { it.date >= todayStr }
+            .sortedBy { it.date }
 
-        return parsedEntries.firstOrNull()?.second ?: cachedLectionary.firstOrNull()
+        return upcomingList.firstOrNull() ?: cachedLectionary.lastOrNull()
+    }
+
+    /**
+     * Backward-compatible alias for the active/upcoming Sunday.
+     */
+    fun getTodayLectionary(): LectionaryEntry? = getUpcomingSunday()
+
+    /**
+     * Filters out past / finished Sundays so users only see upcoming and active lectionary readings.
+     */
+    fun getUpcomingLectionaries(): List<LectionaryEntry> {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val todayStr = sdf.format(Date())
+
+        val upcoming = cachedLectionary
+            .filter { it.date >= todayStr }
+            .sortedBy { it.date }
+
+        return if (upcoming.isNotEmpty()) upcoming else cachedLectionary
     }
 
     fun getSongCategories(): List<String> {

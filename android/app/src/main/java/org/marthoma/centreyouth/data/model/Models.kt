@@ -58,19 +58,45 @@ data class Parish(
     val geo: String = ""
 )
 
+data class Readings(
+    val lesson1: String? = null,
+    val lesson2: String? = null,
+    val epistle: String? = null,
+    val gospel: String? = null,
+    val evening1: String? = null,
+    val evening2: String? = null
+)
+
 data class LectionaryEntry(
     val id: String = "",
     val date: String = "",
+    val displayDateEn: String = "",
+    val displayDateMl: String = "",
+    val displayDateMang: String = "",
+    val month: String = "",
+    val seasonEn: String = "",
+    val seasonMl: String = "",
     val titleEn: String = "",
     val titleMl: String = "",
     val titleMang: String = "",
-    val lesson1: String = "",
-    val lesson2: String = "",
-    val epistle: String = "",
-    val gospel: String = "",
-    val evening1: String = "",
-    val evening2: String = ""
-)
+    val themeEn: String = "",
+    val themeMl: String = "",
+    val readings: Readings? = null,
+    // Direct fallbacks if unnested
+    val lesson1: String? = null,
+    val lesson2: String? = null,
+    val epistle: String? = null,
+    val gospel: String? = null,
+    val evening1: String? = null,
+    val evening2: String? = null
+) {
+    val firstLesson: String get() = readings?.lesson1 ?: lesson1 ?: ""
+    val secondLesson: String get() = readings?.lesson2 ?: lesson2 ?: ""
+    val epistleReading: String get() = readings?.epistle ?: epistle ?: ""
+    val gospelReading: String get() = readings?.gospel ?: gospel ?: ""
+    val eveningReading1: String get() = readings?.evening1 ?: evening1 ?: ""
+    val eveningReading2: String get() = readings?.evening2 ?: evening2 ?: ""
+}
 
 data class Song(
     val id: String = "",

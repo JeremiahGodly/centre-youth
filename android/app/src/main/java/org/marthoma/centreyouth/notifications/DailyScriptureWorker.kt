@@ -14,12 +14,16 @@ class DailyScriptureWorker(
     override suspend fun doWork(): Result {
         return try {
             val repo = CentreRepository(appContext)
-            val todayLectionary = repo.getTodayLectionary()
+            val upcoming = repo.getUpcomingSunday()
             val centreInfo = repo.getCentreInfo()
 
-            val title = todayLectionary?.titleEn ?: "Daily Scripture Reflection"
-            val verse = todayLectionary?.gospel ?: centreInfo.themeQuoteEn
-            val ref = todayLectionary?.gospel ?: centreInfo.themeVerse
+            val title = upcoming?.titleEn ?: "Daily Scripture Reflection"
+            val verse = if (upcoming != null && upcoming.gospelReading.isNotBlank()) {
+                "Holy Gospel: ${upcoming.gospelReading}\n${upcoming.themeEn}"
+            } else {
+                centreInfo.themeQuoteEn
+            }
+            val ref = if (upcoming != null && upcoming.gospelReading.isNotBlank()) upcoming.gospelReading else centreInfo.themeVerse
 
             NotificationHelper.showDailyScriptureNotification(
                 context = appContext,

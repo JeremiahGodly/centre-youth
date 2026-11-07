@@ -5,28 +5,34 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.marthoma.centreyouth.R
 import org.marthoma.centreyouth.data.model.OfficeBearer
 import org.marthoma.centreyouth.data.model.Parish
 import org.marthoma.centreyouth.data.model.PillarItem
 import org.marthoma.centreyouth.data.model.StatItem
+import org.marthoma.centreyouth.ui.theme.GoldAccent
+import org.marthoma.centreyouth.ui.theme.GoldLight
 
 @Composable
 fun StatCard(
@@ -35,10 +41,11 @@ fun StatCard(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -47,7 +54,7 @@ fun StatCard(
             Text(
                 text = "${stat.value}${stat.suffix}",
                 style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.ExtraBold,
                 color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -61,6 +68,19 @@ fun StatCard(
     }
 }
 
+fun getLeaderAvatar(leader: OfficeBearer): Int {
+    val name = leader.nameEn.lowercase()
+    val role = leader.roleEn.lowercase()
+    return when {
+        name.contains("james") || role.contains("president") && !role.contains("vice") -> R.drawable.leader_rev_james_george
+        name.contains("ashin") || role.contains("secretary") && !role.contains("joint") -> R.drawable.leader_ashin_k_santhosh
+        name.contains("aleena") || role.contains("joint") -> R.drawable.leader_aleena_mariya_joy
+        name.contains("gibin") || role.contains("treasurer") -> R.drawable.leader_gibin_saji
+        name.contains("varghese") || name.contains("sabu") || role.contains("vice") -> R.drawable.leader_varghese_sabu
+        else -> R.drawable.app_logo
+    }
+}
+
 @Composable
 fun OfficeBearerCard(
     bearer: OfficeBearer,
@@ -70,11 +90,11 @@ fun OfficeBearerCard(
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Row(
             modifier = Modifier
@@ -82,42 +102,62 @@ fun OfficeBearerCard(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Profile Avatar / Initials
+            // Zoomed-in Face Avatar with Gold Border
             Box(
                 modifier = Modifier
-                    .size(54.dp)
+                    .size(76.dp)
                     .clip(CircleShape)
+                    .border(
+                        width = 2.5.dp,
+                        brush = Brush.linearGradient(listOf(GoldAccent, GoldLight, GoldAccent)),
+                        shape = CircleShape
+                    )
                     .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = bearer.nameEn.take(1),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                Image(
+                    painter = painterResource(id = getLeaderAvatar(bearer)),
+                    contentDescription = bearer.nameEn,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(CircleShape)
                 )
             }
 
             Spacer(modifier = Modifier.width(16.dp))
 
             Column(modifier = Modifier.weight(1f)) {
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                ) {
+                    Text(
+                        text = bearer.roleEn.uppercase(),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
                 Text(
                     text = bearer.nameEn,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
+
                 if (bearer.nameMl.isNotBlank()) {
                     Text(
                         text = bearer.nameMl,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.secondary
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
-                Text(
-                    text = bearer.roleEn,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
+
                 if (bearer.parishEn.isNotBlank()) {
                     Text(
                         text = bearer.parishEn,
@@ -127,29 +167,39 @@ fun OfficeBearerCard(
                 }
             }
 
-            // Action Buttons
-            Row {
+            // Quick Connect Action Buttons
+            Column(
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 if (bearer.phone.isNotBlank()) {
-                    IconButton(
-                        onClick = { dialPhone(context, bearer.phone) }
+                    FilledTonalIconButton(
+                        onClick = { dialPhone(context, bearer.phone) },
+                        modifier = Modifier.size(38.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Phone,
                             contentDescription = "Call",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(18.dp)
                         )
                     }
                 }
 
                 if (bearer.whatsapp.isNotBlank() || bearer.phone.isNotBlank()) {
                     val rawNum = bearer.whatsapp.ifBlank { bearer.phone }.filter { it.isDigit() }
-                    IconButton(
-                        onClick = { openWhatsApp(context, rawNum) }
+                    FilledTonalIconButton(
+                        onClick = { openWhatsApp(context, rawNum) },
+                        modifier = Modifier.size(38.dp),
+                        colors = IconButtonDefaults.filledTonalIconButtonColors(
+                            containerColor = Color(0xFF25D366).copy(alpha = 0.15f)
+                        )
                     ) {
                         Icon(
                             imageVector = Icons.Default.Send,
                             contentDescription = "WhatsApp",
-                            tint = Color(0xFF25D366) // WhatsApp green
+                            tint = Color(0xFF25D366),
+                            modifier = Modifier.size(18.dp)
                         )
                     }
                 }
@@ -167,11 +217,11 @@ fun ParishCard(
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier
@@ -193,11 +243,12 @@ fun ParishCard(
                         Text(
                             text = parish.nameMl,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.secondary
+                            color = MaterialTheme.colorScheme.secondary,
+                            fontWeight = FontWeight.Medium
                         )
                     }
                     if (parish.vicarEn.isNotBlank()) {
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(6.dp))
                         Text(
                             text = "Vicar: ${parish.vicarEn}",
                             style = MaterialTheme.typography.bodyMedium,
@@ -206,22 +257,30 @@ fun ParishCard(
                     }
                 }
 
-                Row {
+                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     if (parish.phone.isNotBlank()) {
-                        IconButton(onClick = { dialPhone(context, parish.phone) }) {
+                        FilledTonalIconButton(
+                            onClick = { dialPhone(context, parish.phone) },
+                            modifier = Modifier.size(38.dp)
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.Phone,
                                 contentDescription = "Call Parish",
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(18.dp)
                             )
                         }
                     }
 
-                    IconButton(onClick = { openMaps(context, "${parish.nameEn} Mar Thoma Church") }) {
+                    FilledTonalIconButton(
+                        onClick = { openMaps(context, "${parish.nameEn} Mar Thoma Church") },
+                        modifier = Modifier.size(38.dp)
+                    ) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
                             contentDescription = "Directions",
-                            tint = MaterialTheme.colorScheme.secondary
+                            tint = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.size(18.dp)
                         )
                     }
                 }
@@ -237,12 +296,12 @@ fun PillarCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
         )
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(18.dp)) {
             Text(
                 text = "${pillar.titleEn} (${pillar.titleMl})",
                 style = MaterialTheme.typography.titleMedium,

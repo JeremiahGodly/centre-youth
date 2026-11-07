@@ -1,6 +1,7 @@
 package org.marthoma.centreyouth.ui.screens
 
 import android.content.Intent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,6 +28,7 @@ import org.marthoma.centreyouth.R
 import org.marthoma.centreyouth.data.CentreRepository
 import org.marthoma.centreyouth.ui.components.PillarCard
 import org.marthoma.centreyouth.ui.components.StatCard
+import org.marthoma.centreyouth.ui.theme.GoldAccent
 
 @Composable
 fun HomeScreen(
@@ -201,6 +203,7 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .clickable { onNavigateToLectionary() },
                     shape = RoundedCornerShape(20.dp),
+                    border = BorderStroke(1.5.dp, GoldAccent.copy(alpha = 0.6f)),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
                     )
@@ -213,12 +216,14 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = "LITURGICAL LECTIONARY",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.secondary
-                            )
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = "✨ UPCOMING SUNDAY LECTIONARY",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = GoldAccent
+                                )
+                            }
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = todayLectionary.titleEn,
@@ -232,19 +237,22 @@ fun HomeScreen(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "Gospel: ${todayLectionary.gospel}",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                            val gospelText = todayLectionary.gospelReading.ifBlank { todayLectionary.gospel }
+                            if (gospelText.isNotBlank()) {
+                                Spacer(modifier = Modifier.height(6.dp))
+                                Text(
+                                    text = "📖 Gospel: $gospelText",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            }
                         }
 
                         Icon(
                             imageVector = Icons.Default.ArrowForward,
                             contentDescription = "Open Lectionary",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = GoldAccent
                         )
                     }
                 }
