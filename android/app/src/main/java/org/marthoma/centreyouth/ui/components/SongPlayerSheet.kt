@@ -4,10 +4,11 @@ import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -51,8 +52,6 @@ fun SongPlayerSheet(
                 .padding(bottom = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Drag handle is built-in to ModalBottomSheet
-
             Spacer(modifier = Modifier.height(12.dp))
 
             // Large Emblem / Album Art
@@ -164,9 +163,10 @@ fun SongPlayerSheet(
                 // Previous
                 IconButton(onClick = onSkipPrevious) {
                     Icon(
-                        imageVector = Icons.Default.SkipPrevious,
+                        painter = painterResource(id = R.drawable.ic_action_skip_prev),
                         contentDescription = "Previous",
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(32.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
 
@@ -179,18 +179,22 @@ fun SongPlayerSheet(
                     )
                 ) {
                     Icon(
-                        imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                        painter = painterResource(
+                            id = if (isPlaying) R.drawable.ic_action_pause else R.drawable.ic_action_play
+                        ),
                         contentDescription = if (isPlaying) "Pause" else "Play",
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(32.dp),
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
 
                 // Next
                 IconButton(onClick = onSkipNext) {
                     Icon(
-                        imageVector = Icons.Default.SkipNext,
+                        painter = painterResource(id = R.drawable.ic_action_skip_next),
                         contentDescription = "Next",
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(32.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
 

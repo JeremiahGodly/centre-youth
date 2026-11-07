@@ -13,12 +13,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.media3.common.MediaItem
@@ -38,16 +42,16 @@ import org.marthoma.centreyouth.ui.components.SongPlayerSheet
 import org.marthoma.centreyouth.ui.screens.*
 import org.marthoma.centreyouth.ui.theme.CentreYouthTheme
 
-enum class Screen(val title: String, val icon: ImageVector) {
-    HOME("Home", Icons.Default.Home),
-    LECTIONARY("Lectionary", Icons.Default.MenuBook),
-    SONGS("Songs", Icons.Default.MusicNote),
-    PARISHES("Parishes", Icons.Default.Church),
-    MORE("More", Icons.Default.MoreHoriz),
-    LEADERSHIP("Leadership", Icons.Default.Groups),
-    EVENTS("Events", Icons.Default.Festival),
-    ABOUT("About", Icons.Default.Info),
-    POLICY("Policy", Icons.Default.Security)
+enum class Screen(val title: String, val iconRes: Int) {
+    HOME("Home", R.drawable.ic_stat_scripture),
+    LECTIONARY("Lectionary", R.drawable.ic_nav_lectionary),
+    SONGS("Songs", R.drawable.ic_nav_songs),
+    PARISHES("Parishes", R.drawable.ic_nav_church),
+    MORE("More", R.drawable.ic_nav_more),
+    LEADERSHIP("Leadership", R.drawable.ic_stat_scripture),
+    EVENTS("Events", R.drawable.ic_stat_scripture),
+    ABOUT("About", R.drawable.ic_stat_scripture),
+    POLICY("Policy", R.drawable.ic_stat_scripture)
 }
 
 class MainActivity : ComponentActivity() {
@@ -276,7 +280,13 @@ class MainActivity : ComponentActivity() {
 
                         navItems.forEach { screen ->
                             NavigationBarItem(
-                                icon = { Icon(screen.icon, contentDescription = screen.title) },
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(id = screen.iconRes),
+                                        contentDescription = screen.title,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                },
                                 label = { Text(screen.title) },
                                 selected = currentScreen == screen || (screen == Screen.MORE && (currentScreen == Screen.LEADERSHIP || currentScreen == Screen.EVENTS || currentScreen == Screen.ABOUT)),
                                 onClick = { currentScreen = screen }
@@ -376,28 +386,28 @@ fun MoreMenuScreen(
         MoreMenuItem(
             title = "Leadership & Office Bearers",
             subtitle = "President Rev James George, Secretary, Treasurer & Committee",
-            icon = Icons.Default.Groups,
+            iconRes = R.drawable.ic_nav_more,
             onClick = onNavigateToLeadership
         )
 
         MoreMenuItem(
             title = "Events & Camps",
             subtitle = "C-SHORE Youth Camp & LUMORA Kalamela 2026",
-            icon = Icons.Default.Festival,
+            iconRes = R.drawable.ic_stat_scripture,
             onClick = onNavigateToEvents
         )
 
         MoreMenuItem(
             title = "About Sakhyam & Developer",
             subtitle = "Diocese history, motto & dev Jeremiah Godly Varghese",
-            icon = Icons.Default.Info,
+            iconRes = R.drawable.ic_stat_scripture,
             onClick = onNavigateToAbout
         )
 
         MoreMenuItem(
             title = "Privacy Policy & Terms",
             subtitle = "Google Play compliance, data safety & zero-tracking policy",
-            icon = Icons.Default.Security,
+            iconRes = R.drawable.ic_stat_scripture,
             onClick = onNavigateToPolicy
         )
     }
@@ -407,7 +417,7 @@ fun MoreMenuScreen(
 fun MoreMenuItem(
     title: String,
     subtitle: String,
-    icon: ImageVector,
+    iconRes: Int,
     onClick: () -> Unit
 ) {
     Surface(
@@ -431,9 +441,10 @@ fun MoreMenuItem(
                 contentAlignment = androidx.compose.ui.Alignment.Center
             ) {
                 Icon(
-                    imageVector = icon,
+                    painter = painterResource(id = iconRes),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp)
                 )
             }
 

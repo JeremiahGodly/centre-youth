@@ -11,7 +11,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -133,9 +134,10 @@ fun HomeScreen(
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                imageVector = Icons.Default.MenuBook,
+                                painter = painterResource(id = R.drawable.ic_nav_lectionary),
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(24.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
@@ -263,25 +265,25 @@ fun HomeScreen(
             ) {
                 QuickActionItem(
                     title = "Lectionary",
-                    icon = Icons.Default.Book,
+                    iconRes = R.drawable.ic_nav_lectionary,
                     onClick = onNavigateToLectionary,
                     modifier = Modifier.weight(1f)
                 )
                 QuickActionItem(
                     title = "Songs",
-                    icon = Icons.Default.MusicNote,
+                    iconRes = R.drawable.ic_nav_songs,
                     onClick = onNavigateToSongs,
                     modifier = Modifier.weight(1f)
                 )
                 QuickActionItem(
                     title = "Parishes",
-                    icon = Icons.Default.Church,
+                    iconRes = R.drawable.ic_nav_church,
                     onClick = onNavigateToParishes,
                     modifier = Modifier.weight(1f)
                 )
                 QuickActionItem(
                     title = "Leaders",
-                    icon = Icons.Default.Groups,
+                    iconRes = R.drawable.ic_nav_more,
                     onClick = onNavigateToLeadership,
                     modifier = Modifier.weight(1f)
                 )
@@ -327,7 +329,7 @@ fun HomeScreen(
 @Composable
 fun QuickActionItem(
     title: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    iconRes: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -343,10 +345,10 @@ fun QuickActionItem(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
-                imageVector = icon,
+                painter = painterResource(id = iconRes),
                 contentDescription = title,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(26.dp)
             )
             Spacer(modifier = Modifier.height(6.dp))
             Text(

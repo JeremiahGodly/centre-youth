@@ -9,15 +9,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import org.marthoma.centreyouth.R
 import org.marthoma.centreyouth.data.CentreRepository
 import org.marthoma.centreyouth.data.model.Song
 
@@ -183,9 +188,10 @@ fun SongItemCard(
             ) {
                 if (isPlaying) {
                     Icon(
-                        imageVector = Icons.Default.GraphicEq,
+                        painter = painterResource(id = R.drawable.ic_nav_songs),
                         contentDescription = "Playing",
-                        tint = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
+                        tint = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(24.dp)
                     )
                 } else {
                     Text(
@@ -236,13 +242,15 @@ fun SongItemCard(
                 )
             }
 
-            // Play Icon
+            // Play / Pause Icon
             IconButton(onClick = onSelect) {
                 Icon(
-                    imageVector = if (isPlaying) Icons.Default.PauseCircle else Icons.Default.PlayCircle,
+                    painter = painterResource(
+                        id = if (isPlaying) R.drawable.ic_action_pause else R.drawable.ic_action_play
+                    ),
                     contentDescription = "Play",
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(28.dp)
                 )
             }
         }

@@ -11,15 +11,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.marthoma.centreyouth.R
 import org.marthoma.centreyouth.data.CentreRepository
 import org.marthoma.centreyouth.data.model.LectionaryEntry
 
@@ -158,7 +162,7 @@ fun LectionaryCard(
                         Toast.makeText(context, "Readings copied to clipboard", Toast.LENGTH_SHORT).show()
                     }) {
                         Icon(
-                            imageVector = Icons.Default.ContentCopy,
+                            imageVector = Icons.Default.Share,
                             contentDescription = "Copy",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -184,7 +188,7 @@ fun LectionaryCard(
                 )
             }
 
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.padding(vertical = 12.dp),
                 color = MaterialTheme.colorScheme.outlineVariant
             )
