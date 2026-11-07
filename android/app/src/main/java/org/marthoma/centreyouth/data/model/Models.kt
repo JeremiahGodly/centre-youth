@@ -126,3 +126,52 @@ data class KalamelaInfo(
     val dateEn: String = "",
     val itemsCount: Int = 18
 )
+
+data class ProgramEvent(
+    val id: String = "",
+    val title: String = "",
+    val titleMl: String = "",
+    val category: String = "Event",
+    val date: String = "",
+    val time: String = "",
+    val venue: String = "",
+    val mapUrl: String = "",
+    val description: String = "",
+    val speakers: String = "",
+    val imageUrl: String = "",
+    val registrationUrl: String = "",
+    val contactName: String = "",
+    val contactPhone: String = "",
+    val isActive: Boolean = true
+) {
+    /**
+     * Converts Google Drive share URLs or raw web links into direct viewable image URLs for Coil
+     */
+    val directImageUrl: String
+        get() {
+            if (imageUrl.isBlank()) return ""
+            if (imageUrl.contains("drive.google.com") || imageUrl.contains("drive.usercontent.google.com")) {
+                val fileId = extractGoogleDriveFileId(imageUrl)
+                if (fileId.isNotBlank()) {
+                    return "https://lh3.googleusercontent.com/d/$fileId"
+                }
+            }
+            return imageUrl
+        }
+
+    companion object {
+        fun extractGoogleDriveFileId(url: String): String {
+            val patterns = listOf(
+                "d/([a-zA-Z0-9_-]+)".toRegex(),
+                "id=([a-zA-Z0-9_-]+)".toRegex()
+            )
+            for (pattern in patterns) {
+                val match = pattern.find(url)
+                if (match != null) {
+                    return match.groupValues[1]
+                }
+            }
+            return ""
+        }
+    }
+}

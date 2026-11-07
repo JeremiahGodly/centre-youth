@@ -15,7 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +26,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.marthoma.centreyouth.R
 import org.marthoma.centreyouth.data.CentreRepository
+import org.marthoma.centreyouth.data.model.ProgramEvent
 import org.marthoma.centreyouth.ui.components.PillarCard
+import org.marthoma.centreyouth.ui.components.ProgramDetailSheet
+import org.marthoma.centreyouth.ui.components.ProgramEventCard
 import org.marthoma.centreyouth.ui.components.StatCard
 import org.marthoma.centreyouth.ui.theme.GoldAccent
 
@@ -44,6 +47,17 @@ fun HomeScreen(
     val stats = repository.getStats()
     val pillars = repository.getPillars()
     val todayLectionary = repository.getTodayLectionary()
+
+    var selectedProgram by remember { mutableStateOf<ProgramEvent?>(null) }
+    var programsList by remember { mutableStateOf(repository.getPrograms()) }
+
+    // Silently fetch newest programs/posters from Google Sheet in background
+    LaunchedEffect(Unit) {
+        val result = repository.syncProgramsFromGoogleSheet()
+        if (result.isSuccess) {
+            programsList = repository.getPrograms()
+        }
+    }
 
     LazyColumn(
         modifier = modifier
@@ -298,6 +312,44 @@ fun HomeScreen(
             }
         }
 
+        // Live Upcoming Programs & Events (Synced from Google Sheet)
+        if (programsList.isNotEmpty()) {
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Upcoming Programs & Events",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = GoldAccent.copy(alpha = 0.15f)
+                    ) {
+                        Text(
+                            text = "LIVE UPDATES",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = GoldAccent,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                    programsList.forEach { program ->
+                        ProgramEventCard(
+                            event = program,
+                            onClick = { selectedProgram = program }
+                        )
+                    }
+                }
+            }
+        }
+
         // Centre Stats
         if (stats.isNotEmpty()) {
             item {
@@ -331,6 +383,13 @@ fun HomeScreen(
                 }
             }
         }
+    }
+
+    if (selectedProgram != null) {
+        ProgramDetailSheet(
+            event = selectedProgram!!,
+            onDismiss = { selectedProgram = null }
+        )
     }
 }
 

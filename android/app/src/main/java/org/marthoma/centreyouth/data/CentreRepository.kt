@@ -4,9 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import org.marthoma.centreyouth.data.model.*
 import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,6 +27,11 @@ class CentreRepository(private val context: Context) {
     private var cachedParishes: List<Parish> = emptyList()
     private var cachedLectionary: List<LectionaryEntry> = emptyList()
     private var cachedSongs: List<Song> = emptyList()
+    private var cachedPrograms: List<ProgramEvent> = emptyList()
+
+    // Configurable Google Sheet Web App / JSON URL
+    private val PREF_SHEET_URL = "google_sheet_programs_url"
+    private val DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycby_EXAMPLE/exec"
 
     init {
         loadData()
@@ -72,9 +81,66 @@ class CentreRepository(private val context: Context) {
             songs.forEach { it.isFavorite = favs.contains(it.id) }
             cachedSongs = songs
 
+            // Load Programs: first from local cache, else from bundled defaults
+            val cachedProgramsJson = prefs.getString("cached_programs_json", null)
+            if (!cachedProgramsJson.isNullOrBlank()) {
+                val progType = object : TypeToken<List<ProgramEvent>>() {}.type
+                cachedPrograms = gson.fromJson(cachedProgramsJson, progType)
+            }
+            if (cachedPrograms.isEmpty()) {
+                cachedPrograms = buildInitialDefaultPrograms(root)
+            }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun buildInitialDefaultPrograms(root: JSONObject): List<ProgramEvent> {
+        val list = mutableListOf<ProgramEvent>()
+        if (root.has("cShoreCamp")) {
+            val camp = root.getJSONObject("cShoreCamp")
+            list.add(
+                ProgramEvent(
+                    id = "cshore-camp-2026",
+                    title = camp.optString("titleEn", "C-SHORE Youth Camp 2026"),
+                    titleMl = camp.optString("titleMl", "സി-ഷോർ യൂത്ത് ക്യാമ്പ് 2026"),
+                    category = "Camp",
+                    date = camp.optString("dateEn", "October 19, 20, 21, 2026"),
+                    time = "Full Day Residential",
+                    venue = camp.optString("venueEn", "MCMAT, Perumbavoor"),
+                    description = "${camp.optString("themeEn", "")}\nInaugurator: ${camp.optString("inauguratorEn", "")}\nMain Talk: ${camp.optString("mainTalkEn", "")}\nMusic: ${camp.optString("musicEn", "")}",
+                    speakers = "${camp.optString("inauguratorEn", "")}, ${camp.optString("chiefGuestEn", "")}",
+                    imageUrl = "",
+                    registrationUrl = "https://forms.gle/cmtz",
+                    contactName = "Ashin K Santhosh (Secretary)",
+                    contactPhone = "9497882179",
+                    isActive = true
+                )
+            )
+        }
+        if (root.has("kalamela")) {
+            val k = root.getJSONObject("kalamela")
+            list.add(
+                ProgramEvent(
+                    id = "kalamela-2026",
+                    title = k.optString("name", "Centre Kalamela 2026"),
+                    titleMl = "സെന്റർ കലാമേള 2026",
+                    category = "Kalamela",
+                    date = k.optString("dateEn", "December 2026"),
+                    time = "09:00 AM",
+                    venue = k.optString("venueEn", "Centre Host Parish"),
+                    description = "Annual Yuvajana Sakhyam Arts Festival featuring 18 competition items across literary, musical, and dramatic categories.",
+                    speakers = "Executive Committee MTYS",
+                    imageUrl = "",
+                    registrationUrl = "",
+                    contactName = "Gibin Saji (Treasurer)",
+                    contactPhone = "9061391963",
+                    isActive = true
+                )
+            )
+        }
+        return list
     }
 
     fun getCentreInfo(): CentreInfo = cachedCentreInfo ?: CentreInfo(
@@ -150,5 +216,72 @@ class CentreRepository(private val context: Context) {
     fun getSongCategories(): List<String> {
         val cats = cachedSongs.map { it.category }.filter { it.isNotBlank() }.distinct()
         return listOf("All") + cats
+    }
+
+    /**
+     * Active upcoming programs & event specifications (offline cached or live synced)
+     */
+    fun getPrograms(): List<ProgramEvent> = cachedPrograms.filter { it.isActive }
+
+    fun getGoogleSheetUrl(): String = prefs.getString(PREF_SHEET_URL, "") ?: ""
+
+    fun setGoogleSheetUrl(url: String) {
+        prefs.edit().putString(PREF_SHEET_URL, url.trim()).apply()
+    }
+
+    /**
+     * Background sync: pulls the latest specifications, posters & details from the Google Sheet
+     */
+    suspend fun syncProgramsFromGoogleSheet(targetUrl: String? = null): Result<List<ProgramEvent>> = withContext(Dispatchers.IO) {
+        val endpoint = targetUrl?.trim().takeUnless { it.isNullOrBlank() }
+            ?: getGoogleSheetUrl().takeUnless { it.isBlank() }
+            ?: return@withContext Result.failure(Exception("No Google Sheet URL configured"))
+
+        try {
+            val jsonText = fetchUrlWithRedirects(endpoint)
+            val progType = object : TypeToken<List<ProgramEvent>>() {}.type
+            val list: List<ProgramEvent> = gson.fromJson(jsonText, progType)
+            if (list.isNotEmpty()) {
+                cachedPrograms = list
+                prefs.edit().putString("cached_programs_json", jsonText).apply()
+            }
+            Result.success(list)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure(e)
+        }
+    }
+
+    private fun fetchUrlWithRedirects(urlString: String): String {
+        var currentUrl = urlString
+        var redirects = 0
+        while (redirects < 5) {
+            val url = URL(currentUrl)
+            val conn = url.openConnection() as HttpURLConnection
+            conn.connectTimeout = 10000
+            conn.readTimeout = 10000
+            conn.instanceFollowRedirects = true
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Android; Mobile)")
+
+            val status = conn.responseCode
+            if (status == HttpURLConnection.HTTP_MOVED_TEMP ||
+                status == HttpURLConnection.HTTP_MOVED_PERM ||
+                status == HttpURLConnection.HTTP_SEE_OTHER ||
+                status == 307 || status == 308
+            ) {
+                val newUrl = conn.getHeaderField("Location")
+                if (newUrl != null) {
+                    currentUrl = newUrl
+                    redirects++
+                    continue
+                }
+            }
+            if (status in 200..299) {
+                return conn.inputStream.bufferedReader().use { it.readText() }
+            } else {
+                throw Exception("HTTP Error: $status")
+            }
+        }
+        throw Exception("Too many redirects")
     }
 }
