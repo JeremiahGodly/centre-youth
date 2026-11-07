@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.OpenInBrowser
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -42,7 +42,7 @@ fun PolicyScreen(
                             "https://jeremiahgodly.github.io/centre-youth/terms.html"
                         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                     }) {
-                        Icon(imageVector = Icons.Default.OpenInBrowser, contentDescription = "Open in browser")
+                        Icon(imageVector = Icons.Default.Share, contentDescription = "Open in browser")
                     }
                 }
             )

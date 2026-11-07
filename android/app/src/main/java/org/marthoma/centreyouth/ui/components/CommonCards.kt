@@ -147,7 +147,7 @@ fun OfficeBearerCard(
                         onClick = { openWhatsApp(context, rawNum) }
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Chat,
+                            imageVector = Icons.Default.Send,
                             contentDescription = "WhatsApp",
                             tint = Color(0xFF25D366) // WhatsApp green
                         )
