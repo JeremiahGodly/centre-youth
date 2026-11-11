@@ -341,6 +341,8 @@ function parseParishes(parishSheet, activitiesSheet) {
       parishes.push(pData);
       parishMap[pId] = pData;
       parishMap[nameEn.toLowerCase()] = pData;
+      var firstWord = nameEn.split(/\s+/)[0].toLowerCase();
+      parishMap[firstWord] = pData;
     }
   }
 
@@ -352,6 +354,8 @@ function parseParishes(parishSheet, activitiesSheet) {
       copy.mapUrl = "https://maps.google.com/?q=" + encodeURIComponent(copy.nameEn);
       parishMap[copy.id] = copy;
       parishMap[copy.nameEn.toLowerCase()] = copy;
+      var fWord = copy.nameEn.split(/\s+/)[0].toLowerCase();
+      parishMap[fWord] = copy;
       return copy;
     });
   }
@@ -377,7 +381,7 @@ function parseParishes(parishSheet, activitiesSheet) {
 
       var targetParish = aObj.parish || aObj.church || aObj.parishname || "";
       var title = aObj.title || aObj.activity || aObj.event || "";
-      if (!title) continue;
+      if (!title || !targetParish) continue;
 
       var isActive = (aObj.isactive !== undefined && aObj.isactive !== "")
         ? String(aObj.isactive).toUpperCase() !== "FALSE"
@@ -399,27 +403,24 @@ function parseParishes(parishSheet, activitiesSheet) {
         imageUrl: posterUrl
       };
 
-      // Match target parish
-      var matched = false;
+      // Exact or intelligent matching to target parish
       var q = targetParish.toLowerCase().trim();
-      if (q && parishMap[q]) {
+      if (q === "all" || q === "centre" || q === "all parishes") {
+        for (var n = 0; n < parishes.length; n++) {
+          parishes[n].activities.push(activityItem);
+        }
+      } else if (parishMap[q]) {
         parishMap[q].activities.push(activityItem);
-        matched = true;
-      } else if (q) {
+      } else {
         for (var m = 0; m < parishes.length; m++) {
           var pName = parishes[m].nameEn.toLowerCase();
           var pId = parishes[m].id.toLowerCase();
-          if (pName.indexOf(q) !== -1 || q.indexOf(pId) !== -1) {
+          var pLoc = (parishes[m].location || "").toLowerCase();
+          if (pName.indexOf(q) !== -1 || q.indexOf(pId) !== -1 || pLoc.indexOf(q) !== -1) {
             parishes[m].activities.push(activityItem);
-            matched = true;
             break;
           }
         }
-      }
-
-      // If no match, add to first parish
-      if (!matched && parishes.length > 0) {
-        parishes[0].activities.push(activityItem);
       }
     }
   }
