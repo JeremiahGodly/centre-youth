@@ -57,6 +57,8 @@
     <string name="phone_call">ഫോൺ</string>
 
     <!-- Shortcuts -->
+    <string name="shortcut_quiz_short">ബൈബിൾ ക്വിസ്</string>
+    <string name="shortcut_quiz_long">ബൈബിൾ ക്വിസ് (10 ലെവലുകൾ)</string>
     <string name="shortcut_lectionary_short">ലെക്ഷനറി</string>
     <string name="shortcut_lectionary_long">ഇന്നത്തെ ലെക്ഷനറി</string>
     <string name="shortcut_songs_short">ഗാനങ്ങൾ</string>

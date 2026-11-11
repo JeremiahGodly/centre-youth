@@ -65,6 +65,8 @@
     <string name="not_now">Not Now</string>
 
     <!-- Shortcuts -->
+    <string name="shortcut_quiz_short">Bible Quiz</string>
+    <string name="shortcut_quiz_long">Bible Quiz Arena (10 Levels)</string>
     <string name="shortcut_lectionary_short">Lectionary</string>
     <string name="shortcut_lectionary_long">Today’s Liturgical Lectionary</string>
     <string name="shortcut_songs_short">Songs</string>

@@ -484,4 +484,37 @@ class CentreRepository(private val context: Context) {
         }
         throw Exception("Too many redirects")
     }
+
+    // ==================== BIBLE QUIZ PERSISTENCE ====================
+
+    fun saveQuizLevelResult(level: Int, score: Int, correctCount: Int, totalCount: Int): Int {
+        val accuracy = if (totalCount > 0) (correctCount.toFloat() / totalCount.toFloat()) else 0f
+        val earnedStars = when {
+            accuracy >= 0.85f -> 3
+            accuracy >= 0.60f -> 2
+            accuracy >= 0.30f -> 1
+            else -> 0
+        }
+        val prevBestScore = getQuizBestScore(level)
+        val prevStars = getQuizStars(level)
+        val prevCorrect = getQuizBestCorrect(level)
+
+        prefs.edit().apply {
+            if (score > prevBestScore) putInt("quiz_best_score_$level", score)
+            if (earnedStars > prevStars) putInt("quiz_best_stars_$level", earnedStars)
+            if (correctCount > prevCorrect) putInt("quiz_best_correct_$level", correctCount)
+            apply()
+        }
+        return earnedStars
+    }
+
+    fun getQuizBestScore(level: Int): Int = prefs.getInt("quiz_best_score_$level", 0)
+
+    fun getQuizStars(level: Int): Int = prefs.getInt("quiz_best_stars_$level", 0)
+
+    fun getQuizBestCorrect(level: Int): Int = prefs.getInt("quiz_best_correct_$level", 0)
+
+    fun getQuizTotalScore(): Int = (1..10).sumOf { getQuizBestScore(it) }
+
+    fun getQuizTotalStars(): Int = (1..10).sumOf { getQuizStars(it) }
 }

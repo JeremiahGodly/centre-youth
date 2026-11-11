@@ -58,6 +58,7 @@ import org.marthoma.centreyouth.ui.theme.GoldLight
 
 enum class Screen(val title: String, val iconRes: Int) {
     HOME("Home", R.drawable.ic_stat_scripture),
+    QUIZ("Quiz", R.drawable.ic_nav_quiz),
     LECTIONARY("Lectionary", R.drawable.ic_nav_lectionary),
     SONGS("Songs", R.drawable.ic_nav_songs),
     PARISHES("Parishes", R.drawable.ic_nav_church),
@@ -130,6 +131,7 @@ class MainActivity : ComponentActivity() {
         val navigateTo = intent?.getStringExtra("navigate_to")
         if (data != null) {
             when (data.host) {
+                "quiz" -> activeScreenState.value = Screen.QUIZ
                 "lectionary" -> activeScreenState.value = Screen.LECTIONARY
                 "songs" -> activeScreenState.value = Screen.SONGS
                 "leadership" -> activeScreenState.value = Screen.LEADERSHIP
@@ -137,6 +139,7 @@ class MainActivity : ComponentActivity() {
             }
         } else if (navigateTo != null) {
             when (navigateTo) {
+                "quiz" -> activeScreenState.value = Screen.QUIZ
                 "lectionary" -> activeScreenState.value = Screen.LECTIONARY
                 "songs" -> activeScreenState.value = Screen.SONGS
             }
@@ -258,11 +261,13 @@ class MainActivity : ComponentActivity() {
         Scaffold(
             topBar = {
                 if (currentScreen != Screen.POLICY) {
+                    val isQuizMode = currentScreen == Screen.QUIZ
                     CenterAlignedTopAppBar(
                         title = {
                             Text(
                                 text = when (currentScreen) {
                                     Screen.HOME -> "Keezhillam-Munnar MTYS"
+                                    Screen.QUIZ -> "⚡ Bible Quiz Arena"
                                     Screen.LECTIONARY -> "Liturgical Lectionary"
                                     Screen.SONGS -> "Youth Songs"
                                     Screen.PARISHES -> "Centre Parishes"
@@ -276,7 +281,8 @@ class MainActivity : ComponentActivity() {
                             )
                         },
                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.background
+                            containerColor = if (isQuizMode) Color(0xFF070416) else MaterialTheme.colorScheme.background,
+                            titleContentColor = if (isQuizMode) Color.White else MaterialTheme.colorScheme.onBackground
                         )
                     )
                 }
@@ -299,7 +305,7 @@ class MainActivity : ComponentActivity() {
                     NavigationBar {
                         val navItems = listOf(
                             Screen.HOME,
-                            Screen.LECTIONARY,
+                            Screen.QUIZ,
                             Screen.SONGS,
                             Screen.PARISHES,
                             Screen.MORE
@@ -331,11 +337,12 @@ class MainActivity : ComponentActivity() {
                 when (currentScreen) {
                     Screen.HOME -> HomeScreen(
                         repository = repository,
-                        onNavigateToLectionary = { currentScreen = Screen.LECTIONARY },
+                        onNavigateToQuiz = { currentScreen = Screen.QUIZ },
                         onNavigateToSongs = { currentScreen = Screen.SONGS },
                         onNavigateToParishes = { currentScreen = Screen.PARISHES },
                         onNavigateToLeadership = { currentScreen = Screen.LEADERSHIP }
                     )
+                    Screen.QUIZ -> BibleQuizScreen(repository = repository)
                     Screen.LECTIONARY -> LectionaryScreen(repository = repository)
                     Screen.SONGS -> SongsScreen(
                         repository = repository,

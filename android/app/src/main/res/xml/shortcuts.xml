@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
-        android:shortcutId="lectionary"
+        android:shortcutId="quiz"
         android:enabled="true"
         android:icon="@mipmap/ic_launcher"
-        android:shortcutShortLabel="@string/shortcut_lectionary_short"
-        android:shortcutLongLabel="@string/shortcut_lectionary_long">
+        android:shortcutShortLabel="@string/shortcut_quiz_short"
+        android:shortcutLongLabel="@string/shortcut_quiz_long">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="org.marthoma.centreyouth"
             android:targetClass="org.marthoma.centreyouth.MainActivity"
-            android:data="centreyouth://lectionary" />
+            android:data="centreyouth://quiz" />
     </shortcut>
 
     <shortcut
