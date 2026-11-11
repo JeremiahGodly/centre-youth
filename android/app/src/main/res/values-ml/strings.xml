@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">സെന്റർ യൂത്ത്</string>
+    <string name="app_name">കീഴില്ലം-മൂന്നാർ MTYS</string>
     <string name="app_full_name">കീഴില്ലം - മൂന്നാർ സെന്റർ മാർത്തോമ്മാ യുവജനസഖ്യം</string>
     <string name="motto">പ്രകാശിതരായി പ്രകാശിപ്പിക്കുക</string>
     <string name="diocese">കോട്ടയം - കൊച്ചി ഭദ്രാസനം</string>
@@ -68,7 +68,7 @@
     <string name="privacy_policy">സ്വകാര്യതാ നയം (Privacy Policy)</string>
     <string name="terms_of_service">സേവന നിബന്ധനകൾ (Terms)</string>
     <string name="data_safety">ഡാറ്റാ സുരക്ഷ</string>
-    <string name="about_app">സെന്റർ യൂത്ത് ആപ്പിനെക്കുറിച്ച്</string>
+    <string name="about_app">കീഴില്ലം-മൂന്നാർ MTYS-നെക്കുറിച്ച്</string>
     <string name="version">പതിപ്പ് 1.0.0 (Build 1)</string>
     <string name="app_motto_verse">"ഈ ലോകത്തിന് അനുരൂപരാകാതെ, നിങ്ങളുടെ മനസ്സിനെ നവീകരിച്ച് രൂപാന്തരപ്പെടുവിൻ." — റോമർ 12:2</string>
 </resources>

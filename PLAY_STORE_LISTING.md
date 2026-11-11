@@ -1,6 +1,6 @@
 # 🚀 Google Play Store Console Submission Guide
 
-**App Name:** Centre Youth - Mar Thoma  
+**App Name:** Keezhillam-Munnar MTYS  
 **Package Name:** `org.marthoma.centreyouth`  
 **Developer:** Jeremiah Godly Varghese  
 **Primary Email:** `jrmhgodly@gmail.com`  
@@ -13,7 +13,7 @@
 
 ### App Title (Max 30 characters)
 ```text
-Centre Youth - Mar Thoma
+Keezhillam-Munnar MTYS
 ```
 
 ### Short Description (Max 80 characters)

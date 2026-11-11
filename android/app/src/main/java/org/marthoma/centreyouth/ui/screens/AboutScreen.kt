@@ -70,7 +70,7 @@ fun AboutScreen(
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.app_logo),
-                            contentDescription = "Centre Youth App Logo",
+                            contentDescription = "Keezhillam-Munnar MTYS App Logo",
                             modifier = Modifier.size(76.dp)
                         )
                     }
@@ -78,7 +78,7 @@ fun AboutScreen(
                     Spacer(modifier = Modifier.height(14.dp))
 
                     Text(
-                        text = "Centre Youth",
+                        text = "Keezhillam-Munnar MTYS",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -198,7 +198,7 @@ fun AboutScreen(
                                     type = "text/plain"
                                     putExtra(
                                         Intent.EXTRA_TEXT,
-                                        "Download Centre Youth app for Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam:\nhttps://play.google.com/store/apps/details?id=org.marthoma.centreyouth"
+                                        "Download Keezhillam-Munnar MTYS app for Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam:\nhttps://play.google.com/store/apps/details?id=org.marthoma.centreyouth"
                                     )
                                 }
                                 context.startActivity(Intent.createChooser(shareIntent, "Share App"))

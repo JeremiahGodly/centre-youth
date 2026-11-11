@@ -242,7 +242,7 @@ class MainActivity : ComponentActivity() {
                         title = {
                             Text(
                                 text = when (currentScreen) {
-                                    Screen.HOME -> "Centre Youth"
+                                    Screen.HOME -> "Keezhillam-Munnar MTYS"
                                     Screen.LECTIONARY -> "Liturgical Lectionary"
                                     Screen.SONGS -> "Youth Songs"
                                     Screen.PARISHES -> "Centre Parishes"

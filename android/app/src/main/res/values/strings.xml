@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Centre Youth</string>
+    <string name="app_name">Keezhillam-Munnar MTYS</string>
     <string name="app_full_name">Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam</string>
     <string name="motto">Lighted to Lighten</string>
     <string name="diocese">Kottayam - Kochi Diocese</string>
@@ -76,7 +76,7 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_of_service">Terms of Service</string>
     <string name="data_safety">Data Safety</string>
-    <string name="about_app">About Centre Youth</string>
+    <string name="about_app">About Keezhillam-Munnar MTYS</string>
     <string name="version">Version 1.0.0 (Build 1)</string>
     <string name="app_motto_verse">"Do not conform to the pattern of this world, but be transformed by the renewing of your mind." — Romans 12:2</string>
 </resources>

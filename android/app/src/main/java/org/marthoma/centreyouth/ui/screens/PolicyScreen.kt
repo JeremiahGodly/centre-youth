@@ -75,7 +75,7 @@ fun PolicyScreen(
                     item {
                         PolicySection(
                             title = "1. Introduction & Overview",
-                            content = "Centre Youth ('the App') is the official mobile application for Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam (Kottayam - Kochi Diocese, Malankara Mar Thoma Syrian Church). We are dedicated to maintaining strict privacy standards for all church members, youth, and visitors."
+                            content = "Keezhillam-Munnar MTYS ('the App') is the official mobile application for Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam (Kottayam - Kochi Diocese, Malankara Mar Thoma Syrian Church). We are dedicated to maintaining strict privacy standards for all church members, youth, and visitors."
                         )
                     }
 
@@ -118,7 +118,7 @@ fun PolicyScreen(
                     item {
                         PolicySection(
                             title = "1. Acceptance of Terms",
-                            content = "By downloading, installing, or using the Centre Youth application, you agree to comply with and be bound by these Terms of Service. If you do not agree, please do not use the application."
+                            content = "By downloading, installing, or using the Keezhillam-Munnar MTYS application, you agree to comply with and be bound by these Terms of Service. If you do not agree, please do not use the application."
                         )
                     }
 
