@@ -517,4 +517,17 @@ class CentreRepository(private val context: Context) {
     fun getQuizTotalScore(): Int = (1..10).sumOf { getQuizBestScore(it) }
 
     fun getQuizTotalStars(): Int = (1..10).sumOf { getQuizStars(it) }
+
+    fun getQuizLanguage(): QuizLanguage {
+        val raw = prefs.getString("quiz_language", QuizLanguage.BOTH.name)
+        return try {
+            QuizLanguage.valueOf(raw ?: QuizLanguage.BOTH.name)
+        } catch (_: Exception) {
+            QuizLanguage.BOTH
+        }
+    }
+
+    fun saveQuizLanguage(language: QuizLanguage) {
+        prefs.edit().putString("quiz_language", language.name).apply()
+    }
 }

@@ -49,6 +49,7 @@ import com.google.common.util.concurrent.MoreExecutors
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.marthoma.centreyouth.data.CentreRepository
+import org.marthoma.centreyouth.data.model.QuizLanguage
 import org.marthoma.centreyouth.data.model.Song
 import org.marthoma.centreyouth.service.AudioPlaybackService
 import org.marthoma.centreyouth.ui.components.MiniPlayer
@@ -251,6 +252,7 @@ class MainActivity : ComponentActivity() {
     private fun MainAppScaffold() {
         var currentScreen by activeScreenState
         var isPlayerSheetVisible by remember { mutableStateOf(false) }
+        var quizLanguage by remember { mutableStateOf(repository.getQuizLanguage()) }
 
         // Periodic progress poller
         LaunchedEffect(isPlayingState.value) {
@@ -269,8 +271,30 @@ class MainActivity : ComponentActivity() {
 
         Scaffold(
             topBar = {
-                if (currentScreen != Screen.POLICY) {
-                    val isQuizMode = currentScreen == Screen.QUIZ
+                if (currentScreen == Screen.QUIZ) {
+                    TopAppBar(
+                        title = {
+                            Text(
+                                text = if (quizLanguage == QuizLanguage.ML) "⚡ ബൈബിൾ ക്വിസ്" else "⚡ Bible Quiz",
+                                fontWeight = FontWeight.Bold
+                            )
+                        },
+                        actions = {
+                            QuizLanguageTogglePill(
+                                currentLanguage = quizLanguage,
+                                onLanguageSelected = { newLang ->
+                                    quizLanguage = newLang
+                                    repository.saveQuizLanguage(newLang)
+                                },
+                                modifier = Modifier.padding(end = 10.dp)
+                            )
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = Color(0xFF070416),
+                            titleContentColor = Color.White
+                        )
+                    )
+                } else if (currentScreen != Screen.POLICY) {
                     CenterAlignedTopAppBar(
                         navigationIcon = {
                             if (currentScreen == Screen.LECTIONARY) {
@@ -286,7 +310,7 @@ class MainActivity : ComponentActivity() {
                             Text(
                                 text = when (currentScreen) {
                                     Screen.HOME -> "Keezhillam-Munnar MTYS"
-                                    Screen.QUIZ -> "⚡ Bible Quiz Arena"
+                                    Screen.QUIZ -> "⚡ Bible Quiz"
                                     Screen.LECTIONARY -> "Liturgical Lectionary"
                                     Screen.SONGS -> "Youth Songs"
                                     Screen.PARISHES -> "Centre Parishes"
@@ -300,8 +324,8 @@ class MainActivity : ComponentActivity() {
                             )
                         },
                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                            containerColor = if (isQuizMode) Color(0xFF070416) else MaterialTheme.colorScheme.background,
-                            titleContentColor = if (isQuizMode) Color.White else MaterialTheme.colorScheme.onBackground
+                            containerColor = MaterialTheme.colorScheme.background,
+                            titleContentColor = MaterialTheme.colorScheme.onBackground
                         )
                     )
                 }
@@ -351,6 +375,7 @@ class MainActivity : ComponentActivity() {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(if (currentScreen == Screen.QUIZ) Color(0xFF070416) else MaterialTheme.colorScheme.background)
                     .padding(innerPadding)
             ) {
                 when (currentScreen) {
@@ -362,7 +387,10 @@ class MainActivity : ComponentActivity() {
                         onNavigateToParishes = { currentScreen = Screen.PARISHES },
                         onNavigateToLeadership = { currentScreen = Screen.LEADERSHIP }
                     )
-                    Screen.QUIZ -> BibleQuizScreen(repository = repository)
+                    Screen.QUIZ -> BibleQuizScreen(
+                        repository = repository,
+                        language = quizLanguage
+                    )
                     Screen.LECTIONARY -> LectionaryScreen(repository = repository)
                     Screen.SONGS -> SongsScreen(
                         repository = repository,

@@ -35,6 +35,7 @@ import kotlinx.coroutines.delay
 import org.marthoma.centreyouth.data.BibleQuizBank
 import org.marthoma.centreyouth.data.CentreRepository
 import org.marthoma.centreyouth.data.model.BibleQuizQuestion
+import org.marthoma.centreyouth.data.model.QuizLanguage
 import org.marthoma.centreyouth.data.model.QuizLevelInfo
 import kotlin.math.ceil
 import kotlin.math.cos
@@ -46,9 +47,60 @@ private enum class QuizStage {
     RESULT
 }
 
+/**
+ * Glowing segmented language toggle button (EN / ML / Both) placed directly in the Quiz Header
+ * so players can switch languages at any moment during Level Hub, Gameplay, or Results.
+ */
+@Composable
+fun QuizLanguageTogglePill(
+    currentLanguage: QuizLanguage,
+    onLanguageSelected: (QuizLanguage) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .clip(CircleShape)
+            .background(Color(0xFF140D32))
+            .border(1.dp, Color(0xFF8B5CF6).copy(alpha = 0.6f), CircleShape)
+            .padding(3.dp),
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        QuizLanguage.entries.forEach { lang ->
+            val isSelected = currentLanguage == lang
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .then(
+                        if (isSelected) {
+                            Modifier.background(
+                                Brush.horizontalGradient(
+                                    listOf(Color(0xFF7C3AED), Color(0xFFEC4899))
+                                )
+                            )
+                        } else {
+                            Modifier.background(Color.Transparent)
+                        }
+                    )
+                    .clickable { onLanguageSelected(lang) }
+                    .padding(horizontal = 10.dp, vertical = 5.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = lang.label,
+                    color = if (isSelected) Color.White else Color(0xFF94A3B8),
+                    fontSize = 11.5.sp,
+                    fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.SemiBold
+                )
+            }
+        }
+    }
+}
+
 @Composable
 fun BibleQuizScreen(
     repository: CentreRepository,
+    language: QuizLanguage,
     modifier: Modifier = Modifier
 ) {
     var stage by remember { mutableStateOf(QuizStage.LEVEL_HUB) }
@@ -74,7 +126,6 @@ fun BibleQuizScreen(
 
     fun startLevel(levelNum: Int) {
         activeLevel = levelNum.coerceIn(1, 10)
-        // Shuffle choices order cleanly or keep authentic question flow per level
         questions = BibleQuizBank.getQuestionsForLevel(activeLevel)
         currentIndex = 0
         selectedOption = null
@@ -184,6 +235,7 @@ fun BibleQuizScreen(
                 QuizStage.LEVEL_HUB -> {
                     QuizLevelHubView(
                         repository = repository,
+                        language = language,
                         refreshTrigger = refreshTrigger,
                         rainbowSpin = rainbowSpin,
                         onSelectLevel = { lvl -> startLevel(lvl) }
@@ -196,6 +248,7 @@ fun BibleQuizScreen(
                         ActiveQuizQuestionView(
                             levelInfo = levelInfo,
                             question = currentQuestion,
+                            language = language,
                             questionNumber = currentIndex + 1,
                             totalQuestions = questions.size,
                             score = score,
@@ -263,6 +316,7 @@ fun BibleQuizScreen(
                 QuizStage.RESULT -> {
                     QuizLevelResultView(
                         levelInfo = levelInfo,
+                        language = language,
                         score = score,
                         correctCount = correctCount,
                         totalQuestions = questions.size,
@@ -289,14 +343,13 @@ fun BibleQuizScreen(
 @Composable
 private fun QuizLevelHubView(
     repository: CentreRepository,
+    language: QuizLanguage,
     refreshTrigger: Int,
     rainbowSpin: Float,
     onSelectLevel: (Int) -> Unit
 ) {
     val totalStars = remember(refreshTrigger) { repository.getQuizTotalStars() }
     val totalScore = remember(refreshTrigger) { repository.getQuizTotalScore() }
-
-    // Recommend the first level without 3 stars, or level 1
     val recommendedLevel = remember(refreshTrigger) {
         (1..10).firstOrNull { repository.getQuizStars(it) < 3 } ?: 1
     }
@@ -347,51 +400,103 @@ private fun QuizLevelHubView(
                         border = BorderStroke(1.dp, Color(0xFFFBBF24).copy(alpha = 0.6f)),
                         shape = CircleShape
                     ) {
+                        val badgeText = when (language) {
+                            QuizLanguage.EN -> "⚡ 120 QUESTIONS • 10 LEVELS ⚡"
+                            QuizLanguage.ML -> "⚡ 120 ചോദ്യങ്ങൾ • 10 ലെവലുകൾ ⚡"
+                            QuizLanguage.BOTH -> "⚡ 120 QUESTIONS • 120 ചോദ്യങ്ങൾ ⚡"
+                        }
                         Text(
-                            text = "⚡ 120 QUESTIONS • 10 LEVELS ⚡",
+                            text = badgeText,
                             color = Color(0xFFFDE68A),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            letterSpacing = 0.8.sp,
+                            letterSpacing = 0.6.sp,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
                         )
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    Text(
-                        text = "Bible Quiz Arena",
-                        color = Color.White,
-                        fontSize = 26.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        textAlign = TextAlign.Center
-                    )
+                    when (language) {
+                        QuizLanguage.EN -> {
+                            Text(
+                                text = "Bible Quiz Arena",
+                                color = Color.White,
+                                fontSize = 26.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        QuizLanguage.ML -> {
+                            Text(
+                                text = "ബൈബിൾ ക്വിസ് അരീന",
+                                color = Color.White,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        QuizLanguage.BOTH -> {
+                            Text(
+                                text = "Bible Quiz Arena",
+                                color = Color.White,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                textAlign = TextAlign.Center
+                            )
+                            Text(
+                                text = "ബൈബിൾ ക്വിസ് അരീന",
+                                color = Color(0xFF38BDF8),
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
 
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
 
-                    Text(
-                        text = "Progressive difficulty from Level 1 (Easy) to Level 10 (Ultra Hard) with tighter countdown timers!",
-                        color = Color(0xFFCBD5E1),
-                        fontSize = 12.5.sp,
-                        textAlign = TextAlign.Center,
-                        lineHeight = 17.sp
-                    )
+                    if (language != QuizLanguage.ML) {
+                        Text(
+                            text = "Progressive difficulty from Level 1 (Easy) to Level 10 (Ultra Hard) with tighter countdown timers!",
+                            color = Color(0xFFCBD5E1),
+                            fontSize = 12.5.sp,
+                            textAlign = TextAlign.Center,
+                            lineHeight = 17.sp
+                        )
+                    }
+                    if (language != QuizLanguage.EN) {
+                        Text(
+                            text = "ലെവൽ 1 (ലളിതം) മുതൽ ലെവൽ 10 (മഹാ കഠിനം) വരെ സമയപരിധിയോടെയുള്ള മത്സരം!",
+                            color = if (language == QuizLanguage.BOTH) Color(0xFF94A3B8) else Color(0xFFCBD5E1),
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Center,
+                            lineHeight = 17.sp
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Stars & Total Score Summary Row
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         ArenaStatPill(
-                            label = "STARS EARNED",
+                            label = when (language) {
+                                QuizLanguage.EN -> "STARS EARNED"
+                                QuizLanguage.ML -> "നേടിയ നക്ഷത്രങ്ങൾ"
+                                QuizLanguage.BOTH -> "STARS • നക്ഷത്രങ്ങൾ"
+                            },
                             value = "⭐ $totalStars / 30",
                             accent = Color(0xFFFBBF24),
                             modifier = Modifier.weight(1f)
                         )
                         ArenaStatPill(
-                            label = "TOTAL SCORE",
+                            label = when (language) {
+                                QuizLanguage.EN -> "TOTAL SCORE"
+                                QuizLanguage.ML -> "ആകെ സ്കോർ"
+                                QuizLanguage.BOTH -> "SCORE • സ്കോർ"
+                            },
                             value = "🏆 $totalScore",
                             accent = Color(0xFF22D3EE),
                             modifier = Modifier.weight(1f)
@@ -400,7 +505,6 @@ private fun QuizLevelHubView(
 
                     Spacer(modifier = Modifier.height(14.dp))
 
-                    // Primary Gradient Play Button
                     Button(
                         onClick = { onSelectLevel(recommendedLevel) },
                         modifier = Modifier
@@ -433,10 +537,14 @@ private fun QuizLevelHubView(
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = "Play Level $recommendedLevel Now",
+                                    text = when (language) {
+                                        QuizLanguage.EN -> "Play Level $recommendedLevel Now"
+                                        QuizLanguage.ML -> "ലെവൽ $recommendedLevel തുടങ്ങുക"
+                                        QuizLanguage.BOTH -> "Play Level $recommendedLevel • ലെവൽ $recommendedLevel തുടങ്ങുക"
+                                    },
                                     color = Color.White,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 15.sp
+                                    fontSize = 14.sp
                                 )
                             }
                         }
@@ -448,9 +556,13 @@ private fun QuizLevelHubView(
         // Section Label
         item {
             Text(
-                text = "Select Difficulty Level (1 → 10)",
+                text = when (language) {
+                    QuizLanguage.EN -> "Select Difficulty Level (1 → 10)"
+                    QuizLanguage.ML -> "ലെവൽ തിരഞ്ഞെടുക്കുക (1 → 10)"
+                    QuizLanguage.BOTH -> "Select Level • ലെവൽ തിരഞ്ഞെടുക്കുക (1 → 10)"
+                },
                 color = Color.White,
-                fontSize = 17.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 4.dp)
             )
@@ -466,6 +578,7 @@ private fun QuizLevelHubView(
             }
             GlowingLevelCard(
                 levelInfo = lvl,
+                language = language,
                 bestScore = bestScore,
                 stars = stars,
                 onClick = { onSelectLevel(lvl.level) }
@@ -486,15 +599,16 @@ private fun ArenaStatPill(
             .clip(RoundedCornerShape(14.dp))
             .background(accent.copy(alpha = 0.10f))
             .border(1.dp, accent.copy(alpha = 0.35f), RoundedCornerShape(14.dp))
-            .padding(vertical = 10.dp, horizontal = 12.dp),
+            .padding(vertical = 10.dp, horizontal = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = label,
             color = accent.copy(alpha = 0.9f),
-            fontSize = 10.sp,
+            fontSize = 9.5.sp,
             fontWeight = FontWeight.Bold,
-            letterSpacing = 0.5.sp
+            letterSpacing = 0.4.sp,
+            textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(3.dp))
         Text(
@@ -509,6 +623,7 @@ private fun ArenaStatPill(
 @Composable
 private fun GlowingLevelCard(
     levelInfo: QuizLevelInfo,
+    language: QuizLanguage,
     bestScore: Int,
     stars: Int,
     onClick: () -> Unit
@@ -543,7 +658,6 @@ private fun GlowingLevelCard(
                 .padding(14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Circular Glowing Level Number Badge
             Box(
                 modifier = Modifier
                     .size(52.dp)
@@ -554,9 +668,9 @@ private fun GlowingLevelCard(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "LVL",
+                        text = if (language == QuizLanguage.ML) "ലെവൽ" else "LVL",
                         color = Color.White.copy(alpha = 0.85f),
-                        fontSize = 9.sp,
+                        fontSize = 8.5.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
@@ -576,10 +690,11 @@ private fun GlowingLevelCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
+                    val primaryTitle = if (language == QuizLanguage.ML) levelInfo.titleMl else levelInfo.title
                     Text(
-                        text = levelInfo.title,
+                        text = primaryTitle,
                         color = Color.White,
-                        fontSize = 16.sp,
+                        fontSize = 15.5.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Surface(
@@ -587,22 +702,40 @@ private fun GlowingLevelCard(
                         border = BorderStroke(1.dp, c1.copy(alpha = 0.65f)),
                         shape = RoundedCornerShape(8.dp)
                     ) {
+                        val diffTag = when (language) {
+                            QuizLanguage.EN -> levelInfo.difficultyLabel
+                            QuizLanguage.ML -> levelInfo.difficultyLabelMl
+                            QuizLanguage.BOTH -> "${levelInfo.difficultyLabel} • ${levelInfo.difficultyLabelMl}"
+                        }
                         Text(
-                            text = levelInfo.difficultyLabel,
+                            text = diffTag,
                             color = c1,
-                            fontSize = 10.sp,
+                            fontSize = 9.5.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.dp)
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(3.dp))
+                if (language == QuizLanguage.BOTH) {
+                    Text(
+                        text = levelInfo.titleMl,
+                        color = Color(0xFFE0F2FE),
+                        fontSize = 12.5.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(2.dp))
 
                 Text(
-                    text = levelInfo.subtitle,
+                    text = when (language) {
+                        QuizLanguage.EN -> levelInfo.subtitle
+                        QuizLanguage.ML -> levelInfo.subtitleMl
+                        QuizLanguage.BOTH -> "${levelInfo.subtitle} • ${levelInfo.subtitleMl}"
+                    },
                     color = Color(0xFF94A3B8),
-                    fontSize = 12.sp
+                    fontSize = 11.5.sp
                 )
 
                 Spacer(modifier = Modifier.height(6.dp))
@@ -612,13 +745,13 @@ private fun GlowingLevelCard(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Text(
-                        text = "⏱️ ${levelInfo.timePerQuestionSec}s/Q",
+                        text = if (language == QuizLanguage.ML) "⏱️ ${levelInfo.timePerQuestionSec} സെ." else "⏱️ ${levelInfo.timePerQuestionSec}s/Q",
                         color = Color(0xFF38BDF8),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                     Text(
-                        text = "• 12 Qs",
+                        text = if (language == QuizLanguage.ML) "• 12 ചോദ്യം" else "• 12 Qs",
                         color = Color(0xFFCBD5E1),
                         fontSize = 11.sp
                     )
@@ -635,7 +768,6 @@ private fun GlowingLevelCard(
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            // 3 Stars Rating Column
             Column(horizontalAlignment = Alignment.End) {
                 Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                     for (i in 1..3) {
@@ -663,6 +795,7 @@ private fun GlowingLevelCard(
 private fun ActiveQuizQuestionView(
     levelInfo: QuizLevelInfo,
     question: BibleQuizQuestion,
+    language: QuizLanguage,
     questionNumber: Int,
     totalQuestions: Int,
     score: Int,
@@ -683,7 +816,6 @@ private fun ActiveQuizQuestionView(
     val totalTimeMs = levelInfo.timePerQuestionSec * 1000L
     var timeLeftMs by remember(question.id) { mutableLongStateOf(totalTimeMs) }
 
-    // Smooth per-question countdown timer (ticks cleanly every 50ms while unanswered)
     LaunchedEffect(question.id, isAnswered) {
         if (!isAnswered) {
             while (timeLeftMs > 0L) {
@@ -700,7 +832,6 @@ private fun ActiveQuizQuestionView(
     val secondsRemaining = ceil(timeLeftMs / 1000.0).toInt().coerceAtLeast(0)
     val isUrgent = !isAnswered && secondsRemaining <= 4
 
-    // Pulse animation when timer enters urgent red zone
     val infiniteTransition = rememberInfiniteTransition(label = "UrgentTimerPulse")
     val urgentScale by infiniteTransition.animateFloat(
         initialValue = 1.0f,
@@ -741,23 +872,26 @@ private fun ActiveQuizQuestionView(
                 )
             }
 
-            // Level Indicator Pill
             Surface(
                 color = c1.copy(alpha = 0.18f),
                 border = BorderStroke(1.5.dp, Brush.horizontalGradient(listOf(c1, c2))),
                 shape = CircleShape
             ) {
+                val lvlTag = when (language) {
+                    QuizLanguage.EN -> "LVL ${levelInfo.level} • ${levelInfo.difficultyLabel.uppercase()}"
+                    QuizLanguage.ML -> "ലെവൽ ${levelInfo.level} • ${levelInfo.difficultyLabelMl}"
+                    QuizLanguage.BOTH -> "LVL ${levelInfo.level} • ${levelInfo.difficultyLabelMl}"
+                }
                 Text(
-                    text = "LVL ${levelInfo.level} • ${levelInfo.difficultyLabel.uppercase()}",
+                    text = lvlTag,
                     color = Color.White,
                     fontSize = 11.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    letterSpacing = 0.5.sp,
+                    letterSpacing = 0.4.sp,
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 5.dp)
                 )
             }
 
-            // Score + Streak Pill
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -803,22 +937,29 @@ private fun ActiveQuizQuestionView(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Question $questionNumber of $totalQuestions",
+                text = when (language) {
+                    QuizLanguage.EN -> "Question $questionNumber of $totalQuestions"
+                    QuizLanguage.ML -> "ചോദ്യം $questionNumber / $totalQuestions"
+                    QuizLanguage.BOTH -> "Q$questionNumber/$totalQuestions • ചോദ്യം $questionNumber"
+                },
                 color = Color(0xFFCBD5E1),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = levelInfo.title,
+                text = when (language) {
+                    QuizLanguage.EN -> levelInfo.title
+                    QuizLanguage.ML -> levelInfo.titleMl
+                    QuizLanguage.BOTH -> "${levelInfo.title} • ${levelInfo.titleMl}"
+                },
                 color = c2,
-                fontSize = 12.sp,
+                fontSize = 11.5.sp,
                 fontWeight = FontWeight.Bold
             )
         }
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        // Glowing Gradient Progress Bar
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -840,9 +981,9 @@ private fun ActiveQuizQuestionView(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(14.dp))
 
-        // 3. Glowing Circular Difficulty Countdown Timer
+        // 3. Glowing Circular Countdown Timer
         val timerColor = when {
             isTimedOut -> Color(0xFFEF4444)
             isAnswered -> Color(0xFF10B981)
@@ -853,7 +994,7 @@ private fun ActiveQuizQuestionView(
 
         Box(
             modifier = Modifier
-                .size(84.dp)
+                .size(80.dp)
                 .graphicsLayer {
                     scaleX = urgentScale
                     scaleY = urgentScale
@@ -862,9 +1003,8 @@ private fun ActiveQuizQuestionView(
         ) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 val radius = this.size.minDimension * 0.46f
-                val strokeWidth = 7.dp.toPx()
+                val strokeWidth = 6.5.dp.toPx()
 
-                // Soft glowing aura halo behind ring
                 drawCircle(
                     brush = Brush.radialGradient(
                         0.0f to timerColor.copy(alpha = 0.35f),
@@ -876,20 +1016,16 @@ private fun ActiveQuizQuestionView(
                     center = center
                 )
 
-                // Dim track ring
                 drawCircle(
                     color = Color.White.copy(alpha = 0.14f),
                     radius = radius,
                     style = Stroke(width = strokeWidth)
                 )
 
-                // Glowing active arc
                 val topLeftOffset = Offset(center.x - radius, center.y - radius)
                 val arcSize = Size(radius * 2f, radius * 2f)
                 drawArc(
-                    brush = Brush.sweepGradient(
-                        listOf(timerColor, c2, timerColor)
-                    ),
+                    brush = Brush.sweepGradient(listOf(timerColor, c2, timerColor)),
                     startAngle = -90f,
                     sweepAngle = 360f * progressFraction,
                     useCenter = false,
@@ -899,19 +1035,17 @@ private fun ActiveQuizQuestionView(
                 )
             }
 
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "${secondsRemaining}s",
-                    color = if (isUrgent) Color(0xFFFCA5A5) else Color.White,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.ExtraBold
-                )
-            }
+            Text(
+                text = "${secondsRemaining}s",
+                color = if (isUrgent) Color(0xFFFCA5A5) else Color.White,
+                fontSize = 21.sp,
+                fontWeight = FontWeight.ExtraBold
+            )
         }
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // 4. Colorful Glowing Question Window Card (Animated one-by-one transition)
+        // 4. Colorful Glowing Question Window Card
         AnimatedContent(
             targetState = question,
             transitionSpec = {
@@ -940,20 +1074,48 @@ private fun ActiveQuizQuestionView(
                         .clip(RoundedCornerShape(24.dp))
                         .background(Color(0xFF140D32).copy(alpha = 0.94f))
                         .border(2.dp, neonBorder, RoundedCornerShape(24.dp))
-                        .padding(22.dp)
+                        .padding(20.dp)
                 ) {
-                    Text(
-                        text = currentQ.question,
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        lineHeight = 25.sp,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        if (language != QuizLanguage.ML) {
+                            Text(
+                                text = currentQ.question,
+                                color = Color.White,
+                                fontSize = if (language == QuizLanguage.BOTH) 16.5.sp else 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                lineHeight = 23.sp,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+
+                        if (language == QuizLanguage.BOTH) {
+                            Spacer(modifier = Modifier.height(10.dp))
+                            HorizontalDivider(
+                                color = c1.copy(alpha = 0.35f),
+                                modifier = Modifier.fillMaxWidth(0.45f)
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
+
+                        if (language != QuizLanguage.EN) {
+                            Text(
+                                text = currentQ.questionMl,
+                                color = if (language == QuizLanguage.BOTH) Color(0xFFE0F2FE) else Color.White,
+                                fontSize = if (language == QuizLanguage.BOTH) 14.5.sp else 17.sp,
+                                fontWeight = if (language == QuizLanguage.BOTH) FontWeight.SemiBold else FontWeight.Bold,
+                                lineHeight = 21.sp,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }
                 }
 
-                Spacer(modifier = Modifier.height(18.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // 5. Four Colorful Choice Buttons (A, B, C, D)
                 val optionColors = listOf(
@@ -964,7 +1126,8 @@ private fun ActiveQuizQuestionView(
                 )
                 val optionLetters = listOf("A", "B", "C", "D")
 
-                currentQ.options.forEachIndexed { idx, optionText ->
+                currentQ.options.forEachIndexed { idx, optionTextEn ->
+                    val optionTextMl = currentQ.optionsMl.getOrElse(idx) { optionTextEn }
                     val isThisCorrect = idx == currentQ.correctIndex
                     val isThisSelected = selectedOption == idx
 
@@ -1018,7 +1181,7 @@ private fun ActiveQuizQuestionView(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 14.dp, vertical = 14.dp),
+                                .padding(horizontal = 14.dp, vertical = 12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Box(
@@ -1038,14 +1201,31 @@ private fun ActiveQuizQuestionView(
 
                             Spacer(modifier = Modifier.width(12.dp))
 
-                            Text(
-                                text = optionText,
-                                color = if (!isAnswered || isThisCorrect || isThisSelected) Color.White else Color(0xFF94A3B8),
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                modifier = Modifier.weight(1f),
-                                lineHeight = 20.sp
-                            )
+                            Column(modifier = Modifier.weight(1f)) {
+                                val textDim = isAnswered && !isThisCorrect && !isThisSelected
+                                if (language != QuizLanguage.ML) {
+                                    Text(
+                                        text = optionTextEn,
+                                        color = if (!textDim) Color.White else Color(0xFF94A3B8),
+                                        fontSize = 14.5.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        lineHeight = 19.sp
+                                    )
+                                }
+                                if (language != QuizLanguage.EN) {
+                                    Text(
+                                        text = optionTextMl,
+                                        color = when {
+                                            textDim -> Color(0xFF64748B)
+                                            language == QuizLanguage.BOTH -> Color(0xFFBAE6FD)
+                                            else -> Color.White
+                                        },
+                                        fontSize = if (language == QuizLanguage.BOTH) 13.sp else 14.5.sp,
+                                        fontWeight = if (language == QuizLanguage.BOTH) FontWeight.Medium else FontWeight.SemiBold,
+                                        lineHeight = 18.sp
+                                    )
+                                }
+                            }
 
                             if (isAnswered && isThisCorrect) {
                                 Spacer(modifier = Modifier.width(8.dp))
@@ -1077,7 +1257,7 @@ private fun ActiveQuizQuestionView(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 14.dp)
+                            .padding(top = 12.dp)
                     ) {
                         val isCorrect = selectedOption == currentQ.correctIndex
                         val bannerColor = when {
@@ -1086,40 +1266,58 @@ private fun ActiveQuizQuestionView(
                             else -> Color(0xFFF43F5E)
                         }
 
+                        val statusMessage = when {
+                            isTimedOut -> when (language) {
+                                QuizLanguage.EN -> "⏰ Time's Up!"
+                                QuizLanguage.ML -> "⏰ സമയം കഴിഞ്ഞു!"
+                                QuizLanguage.BOTH -> "⏰ Time's Up! • സമയം കഴിഞ്ഞു!"
+                            }
+                            isCorrect -> when (language) {
+                                QuizLanguage.EN -> "✨ Correct! +$lastEarnedPoints pts"
+                                QuizLanguage.ML -> "✨ ശരിയാണ്! +$lastEarnedPoints"
+                                QuizLanguage.BOTH -> "✨ Correct! / ശരിയാണ്! +$lastEarnedPoints"
+                            }
+                            else -> when (language) {
+                                QuizLanguage.EN -> "❌ Incorrect"
+                                QuizLanguage.ML -> "❌ തെറ്റി"
+                                QuizLanguage.BOTH -> "❌ Incorrect • തെറ്റി"
+                            }
+                        }
+
+                        val refText = when (language) {
+                            QuizLanguage.EN -> "📖 ${currentQ.verseRef}"
+                            QuizLanguage.ML -> "📖 ${currentQ.verseRefMl}"
+                            QuizLanguage.BOTH -> "📖 ${currentQ.verseRef} • ${currentQ.verseRefMl}"
+                        }
+
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
                             color = bannerColor.copy(alpha = 0.16f),
                             border = BorderStroke(1.dp, bannerColor.copy(alpha = 0.55f)),
                             shape = RoundedCornerShape(14.dp)
                         ) {
-                            Row(
+                            Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(horizontal = 14.dp, vertical = 10.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                    .padding(horizontal = 14.dp, vertical = 10.dp)
                             ) {
                                 Text(
-                                    text = when {
-                                        isTimedOut -> "⏰ Time's Up!"
-                                        isCorrect -> "✨ Correct! +$lastEarnedPoints pts"
-                                        else -> "❌ Incorrect"
-                                    },
+                                    text = statusMessage,
                                     color = bannerColor,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.ExtraBold
                                 )
-
+                                Spacer(modifier = Modifier.height(6.dp))
                                 Surface(
-                                    color = Color(0xFF0F172A).copy(alpha = 0.7f),
+                                    color = Color(0xFF0F172A).copy(alpha = 0.75f),
                                     shape = RoundedCornerShape(8.dp)
                                 ) {
                                     Text(
-                                        text = "📖 ${currentQ.verseRef}",
+                                        text = refText,
                                         color = Color(0xFFFDE68A),
                                         fontSize = 11.5.sp,
                                         fontWeight = FontWeight.SemiBold,
-                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                     )
                                 }
                             }
@@ -1143,10 +1341,23 @@ private fun ActiveQuizQuestionView(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
+                                    val btnLabel = if (questionNumber < totalQuestions) {
+                                        when (language) {
+                                            QuizLanguage.EN -> "Next Question"
+                                            QuizLanguage.ML -> "അടുത്ത ചോദ്യം"
+                                            QuizLanguage.BOTH -> "Next • അടുത്ത ചോദ്യം"
+                                        }
+                                    } else {
+                                        when (language) {
+                                            QuizLanguage.EN -> "Finish Level 🏆"
+                                            QuizLanguage.ML -> "പൂർത്തിയാക്കുക 🏆"
+                                            QuizLanguage.BOTH -> "Finish • പൂർത്തിയാക്കുക 🏆"
+                                        }
+                                    }
                                     Text(
-                                        text = if (questionNumber < totalQuestions) "Next Question" else "Finish Level 🏆",
+                                        text = btnLabel,
                                         color = Color.White,
-                                        fontSize = 16.sp,
+                                        fontSize = 15.5.sp,
                                         fontWeight = FontWeight.ExtraBold
                                     )
                                     if (questionNumber < totalQuestions) {
@@ -1171,6 +1382,7 @@ private fun ActiveQuizQuestionView(
 @Composable
 private fun QuizLevelResultView(
     levelInfo: QuizLevelInfo,
+    language: QuizLanguage,
     score: Int,
     correctCount: Int,
     totalQuestions: Int,
@@ -1193,7 +1405,6 @@ private fun QuizLevelResultView(
             .padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 110.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Rotating Halo Emblem
         Box(
             modifier = Modifier.size(110.dp),
             contentAlignment = Alignment.Center
@@ -1233,7 +1444,11 @@ private fun QuizLevelResultView(
                 shape = CircleShape
             ) {
                 Text(
-                    text = "✨ NEW HIGH SCORE! ✨",
+                    text = when (language) {
+                        QuizLanguage.EN -> "✨ NEW HIGH SCORE! ✨"
+                        QuizLanguage.ML -> "✨ പുതിയ ഉയർന്ന സ്കോർ! ✨"
+                        QuizLanguage.BOTH -> "✨ NEW HIGH SCORE • പുതിയ റെക്കോർഡ്! ✨"
+                    },
                     color = Color(0xFFFDE68A),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.ExtraBold,
@@ -1244,21 +1459,30 @@ private fun QuizLevelResultView(
         }
 
         Text(
-            text = "Level ${levelInfo.level} Complete!",
+            text = when (language) {
+                QuizLanguage.EN -> "Level ${levelInfo.level} Complete!"
+                QuizLanguage.ML -> "ലെവൽ ${levelInfo.level} പൂർത്തിയായി!"
+                QuizLanguage.BOTH -> "Level ${levelInfo.level} Complete! • ലെവൽ ${levelInfo.level} പൂർത്തിയായി!"
+            },
             color = Color.White,
-            fontSize = 26.sp,
-            fontWeight = FontWeight.ExtraBold
+            fontSize = if (language == QuizLanguage.BOTH) 20.sp else 25.sp,
+            fontWeight = FontWeight.ExtraBold,
+            textAlign = TextAlign.Center
         )
         Text(
-            text = "${levelInfo.title} • ${levelInfo.difficultyLabel}",
+            text = when (language) {
+                QuizLanguage.EN -> "${levelInfo.title} • ${levelInfo.difficultyLabel}"
+                QuizLanguage.ML -> "${levelInfo.titleMl} • ${levelInfo.difficultyLabelMl}"
+                QuizLanguage.BOTH -> "${levelInfo.title} • ${levelInfo.titleMl}"
+            },
             color = c2,
             fontSize = 14.sp,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Stars Display
         Row(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -1275,7 +1499,6 @@ private fun QuizLevelResultView(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Summary Stats Card
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -1286,17 +1509,40 @@ private fun QuizLevelResultView(
                 .padding(20.dp)
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                ResultStatRow("Final Score", "🏆 $score pts", Color(0xFF38BDF8))
+                ResultStatRow(
+                    label = when (language) {
+                        QuizLanguage.EN -> "Final Score"
+                        QuizLanguage.ML -> "അന്തിമ സ്കോർ"
+                        QuizLanguage.BOTH -> "Score • സ്കോർ"
+                    },
+                    value = "🏆 $score pts",
+                    accent = Color(0xFF38BDF8)
+                )
                 HorizontalDivider(color = Color.White.copy(alpha = 0.1f))
-                ResultStatRow("Correct Answers", "$correctCount / $totalQuestions ($accuracy%)", Color(0xFF10B981))
+                ResultStatRow(
+                    label = when (language) {
+                        QuizLanguage.EN -> "Correct Answers"
+                        QuizLanguage.ML -> "ശരിയായ ഉത്തരങ്ങൾ"
+                        QuizLanguage.BOTH -> "Correct • ശരിയുത്തരം"
+                    },
+                    value = "$correctCount / $totalQuestions ($accuracy%)",
+                    accent = Color(0xFF10B981)
+                )
                 HorizontalDivider(color = Color.White.copy(alpha = 0.1f))
-                ResultStatRow("Best Streak", "🔥 ${maxStreak}x", Color(0xFFFBBF24))
+                ResultStatRow(
+                    label = when (language) {
+                        QuizLanguage.EN -> "Best Streak"
+                        QuizLanguage.ML -> "മികച്ച സ്ട്രീക്ക്"
+                        QuizLanguage.BOTH -> "Streak • സ്ട്രീക്ക്"
+                    },
+                    value = "🔥 ${maxStreak}x",
+                    accent = Color(0xFFFBBF24)
+                )
             }
         }
 
         Spacer(modifier = Modifier.height(22.dp))
 
-        // Next Level Primary Button
         if (levelInfo.level < 10) {
             Button(
                 onClick = onNextLevel,
@@ -1314,9 +1560,13 @@ private fun QuizLevelResultView(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Continue to Level ${levelInfo.level + 1} ⚡",
+                        text = when (language) {
+                            QuizLanguage.EN -> "Continue to Level ${levelInfo.level + 1} ⚡"
+                            QuizLanguage.ML -> "ലെവൽ ${levelInfo.level + 1}-ലേക്ക് കടക്കുക ⚡"
+                            QuizLanguage.BOTH -> "Next: Level ${levelInfo.level + 1} • അടുത്ത ലെവൽ ⚡"
+                        },
                         color = Color.White,
-                        fontSize = 16.sp,
+                        fontSize = 15.5.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
                 }
@@ -1330,7 +1580,11 @@ private fun QuizLevelResultView(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "👑 You reached Omega Grandmaster (Level 10)!",
+                    text = when (language) {
+                        QuizLanguage.EN -> "👑 You reached Omega Grandmaster (Level 10)!"
+                        QuizLanguage.ML -> "👑 നിങ്ങൾ ഒമേഗ മഹാഗുരു (ലെവൽ 10) പൂർത്തിയാക്കി!"
+                        QuizLanguage.BOTH -> "👑 Omega Grandmaster (Level 10 • ലെവൽ 10)!"
+                    },
                     color = Color(0xFFFDE68A),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
@@ -1360,7 +1614,11 @@ private fun QuizLevelResultView(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
-                Text("Retry", color = Color.White, fontWeight = FontWeight.Bold)
+                Text(
+                    text = if (language == QuizLanguage.ML) "വീണ്ടും" else "Retry",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
             }
 
             OutlinedButton(
@@ -1371,7 +1629,11 @@ private fun QuizLevelResultView(
                 shape = RoundedCornerShape(14.dp),
                 border = BorderStroke(1.2.dp, Color.White.copy(alpha = 0.35f))
             ) {
-                Text("All Levels", color = Color.White, fontWeight = FontWeight.Bold)
+                Text(
+                    text = if (language == QuizLanguage.ML) "എല്ലാ ലെവലും" else "All Levels",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
@@ -1387,13 +1649,13 @@ private fun ResultStatRow(label: String, value: String, accent: Color) {
         Text(
             text = label,
             color = Color(0xFF94A3B8),
-            fontSize = 14.sp,
+            fontSize = 13.5.sp,
             fontWeight = FontWeight.Medium
         )
         Text(
             text = value,
             color = accent,
-            fontSize = 17.sp,
+            fontSize = 16.5.sp,
             fontWeight = FontWeight.ExtraBold
         )
     }
