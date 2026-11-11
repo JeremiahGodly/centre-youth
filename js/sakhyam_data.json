@@ -466,7 +466,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "illithode",
@@ -485,7 +488,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "keezhillam",
@@ -525,7 +531,10 @@
       "vicePresident": "Parish Vice President",
       "secretary": "Ashin K Santhosh",
       "secretaryPhone": "9497882179",
-      "treasurer": "Parish Treasurer"
+      "treasurer": "Parish Treasurer",
+      "presidentPhone": "9446906706",
+      "vicePresidentPhone": "9447112233",
+      "treasurerPhone": "9061391963"
     },
     {
       "id": "kolenchery",
@@ -555,7 +564,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "kothamangalam",
@@ -574,7 +586,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "kuttampuzha",
@@ -593,7 +608,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "methala",
@@ -612,7 +630,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "munnar",
@@ -642,7 +663,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "nellimattam",
@@ -661,7 +685,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "oonjappara",
@@ -680,7 +707,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "paraikkathanam",
@@ -699,7 +729,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "perumbavoor",
@@ -721,7 +754,8 @@
           "venue": "St. Paul's MTC Campus, Perumbavoor",
           "description": "Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam Kalamela across 4 stages.",
           "coordinator": "Treasurer: Gibin Saji (9061391963)",
-          "category": "Kalamela"
+          "category": "Kalamela",
+          "posterUrl": "https://lh3.googleusercontent.com/d/1zWQfoC1HsWhhv6EALpBFNwDzFhNDTEhz"
         },
         {
           "id": "pb-act-2",
@@ -739,7 +773,10 @@
       "vicePresident": "Parish Vice President",
       "secretary": "Youth Secretary",
       "secretaryPhone": "9061391963",
-      "treasurer": "Gibin Saji"
+      "treasurer": "Gibin Saji",
+      "presidentPhone": "9446906706",
+      "vicePresidentPhone": "9847123456",
+      "treasurerPhone": "9061391963"
     },
     {
       "id": "poika",
@@ -758,7 +795,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "rayamangalam",
@@ -777,7 +817,10 @@
       "vicePresident": "",
       "secretary": "",
       "secretaryPhone": "",
-      "treasurer": ""
+      "treasurer": "",
+      "presidentPhone": "",
+      "vicePresidentPhone": "",
+      "treasurerPhone": ""
     },
     {
       "id": "valakom",
@@ -807,7 +850,9 @@
       "vicePresident": "Parish Vice President",
       "secretary": "Aleena Mariya Joy",
       "secretaryPhone": "9656128738",
-      "treasurer": "Parish Treasurer"
+      "treasurer": "Parish Treasurer",
+      "presidentPhone": "9446906706",
+      "treasurerPhone": "9447998877"
     }
   ],
   "achievements": [

@@ -60,7 +60,7 @@ Put these headers across **Row 1 (A to J)**:
 ## 3. Setting up Tab 3: `Parishes`
 
 Click the **`+` (Add Sheet)** button and name the tab: **`Parishes`**.  
-Put these headers across **Row 1 (A to L)**:
+Put these headers across **Row 1 (A to O)**:
 
 | Col | Header Name | Description | Example |
 |---|---|---|---|
@@ -68,38 +68,45 @@ Put these headers across **Row 1 (A to L)**:
 | **B** | `NameMl` | Parish Name (Malayalam) | `കീഴില്ലം നസ്രേത്ത് മാർത്തോമ്മാ ഇടവക` |
 | **C** | `Location` | Place / Area | `Keezhillam, Ernakulam` |
 | **D** | `President` | President (Vicar) Name | `Rev. James George` |
-| **E** | `VicePresident` | Vice President (V.P.) Name | `Parish Vice President` |
-| **F** | `Secretary` | Secretary (Secre.) Name | `Ashin K Santhosh` |
-| **G** | `Treasurer` | Treasurer (Trea.) Name | `Parish Treasurer` |
-| **H** | `Phone` | Contact Phone / Secretary Phone | `9497882179` |
-| **I** | `MapUrl` | Google Maps Directions Link | `https://maps.google.com/?q=Keezhillam...` |
-| **J** | `Badge` | Tag / Badge | `Vibrant Youth Wing` |
-| **K** | `Tag` | Category | `Centre Parish` |
-| **L** | `Activities` | Quick Activities (separated by \|) | `Weekly Youth Fellowship - Sundays 11:30 AM \| Cottage Prayer - Saturdays 6:30 PM` |
+| **E** | `PresidentPhone` | President Direct Phone | `9446906706` |
+| **F** | `VicePresident` | Vice President (V.P.) Name | `Parish Vice President` |
+| **G** | `VicePresidentPhone` | Vice President Phone | `9847000000` |
+| **H** | `Secretary` | Secretary (Secre.) Name | `Ashin K Santhosh` |
+| **I** | `SecretaryPhone` | Secretary Phone | `9497882179` |
+| **J** | `Treasurer` | Treasurer (Trea.) Name | `Parish Treasurer` |
+| **K** | `TreasurerPhone` | Treasurer Phone | `9061000000` |
+| **L** | `MapUrl` | Google Maps Directions Link | `https://maps.google.com/?q=Keezhillam...` |
+| **M** | `Badge` | Tag / Badge | `Vibrant Youth Wing` |
+| **N** | `Tag` | Category | `Centre Parish` |
+| **O** | `Activities` | Quick Activities (separated by \|) | `Weekly Youth Fellowship - Sundays 11:30 AM \| Cottage Prayer - Saturdays 6:30 PM` |
 
 > 💡 **Leadership Note:**  
 > - **`President`**: Replaced *Vicar* with *President* (Vicar serves as President of the Sakhyam).  
-> - **`VicePresident`**, **`Secretary`**, **`Treasurer`**: Shows the full parish youth leadership team in the app's collapsible window with one-tap phone call buttons.
+> - **Phone Numbers for Each Leader**: Adding `PresidentPhone`, `VicePresidentPhone`, `SecretaryPhone`, and `TreasurerPhone` automatically displays a **one-tap direct dial call button (`📞`)** next to each leader's name in the app!
 > - The app automatically sorts all parishes in **Alphabetical Order (A to Z)** regardless of the order entered in the sheet!
 
 ---
 
-## 4. Setting up Tab 4: `ParishActivities` (Collapsible Window Events)
+## 4. Setting up Tab 4: `ParishActivities` (Collapsible Window Events with Posters)
 
 Click **`+` (Add Sheet)** and name the tab: **`ParishActivities`**.  
-This tab allows parish secretaries or centre leaders to add specific activities and events that appear inside each parish's collapsible card in the app:
+This tab allows parish secretaries or centre leaders to add specific activities and events (with flyers/posters) that appear inside each parish's collapsible card in the app:
 
 | Col | Header Name | Description | Example |
 |---|---|---|---|
-| **A** | `Parish` | Name of Parish (or key word) | `Keezhillam` (or `Perumbavoor`, `Valakom`, etc.) |
+| **A** | `Parish` | Name of Parish (or keyword) | `Keezhillam` (or `Perumbavoor`, `Valakom`, etc.) |
 | **B** | `Title` | Activity / Event Title | `Youth Fellowship & Bible Study` |
 | **C** | `Date` | Date or Frequency | `Every Sunday` (or `Nov 22, 2026`) |
 | **D** | `Time` | Time | `11:30 AM` |
 | **E** | `Venue` | Venue | `Parish Hall` |
 | **F** | `Description` | Activity highlights | `Discussion on Romans 12:2, choir rehearsal & games.` |
 | **G** | `Coordinator` | Contact Person | `Ashin K Santhosh (9497882179)` |
-| **H** | `Category` | Category tag | `Fellowship` (or `Prayer`, `Sports`, `Kalamela`) |
-| **I** | `IsActive` | Visible in app? | `TRUE` |
+| **H** | `PosterUrl` | Google Drive link to event flyer/poster | `https://drive.google.com/file/d/1ABC...` |
+| **I** | `Category` | Category tag | `Fellowship` (or `Prayer`, `Sports`, `Kalamela`) |
+| **J** | `IsActive` | Visible in app? | `TRUE` |
+
+> 🖼️ **Poster Display in App:**  
+> When a Google Drive or web link is pasted into **`PosterUrl`**, the app displays the event poster banner under that parish's events. Tapping the poster opens the interactive full-screen viewer with pinch-to-zoom!
 
 ---
 
@@ -298,12 +305,15 @@ function parseParishes(parishSheet, activitiesSheet) {
         }
       }
 
-      // Leadership: President (formerly Vicar), V.P, Secretary, Treasurer
+      // Leadership: President (formerly Vicar), V.P, Secretary, Treasurer with individual phone numbers
       var president = pObj.president || pObj.presidenten || pObj.vicar || pObj.vicaren || "";
+      var presidentPhone = pObj.presidentphone || pObj.vicarphone || pObj.presidentcontact || pObj.phone || "";
       var vicePresident = pObj.vicepresident || pObj.vp || "";
+      var vicePresidentPhone = pObj.vicepresidentphone || pObj.vpphone || "";
       var secretary = pObj.secretary || pObj.secre || pObj.sec || "";
+      var secretaryPhone = pObj.secretaryphone || pObj.secphone || "";
       var treasurer = pObj.treasurer || pObj.trea || pObj.tres || "";
-      var secPhone = pObj.phone || pObj.secretaryphone || pObj.mobile || pObj.contact || "";
+      var treasurerPhone = pObj.treasurerphone || pObj.treaphone || "";
 
       var pData = {
         id: pId,
@@ -314,11 +324,14 @@ function parseParishes(parishSheet, activitiesSheet) {
         presidentEn: president,
         vicarEn: president, // backward compatibility
         presidentMl: pObj.presidentml || pObj.vicarml || "",
+        presidentPhone: presidentPhone,
         vicePresident: vicePresident,
+        vicePresidentPhone: vicePresidentPhone,
         secretary: secretary,
+        secretaryPhone: secretaryPhone,
         treasurer: treasurer,
-        secretaryPhone: secPhone,
-        phone: secPhone,
+        treasurerPhone: treasurerPhone,
+        phone: secretaryPhone || presidentPhone || "",
         mapUrl: pObj.mapurl || pObj.mapslink || ("https://maps.google.com/?q=" + encodeURIComponent(nameEn)),
         tag: pObj.tag || "Centre Parish",
         badge: pObj.badge || "Youth Fellowship",
@@ -371,6 +384,8 @@ function parseParishes(parishSheet, activitiesSheet) {
         : true;
       if (!isActive) continue;
 
+      var posterUrl = aObj.posterurl || aObj.posterimage || aObj.poster || aObj.image || aObj.imageurl || aObj.photo || "";
+
       var activityItem = {
         id: "act-" + k,
         title: title,
@@ -379,7 +394,9 @@ function parseParishes(parishSheet, activitiesSheet) {
         venue: aObj.venue || aObj.location || "",
         description: aObj.description || aObj.desc || aObj.details || "",
         coordinator: aObj.coordinator || aObj.contact || aObj.leader || "",
-        category: aObj.category || aObj.type || "Activity"
+        category: aObj.category || aObj.type || "Activity",
+        posterUrl: posterUrl,
+        imageUrl: posterUrl
       };
 
       // Match target parish

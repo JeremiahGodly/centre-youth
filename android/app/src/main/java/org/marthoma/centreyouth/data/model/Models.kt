@@ -69,8 +69,26 @@ data class ParishActivity(
     val venue: String = "",
     val description: String = "",
     val coordinator: String = "",
-    val category: String = "Activity"
-)
+    val category: String = "Activity",
+    val posterUrl: String = "",
+    val imageUrl: String = ""
+) {
+    val directImageUrl: String
+        get() {
+            val raw = posterUrl.ifBlank { imageUrl }
+            if (raw.isBlank()) return ""
+            if (raw.contains("drive.google.com") || raw.contains("drive.usercontent.google.com")) {
+                val fileId = ProgramEvent.extractGoogleDriveFileId(raw)
+                if (fileId.isNotBlank()) {
+                    return "https://lh3.googleusercontent.com/d/$fileId"
+                }
+            }
+            if (raw.startsWith("http://") || raw.startsWith("https://")) {
+                return raw
+            }
+            return ""
+        }
+}
 
 data class Parish(
     val id: String = "",
@@ -81,12 +99,15 @@ data class Parish(
     val location: String = "",
     val presidentEn: String = "",
     val presidentMl: String = "",
+    val presidentPhone: String = "",
     val vicarEn: String = "",
     val vicarMl: String = "",
     val vicePresident: String = "",
+    val vicePresidentPhone: String = "",
     val secretary: String = "",
     val secretaryPhone: String = "",
     val treasurer: String = "",
+    val treasurerPhone: String = "",
     val phone: String = "",
     val geo: String = "",
     val tag: String = "",
@@ -99,6 +120,9 @@ data class Parish(
 
     val displayPresident: String
         get() = presidentEn.ifBlank { presidentMl.ifBlank { vicarEn.ifBlank { vicarMl } } }
+
+    val displayPresidentPhone: String
+        get() = presidentPhone.ifBlank { phone }
 
     val displayVicar: String
         get() = displayPresident
