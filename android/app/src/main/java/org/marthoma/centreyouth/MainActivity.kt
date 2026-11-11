@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -261,11 +263,25 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        BackHandler(enabled = currentScreen == Screen.LECTIONARY) {
+            currentScreen = Screen.HOME
+        }
+
         Scaffold(
             topBar = {
                 if (currentScreen != Screen.POLICY) {
                     val isQuizMode = currentScreen == Screen.QUIZ
                     CenterAlignedTopAppBar(
+                        navigationIcon = {
+                            if (currentScreen == Screen.LECTIONARY) {
+                                IconButton(onClick = { currentScreen = Screen.HOME }) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        contentDescription = "Back to Home"
+                                    )
+                                }
+                            }
+                        },
                         title = {
                             Text(
                                 text = when (currentScreen) {
@@ -340,6 +356,7 @@ class MainActivity : ComponentActivity() {
                 when (currentScreen) {
                     Screen.HOME -> HomeScreen(
                         repository = repository,
+                        onNavigateToLectionary = { currentScreen = Screen.LECTIONARY },
                         onNavigateToQuiz = { currentScreen = Screen.QUIZ },
                         onNavigateToSongs = { currentScreen = Screen.SONGS },
                         onNavigateToParishes = { currentScreen = Screen.PARISHES },

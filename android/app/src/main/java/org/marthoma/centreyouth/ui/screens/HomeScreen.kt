@@ -41,6 +41,7 @@ import org.marthoma.centreyouth.ui.theme.GoldAccent
 @Composable
 fun HomeScreen(
     repository: CentreRepository,
+    onNavigateToLectionary: () -> Unit,
     onNavigateToQuiz: () -> Unit,
     onNavigateToSongs: () -> Unit,
     onNavigateToParishes: () -> Unit,
@@ -51,6 +52,7 @@ fun HomeScreen(
     val centreInfo = repository.getCentreInfo()
     val stats = repository.getStats()
     val pillars = repository.getPillars()
+    val todayLectionary = repository.getTodayLectionary()
 
     var selectedProgram by remember { mutableStateOf<ProgramEvent?>(null) }
     var programsList by remember { mutableStateOf(repository.getPrograms()) }
@@ -202,6 +204,70 @@ fun HomeScreen(
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                }
+            }
+        }
+
+        // Upcoming Liturgical Lectionary Glance (under Daily Scripture as it was)
+        if (todayLectionary != null) {
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onNavigateToLectionary() },
+                    shape = RoundedCornerShape(20.dp),
+                    border = BorderStroke(1.5.dp, GoldAccent.copy(alpha = 0.6f)),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(18.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = "✨ UPCOMING SUNDAY LECTIONARY",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = GoldAccent
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = todayLectionary.titleEn,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            if (todayLectionary.titleMl.isNotBlank()) {
+                                Text(
+                                    text = todayLectionary.titleMl,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            val gospelText = todayLectionary.gospelReading
+                            if (gospelText.isNotBlank()) {
+                                Spacer(modifier = Modifier.height(6.dp))
+                                Text(
+                                    text = "📖 Gospel: $gospelText",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            }
+                        }
+
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = "Open Lectionary",
+                            tint = GoldAccent
+                        )
+                    }
                 }
             }
         }
