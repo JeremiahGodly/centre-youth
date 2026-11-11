@@ -2,15 +2,11 @@ package org.marthoma.centreyouth.ui.screens
 
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -20,9 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -266,84 +259,6 @@ fun HomeScreen(
                             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                             contentDescription = "Open Lectionary",
                             tint = GoldAccent
-                        )
-                    }
-                }
-            }
-        }
-
-        // Colorful Glowing Bible Quiz Challenge Card
-        item {
-            val totalStars = repository.getQuizTotalStars()
-            val totalScore = repository.getQuizTotalScore()
-            val rainbowBrush = Brush.horizontalGradient(
-                listOf(
-                    Color(0xFF06B6D4),
-                    Color(0xFF8B5CF6),
-                    Color(0xFFEC4899),
-                    Color(0xFFF59E0B)
-                )
-            )
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .shadow(
-                        elevation = 12.dp,
-                        shape = RoundedCornerShape(22.dp),
-                        ambientColor = Color(0xFF8B5CF6),
-                        spotColor = Color(0xFFEC4899)
-                    )
-                    .clip(RoundedCornerShape(22.dp))
-                    .clickable { onNavigateToQuiz() }
-                    .border(2.dp, rainbowBrush, RoundedCornerShape(22.dp)),
-                shape = RoundedCornerShape(22.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFF130D2E)
-                )
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(18.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = "⚡ BIBLE QUIZ ARENA • 120 QUESTIONS",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = Color(0xFFFBBF24)
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "10 Escalating Levels: Easy to Ultra Hard",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "⭐ $totalStars/30 Stars  •  🏆 $totalScore pts  •  Timed Choices",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color(0xFF38BDF8),
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .background(rainbowBrush),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = "Play Bible Quiz",
-                            tint = Color.White
                         )
                     }
                 }
