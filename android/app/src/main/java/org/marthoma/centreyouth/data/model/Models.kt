@@ -79,8 +79,14 @@ data class Parish(
     val placeEn: String = "",
     val placeMl: String = "",
     val location: String = "",
+    val presidentEn: String = "",
+    val presidentMl: String = "",
     val vicarEn: String = "",
     val vicarMl: String = "",
+    val vicePresident: String = "",
+    val secretary: String = "",
+    val secretaryPhone: String = "",
+    val treasurer: String = "",
     val phone: String = "",
     val geo: String = "",
     val tag: String = "",
@@ -91,8 +97,11 @@ data class Parish(
     val displayPlace: String
         get() = placeEn.ifBlank { location.ifBlank { placeMl } }
 
+    val displayPresident: String
+        get() = presidentEn.ifBlank { presidentMl.ifBlank { vicarEn.ifBlank { vicarMl } } }
+
     val displayVicar: String
-        get() = vicarEn.ifBlank { vicarMl }
+        get() = displayPresident
 }
 
 data class Readings(

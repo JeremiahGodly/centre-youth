@@ -47,7 +47,10 @@ fun ParishesScreen(
                 parish.nameEn.lowercase().contains(q) ||
                 parish.nameMl.lowercase().contains(q) ||
                 parish.displayPlace.lowercase().contains(q) ||
-                parish.displayVicar.lowercase().contains(q) ||
+                parish.displayPresident.lowercase().contains(q) ||
+                parish.vicePresident.lowercase().contains(q) ||
+                parish.secretary.lowercase().contains(q) ||
+                parish.treasurer.lowercase().contains(q) ||
                 parish.tag.lowercase().contains(q) ||
                 parish.badge.lowercase().contains(q) ||
                 parish.activities.any { act ->

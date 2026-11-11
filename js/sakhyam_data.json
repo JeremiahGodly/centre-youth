@@ -460,7 +460,13 @@
       "activities": [],
       "phone": "",
       "vicarEn": "",
-      "mapUrl": ""
+      "mapUrl": "",
+      "presidentEn": "",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "illithode",
@@ -473,7 +479,13 @@
       "activities": [],
       "phone": "",
       "vicarEn": "",
-      "mapUrl": ""
+      "mapUrl": "",
+      "presidentEn": "",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "keezhillam",
@@ -507,7 +519,13 @@
           "coordinator": "Prayer Convener",
           "category": "Prayer"
         }
-      ]
+      ],
+      "presidentEn": "Rev. James George",
+      "presidentMl": "റവ. ജെയിംസ് ജോർജ്",
+      "vicePresident": "Parish Vice President",
+      "secretary": "Ashin K Santhosh",
+      "secretaryPhone": "9497882179",
+      "treasurer": "Parish Treasurer"
     },
     {
       "id": "kolenchery",
@@ -531,7 +549,13 @@
           "coordinator": "Youth Secretary",
           "category": "Fellowship"
         }
-      ]
+      ],
+      "presidentEn": "Rev. Vicar",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "kothamangalam",
@@ -544,7 +568,13 @@
       "activities": [],
       "phone": "",
       "vicarEn": "",
-      "mapUrl": ""
+      "mapUrl": "",
+      "presidentEn": "",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "kuttampuzha",
@@ -557,7 +587,13 @@
       "activities": [],
       "phone": "",
       "vicarEn": "",
-      "mapUrl": ""
+      "mapUrl": "",
+      "presidentEn": "",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "methala",
@@ -570,7 +606,13 @@
       "activities": [],
       "phone": "",
       "vicarEn": "",
-      "mapUrl": ""
+      "mapUrl": "",
+      "presidentEn": "",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "munnar",
@@ -594,7 +636,13 @@
           "coordinator": "Munnar Youth Wing",
           "category": "Retreat"
         }
-      ]
+      ],
+      "presidentEn": "Rev. Vicar",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "nellimattam",
@@ -607,7 +655,13 @@
       "activities": [],
       "phone": "",
       "vicarEn": "",
-      "mapUrl": ""
+      "mapUrl": "",
+      "presidentEn": "",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "oonjappara",
@@ -620,7 +674,13 @@
       "activities": [],
       "phone": "",
       "vicarEn": "",
-      "mapUrl": ""
+      "mapUrl": "",
+      "presidentEn": "",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "paraikkathanam",
@@ -633,7 +693,13 @@
       "activities": [],
       "phone": "",
       "vicarEn": "",
-      "mapUrl": ""
+      "mapUrl": "",
+      "presidentEn": "",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "perumbavoor",
@@ -667,7 +733,13 @@
           "coordinator": "Choir Master",
           "category": "Choir"
         }
-      ]
+      ],
+      "presidentEn": "Rev. Vicar",
+      "presidentMl": "റവ. വികാരി",
+      "vicePresident": "Parish Vice President",
+      "secretary": "Youth Secretary",
+      "secretaryPhone": "9061391963",
+      "treasurer": "Gibin Saji"
     },
     {
       "id": "poika",
@@ -680,7 +752,13 @@
       "activities": [],
       "phone": "",
       "vicarEn": "",
-      "mapUrl": ""
+      "mapUrl": "",
+      "presidentEn": "",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "rayamangalam",
@@ -693,7 +771,13 @@
       "activities": [],
       "phone": "",
       "vicarEn": "",
-      "mapUrl": ""
+      "mapUrl": "",
+      "presidentEn": "",
+      "presidentMl": "",
+      "vicePresident": "",
+      "secretary": "",
+      "secretaryPhone": "",
+      "treasurer": ""
     },
     {
       "id": "valakom",
@@ -717,7 +801,13 @@
           "coordinator": "Joint Secretary: Aleena Mariya Joy (9656128738)",
           "category": "Sports & Fellowship"
         }
-      ]
+      ],
+      "presidentEn": "Rev. Vicar",
+      "presidentMl": "റവ. വികാരി",
+      "vicePresident": "Parish Vice President",
+      "secretary": "Aleena Mariya Joy",
+      "secretaryPhone": "9656128738",
+      "treasurer": "Parish Treasurer"
     }
   ],
   "achievements": [

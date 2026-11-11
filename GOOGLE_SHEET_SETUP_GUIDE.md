@@ -60,21 +60,27 @@ Put these headers across **Row 1 (A to J)**:
 ## 3. Setting up Tab 3: `Parishes`
 
 Click the **`+` (Add Sheet)** button and name the tab: **`Parishes`**.  
-Put these headers across **Row 1 (A to I)**:
+Put these headers across **Row 1 (A to L)**:
 
 | Col | Header Name | Description | Example |
 |---|---|---|---|
 | **A** | `Name` | Parish Name (English) | `Keezhillam Nazareth Mar Thoma Church` |
 | **B** | `NameMl` | Parish Name (Malayalam) | `കീഴില്ലം നസ്രേത്ത് മാർത്തോമ്മാ ഇടവക` |
 | **C** | `Location` | Place / Area | `Keezhillam, Ernakulam` |
-| **D** | `Vicar` | Vicar's Name | `Rev. James George` |
-| **E** | `Phone` | Contact Phone | `9446906706` |
-| **F** | `MapUrl` | Google Maps Directions Link | `https://maps.google.com/?q=Keezhillam...` |
-| **G** | `Badge` | Tag / Badge | `Vibrant Youth Wing` |
-| **H** | `Tag` | Category | `Centre Parish` |
-| **I** | `Activities` | Quick Activities (separated by \|) | `Weekly Youth Fellowship - Sundays 11:30 AM \| Cottage Prayer - Saturdays 6:30 PM` |
+| **D** | `President` | President (Vicar) Name | `Rev. James George` |
+| **E** | `VicePresident` | Vice President (V.P.) Name | `Parish Vice President` |
+| **F** | `Secretary` | Secretary (Secre.) Name | `Ashin K Santhosh` |
+| **G** | `Treasurer` | Treasurer (Trea.) Name | `Parish Treasurer` |
+| **H** | `Phone` | Contact Phone / Secretary Phone | `9497882179` |
+| **I** | `MapUrl` | Google Maps Directions Link | `https://maps.google.com/?q=Keezhillam...` |
+| **J** | `Badge` | Tag / Badge | `Vibrant Youth Wing` |
+| **K** | `Tag` | Category | `Centre Parish` |
+| **L** | `Activities` | Quick Activities (separated by \|) | `Weekly Youth Fellowship - Sundays 11:30 AM \| Cottage Prayer - Saturdays 6:30 PM` |
 
-> 💡 **Note:** The app automatically sorts all parishes in **Alphabetical Order (A to Z)** regardless of the order entered in the sheet!
+> 💡 **Leadership Note:**  
+> - **`President`**: Replaced *Vicar* with *President* (Vicar serves as President of the Sakhyam).  
+> - **`VicePresident`**, **`Secretary`**, **`Treasurer`**: Shows the full parish youth leadership team in the app's collapsible window with one-tap phone call buttons.
+> - The app automatically sorts all parishes in **Alphabetical Order (A to Z)** regardless of the order entered in the sheet!
 
 ---
 
@@ -231,21 +237,21 @@ function parseSheet(sheet, type) {
 function parseParishes(parishSheet, activitiesSheet) {
   // Default list of 15 Centre Parishes (fallback if sheet is blank or missing columns)
   var defaultParishes = [
-    { id: "adimali", nameEn: "Adimali Mar Thoma Church", nameMl: "അടിമാലി മാർത്തോമ്മാ ഇടവക", location: "Adimali, Idukki", tag: "High Range Parish", badge: "Energetic Fellowship" },
-    { id: "illithode", nameEn: "Illithode Mar Thoma Church & Mission Field", nameMl: "ഇല്ലിത്തോട് മാർത്തോമ്മാ ഇടവക / മിഷൻ ഫീൽഡ്", location: "Illithode, Malayattoor Forest Border", tag: "Mission Outpost", badge: "Mission Outreach" },
-    { id: "keezhillam", nameEn: "Keezhillam Nazareth Mar Thoma Church", nameMl: "കീഴില്ലം നസ്രേത്ത് മാർത്തോമ്മാ ഇടവക", location: "Keezhillam, Ernakulam", tag: "Centre Parish", badge: "Vibrant Youth Wing", vicarEn: "Rev. James George", phone: "9446906706" },
-    { id: "kolenchery", nameEn: "Kolenchery St. Thomas Mar Thoma Church", nameMl: "കോലഞ്ചേരി സെന്റ് തോമസ് മാർത്തോമ്മാ ഇടവക", location: "Kolenchery, Ernakulam", tag: "Centre Hub", badge: "Dynamic Youth" },
-    { id: "kothamangalam", nameEn: "Kothamangalam St. Thomas Mar Thoma Church", nameMl: "കോതമംഗലം സെന്റ് തോമസ് മാർത്തോമ്മാ ഇടവക", location: "Kothamangalam", tag: "Gateway Parish", badge: "Active Participation" },
-    { id: "kuttampuzha", nameEn: "Kuttampuzha St. Stephen's Mar Thoma Church", nameMl: "കുട്ടമ്പുഴ സെന്റ് സ്റ്റീഫൻസ് മാർത്തോമ്മാ ഇടവക", location: "Kuttampuzha, High Ranges", tag: "Parish Fellowship", badge: "Scenic Foothills" },
-    { id: "methala", nameEn: "Methala Mar Thoma Church", nameMl: "മേതല മാർത്തോമ്മാ ഇടവക", location: "Methala, Asamannoor", tag: "Parish Fellowship", badge: "Warm Fellowship" },
-    { id: "munnar", nameEn: "Munnar Christ Mar Thoma Church", nameMl: "മൂന്നാർ ക്രൈസ്റ്റ് മാർത്തോമ്മാ ഇടവക", location: "Munnar Hill Station, Idukki", tag: "High Range Flagship", badge: "Heritage Hills" },
-    { id: "nellimattam", nameEn: "Nellimattam Bethel Mar Thoma Church", nameMl: "നെല്ലിമറ്റം ബഥേൽ മാർത്തോമ്മാ ഇടവക", location: "Nellimattam, Kavalangad", tag: "Parish Fellowship", badge: "Enthusiastic Youth" },
-    { id: "oonjappara", nameEn: "Oonjappara Mar Thoma Church", nameMl: "ഊഞ്ഞാപ്പാറ മാർത്തോമ്മാ ഇടവക", location: "Oonjappara, Kothamangalam", tag: "Parish Fellowship", badge: "Faithful Community" },
-    { id: "paraikkathanam", nameEn: "Paraikkathanam St. Thomas Mar Thoma Church", nameMl: "പരയ്ക്കത്താനം സെന്റ് തോമസ് മാർത്തോമ്മാ ഇടവക", location: "Paraikkathanam, Ernakulam", tag: "Parish Fellowship", badge: "United Sakhyam" },
-    { id: "perumbavoor", nameEn: "Perumbavoor St. Paul's Mar Thoma Church", nameMl: "പെരുമ്പാവൂർ സെന്റ് പോൾസ് മാർത്തോമ്മാ ഇടവക", location: "Perumbavoor Town", tag: "Kalamela 2026 Venue", badge: "Historic Parish" },
-    { id: "poika", nameEn: "Poika Ebenezer Mar Thoma Church", nameMl: "പൊയ്ക എബനേസർ മാർത്തോമ്മാ ഇടവക", location: "Poika, Perumbavoor", tag: "Sports Champions Parish", badge: "Best Goalkeeper Award" },
-    { id: "rayamangalam", nameEn: "Rayamangalam Bethlehem Mar Thoma Church", nameMl: "രായമംഗലം ബേത്‌ലഹേം മാർത്തോമ്മാ ഇടവക", location: "Rayamangalam, Kuruppampady", tag: "Parish Fellowship", badge: "Devout Community" },
-    { id: "valakom", nameEn: "Valakom Mar Thoma Church", nameMl: "വാളകം മാർത്തോമ്മാ ഇടവക", location: "Valakom, Muvattupuzha", tag: "2026-27 Inauguration Venue", badge: "Active Sakhyam" }
+    { id: "adimali", nameEn: "Adimali Mar Thoma Church", nameMl: "അടിമാലി മാർത്തോമ്മാ ഇടവക", location: "Adimali, Idukki", tag: "High Range Parish", badge: "Energetic Fellowship", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "", treasurer: "" },
+    { id: "illithode", nameEn: "Illithode Mar Thoma Church & Mission Field", nameMl: "ഇല്ലിത്തോട് മാർത്തോമ്മാ ഇടവക / മിഷൻ ഫീൽഡ്", location: "Illithode, Malayattoor Forest Border", tag: "Mission Outpost", badge: "Mission Outreach", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "", treasurer: "" },
+    { id: "keezhillam", nameEn: "Keezhillam Nazareth Mar Thoma Church", nameMl: "കീഴില്ലം നസ്രേത്ത് മാർത്തോമ്മാ ഇടവക", location: "Keezhillam, Ernakulam", tag: "Centre Parish", badge: "Vibrant Youth Wing", presidentEn: "Rev. James George", vicePresident: "Parish Vice President", secretary: "Ashin K Santhosh", secretaryPhone: "9497882179", treasurer: "Parish Treasurer", phone: "9446906706" },
+    { id: "kolenchery", nameEn: "Kolenchery St. Thomas Mar Thoma Church", nameMl: "കോലഞ്ചേരി സെന്റ് തോമസ് മാർത്തോമ്മാ ഇടവക", location: "Kolenchery, Ernakulam", tag: "Centre Hub", badge: "Dynamic Youth", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "Youth Secretary", treasurer: "" },
+    { id: "kothamangalam", nameEn: "Kothamangalam St. Thomas Mar Thoma Church", nameMl: "കോതമംഗലം സെന്റ് തോമസ് മാർത്തോമ്മാ ഇടവക", location: "Kothamangalam", tag: "Gateway Parish", badge: "Active Participation", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "", treasurer: "" },
+    { id: "kuttampuzha", nameEn: "Kuttampuzha St. Stephen's Mar Thoma Church", nameMl: "കുട്ടമ്പുഴ സെന്റ് സ്റ്റീഫൻസ് മാർത്തോമ്മാ ഇടവക", location: "Kuttampuzha, High Ranges", tag: "Parish Fellowship", badge: "Scenic Foothills", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "", treasurer: "" },
+    { id: "methala", nameEn: "Methala Mar Thoma Church", nameMl: "മേതല മാർത്തോമ്മാ ഇടവക", location: "Methala, Asamannoor", tag: "Parish Fellowship", badge: "Warm Fellowship", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "", treasurer: "" },
+    { id: "munnar", nameEn: "Munnar Christ Mar Thoma Church", nameMl: "മൂന്നാർ ക്രൈസ്റ്റ് മാർത്തോമ്മാ ഇടവക", location: "Munnar Hill Station, Idukki", tag: "High Range Flagship", badge: "Heritage Hills", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "Munnar Youth Wing", treasurer: "" },
+    { id: "nellimattam", nameEn: "Nellimattam Bethel Mar Thoma Church", nameMl: "നെല്ലിമറ്റം ബഥേൽ മാർത്തോമ്മാ ഇടവക", location: "Nellimattam, Kavalangad", tag: "Parish Fellowship", badge: "Enthusiastic Youth", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "", treasurer: "" },
+    { id: "oonjappara", nameEn: "Oonjappara Mar Thoma Church", nameMl: "ഊഞ്ഞാപ്പാറ മാർത്തോമ്മാ ഇടവക", location: "Oonjappara, Kothamangalam", tag: "Parish Fellowship", badge: "Faithful Community", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "", treasurer: "" },
+    { id: "paraikkathanam", nameEn: "Paraikkathanam St. Thomas Mar Thoma Church", nameMl: "പരയ്ക്കത്താനം സെന്റ് തോമസ് മാർത്തോമ്മാ ഇടവക", location: "Paraikkathanam, Ernakulam", tag: "Parish Fellowship", badge: "United Sakhyam", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "", treasurer: "" },
+    { id: "perumbavoor", nameEn: "Perumbavoor St. Paul's Mar Thoma Church", nameMl: "പെരുമ്പാവൂർ സെന്റ് പോൾസ് മാർത്തോമ്മാ ഇടവക", location: "Perumbavoor Town", tag: "Kalamela 2026 Venue", badge: "Historic Parish", presidentEn: "Rev. Vicar", vicePresident: "Parish Vice President", secretary: "Youth Secretary", secretaryPhone: "9061391963", treasurer: "Gibin Saji", phone: "9061391963" },
+    { id: "poika", nameEn: "Poika Ebenezer Mar Thoma Church", nameMl: "പൊയ്ക എബനേസർ മാർത്തോമ്മാ ഇടവക", location: "Poika, Perumbavoor", tag: "Sports Champions Parish", badge: "Best Goalkeeper Award", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "", treasurer: "" },
+    { id: "rayamangalam", nameEn: "Rayamangalam Bethlehem Mar Thoma Church", nameMl: "രായമംഗലം ബേത്‌ലഹേം മാർത്തോമ്മാ ഇടവക", location: "Rayamangalam, Kuruppampady", tag: "Parish Fellowship", badge: "Devout Community", presidentEn: "Rev. Vicar", vicePresident: "", secretary: "", treasurer: "" },
+    { id: "valakom", nameEn: "Valakom Mar Thoma Church", nameMl: "വാളകം മാർത്തോമ്മാ ഇടവക", location: "Valakom, Muvattupuzha", tag: "2026-27 Inauguration Venue", badge: "Active Sakhyam", presidentEn: "Rev. Vicar", vicePresident: "Parish Vice President", secretary: "Aleena Mariya Joy", secretaryPhone: "9656128738", treasurer: "Parish Treasurer", phone: "9656128738" }
   ];
 
   var parishes = [];
@@ -292,15 +298,27 @@ function parseParishes(parishSheet, activitiesSheet) {
         }
       }
 
+      // Leadership: President (formerly Vicar), V.P, Secretary, Treasurer
+      var president = pObj.president || pObj.presidenten || pObj.vicar || pObj.vicaren || "";
+      var vicePresident = pObj.vicepresident || pObj.vp || "";
+      var secretary = pObj.secretary || pObj.secre || pObj.sec || "";
+      var treasurer = pObj.treasurer || pObj.trea || pObj.tres || "";
+      var secPhone = pObj.phone || pObj.secretaryphone || pObj.mobile || pObj.contact || "";
+
       var pData = {
         id: pId,
         nameEn: nameEn,
         nameMl: pObj.nameml || "",
         location: pObj.location || pObj.place || pObj.placeen || "",
         placeEn: pObj.location || pObj.place || pObj.placeen || "",
-        vicarEn: pObj.vicar || pObj.vicaren || "",
-        vicarMl: pObj.vicarml || "",
-        phone: pObj.phone || pObj.mobile || pObj.contact || "",
+        presidentEn: president,
+        vicarEn: president, // backward compatibility
+        presidentMl: pObj.presidentml || pObj.vicarml || "",
+        vicePresident: vicePresident,
+        secretary: secretary,
+        treasurer: treasurer,
+        secretaryPhone: secPhone,
+        phone: secPhone,
         mapUrl: pObj.mapurl || pObj.mapslink || ("https://maps.google.com/?q=" + encodeURIComponent(nameEn)),
         tag: pObj.tag || "Centre Parish",
         badge: pObj.badge || "Youth Fellowship",
