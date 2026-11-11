@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import org.marthoma.centreyouth.R
 import org.marthoma.centreyouth.data.CentreRepository
 import org.marthoma.centreyouth.data.model.ProgramEvent
+import org.marthoma.centreyouth.ui.components.AwesomeLogoEmblem3D
 import org.marthoma.centreyouth.ui.components.PillarCard
 import org.marthoma.centreyouth.ui.components.ProgramDetailSheet
 import org.marthoma.centreyouth.ui.components.ProgramEventCard
@@ -81,19 +82,12 @@ fun HomeScreen(
                         .padding(20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .size(80.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.surface),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.app_logo),
-                            contentDescription = "Emblem",
-                            modifier = Modifier.size(68.dp)
-                        )
-                    }
+                    AwesomeLogoEmblem3D(
+                        medallionSize = 110.dp,
+                        enableInteractiveTilt = true,
+                        showAura = true,
+                        showPedestalShadow = true
+                    )
 
                     Spacer(modifier = Modifier.height(14.dp))
 

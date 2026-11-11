@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.marthoma.centreyouth.R
 import org.marthoma.centreyouth.data.CentreRepository
+import org.marthoma.centreyouth.ui.components.AwesomeLogoEmblem3D
 
 @Composable
 fun AboutScreen(
@@ -61,19 +62,12 @@ fun AboutScreen(
                         .padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .size(90.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primaryContainer),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.app_logo),
-                            contentDescription = "Keezhillam-Munnar MTYS App Logo",
-                            modifier = Modifier.size(76.dp)
-                        )
-                    }
+                    AwesomeLogoEmblem3D(
+                        medallionSize = 130.dp,
+                        enableInteractiveTilt = true,
+                        showAura = true,
+                        showPedestalShadow = true
+                    )
 
                     Spacer(modifier = Modifier.height(14.dp))
 

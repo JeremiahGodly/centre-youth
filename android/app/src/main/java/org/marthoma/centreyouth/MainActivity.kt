@@ -12,6 +12,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -21,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -93,9 +97,25 @@ class MainActivity : ComponentActivity() {
         checkNotificationPermission()
         initializeMediaController()
 
+        val hasDirectNavigation = intent?.data != null || intent?.getStringExtra("navigate_to") != null
+
         setContent {
             CentreYouthTheme {
-                MainAppScaffold()
+                var showStartupEntry by rememberSaveable { mutableStateOf(!hasDirectNavigation) }
+
+                Crossfade(
+                    targetState = showStartupEntry,
+                    animationSpec = tween(durationMillis = 450, easing = FastOutSlowInEasing),
+                    label = "StartupCrossfade"
+                ) { isStartup ->
+                    if (isStartup) {
+                        AppStartupEntryScreen(
+                            onEnterApp = { showStartupEntry = false }
+                        )
+                    } else {
+                        MainAppScaffold()
+                    }
+                }
             }
         }
     }
