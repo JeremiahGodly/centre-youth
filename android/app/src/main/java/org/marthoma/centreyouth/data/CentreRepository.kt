@@ -69,9 +69,16 @@ class CentreRepository(private val context: Context) {
                 cachedOfficeBearers = gson.fromJson(root.getJSONArray("officeBearers").toString(), type)
             }
 
-            if (root.has("parishes")) {
+            // Load Parishes: check local cached updates from Google Sheet first, else bundled
+            val cachedParishesJson = prefs.getString("cached_parishes_json", null)
+            if (!cachedParishesJson.isNullOrBlank()) {
                 val type = object : TypeToken<List<Parish>>() {}.type
-                cachedParishes = gson.fromJson(root.getJSONArray("parishes").toString(), type)
+                val pList: List<Parish> = gson.fromJson(cachedParishesJson, type)
+                cachedParishes = pList.sortedBy { it.nameEn.lowercase().trim() }
+            } else if (root.has("parishes")) {
+                val type = object : TypeToken<List<Parish>>() {}.type
+                val pList: List<Parish> = gson.fromJson(root.getJSONArray("parishes").toString(), type)
+                cachedParishes = pList.sortedBy { it.nameEn.lowercase().trim() }
             }
 
             if (root.has("lectionary")) {
@@ -163,7 +170,7 @@ class CentreRepository(private val context: Context) {
     fun getStats(): List<StatItem> = cachedStats
     fun getPillars(): List<PillarItem> = cachedPillars
     fun getOfficeBearers(): List<OfficeBearer> = cachedOfficeBearers
-    fun getParishes(): List<Parish> = cachedParishes
+    fun getParishes(): List<Parish> = cachedParishes.sortedBy { it.nameEn.lowercase().trim() }
     fun getLectionary(): List<LectionaryEntry> = cachedLectionary
     fun getSongs(): List<Song> = cachedSongs
 
@@ -318,6 +325,18 @@ class CentreRepository(private val context: Context) {
                             .apply()
                     }
                 }
+                if (root.has("parishes")) {
+                    val parArray = root.getJSONArray("parishes").toString()
+                    val parType = object : TypeToken<List<Parish>>() {}.type
+                    val pList: List<Parish> = gson.fromJson(parArray, parType)
+                    if (pList.isNotEmpty()) {
+                        cachedParishes = pList.sortedBy { it.nameEn.lowercase().trim() }
+                        prefs.edit()
+                            .putString("cached_parishes_json", parArray)
+                            .putLong("last_synced_timestamp", System.currentTimeMillis())
+                            .apply()
+                    }
+                }
                 Result.success(cachedPrograms)
             } else if (jsonText.startsWith("[")) {
                 val progType = object : TypeToken<List<ProgramEvent>>() {}.type
@@ -373,6 +392,59 @@ class CentreRepository(private val context: Context) {
                 }
             } else {
                 Result.failure(Exception("Invalid leaders JSON"))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Pulls latest parishes and their specific events/activities from Google Sheet (?tab=parishes)
+     */
+    suspend fun syncParishesFromGoogleSheet(): Result<List<Parish>> = withContext(Dispatchers.IO) {
+        val baseUrl = getGoogleSheetUrl()
+        if (baseUrl.isBlank()) return@withContext Result.failure(Exception("No Google Sheet URL configured"))
+        val endpoint = if (baseUrl.contains("?")) "$baseUrl&tab=parishes" else "$baseUrl?tab=parishes"
+
+        try {
+            val jsonText = fetchUrlWithRedirects(endpoint).trim()
+            if (jsonText.startsWith("[")) {
+                val parishType = object : TypeToken<List<Parish>>() {}.type
+                val list: List<Parish> = gson.fromJson(jsonText, parishType)
+                if (list.isNotEmpty()) {
+                    val sorted = list.sortedBy { it.nameEn.lowercase().trim() }
+                    cachedParishes = sorted
+                    prefs.edit()
+                        .putString("cached_parishes_json", jsonText)
+                        .putLong("last_synced_timestamp", System.currentTimeMillis())
+                        .apply()
+                    Result.success(sorted)
+                } else {
+                    Result.failure(Exception("Empty parishes list"))
+                }
+            } else if (jsonText.startsWith("{")) {
+                val root = JSONObject(jsonText)
+                if (root.has("parishes")) {
+                    val pArray = root.getJSONArray("parishes").toString()
+                    val parishType = object : TypeToken<List<Parish>>() {}.type
+                    val list: List<Parish> = gson.fromJson(pArray, parishType)
+                    if (list.isNotEmpty()) {
+                        val sorted = list.sortedBy { it.nameEn.lowercase().trim() }
+                        cachedParishes = sorted
+                        prefs.edit()
+                            .putString("cached_parishes_json", pArray)
+                            .putLong("last_synced_timestamp", System.currentTimeMillis())
+                            .apply()
+                        Result.success(sorted)
+                    } else {
+                        Result.failure(Exception("Empty parishes array"))
+                    }
+                } else {
+                    Result.failure(Exception("No parishes array in JSON"))
+                }
+            } else {
+                Result.failure(Exception("Invalid parishes JSON"))
             }
         } catch (e: Exception) {
             e.printStackTrace()

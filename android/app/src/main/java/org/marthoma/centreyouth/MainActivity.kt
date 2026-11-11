@@ -470,6 +470,7 @@ fun MoreMenuScreen(
                                 isCheckingSync = true
                                 repository.syncProgramsFromGoogleSheet()
                                 repository.syncLeadersFromGoogleSheet()
+                                repository.syncParishesFromGoogleSheet()
                                 lastSyncedText = repository.getLastSyncedFormatted()
                                 isCheckingSync = false
                                 Toast.makeText(context, "Checked: Up to date", Toast.LENGTH_SHORT).show()

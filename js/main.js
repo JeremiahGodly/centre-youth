@@ -222,10 +222,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const filtered = SAKHYAM_DATA.parishes.filter(p => {
       const q = parishSearchQuery.toLowerCase();
       return p.nameEn.toLowerCase().includes(q) ||
-             p.nameMl.toLowerCase().includes(q) ||
-             p.nameMang.toLowerCase().includes(q) ||
-             p.location.toLowerCase().includes(q);
-    });
+             (p.nameMl && p.nameMl.toLowerCase().includes(q)) ||
+             (p.nameMang && p.nameMang.toLowerCase().includes(q)) ||
+             (p.location && p.location.toLowerCase().includes(q));
+    }).sort((a, b) => a.nameEn.localeCompare(b.nameEn));
 
     if (filtered.length === 0) {
       container.innerHTML = `
@@ -1357,12 +1357,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let livePrograms = [];
       let liveLeaders = [];
+      let liveParishes = [];
 
       if (Array.isArray(data)) {
         livePrograms = data;
       } else if (data && typeof data === 'object') {
         if (Array.isArray(data.programs)) livePrograms = data.programs;
         if (Array.isArray(data.leaders)) liveLeaders = data.leaders;
+        if (Array.isArray(data.parishes)) liveParishes = data.parishes;
+      }
+
+      // If live parishes were updated in Google Sheet
+      if (liveParishes.length > 0) {
+        SAKHYAM_DATA.parishes = liveParishes.sort((a, b) => a.nameEn.localeCompare(b.nameEn));
+        renderParishes();
       }
 
       // If live leaders were updated in Google Sheet

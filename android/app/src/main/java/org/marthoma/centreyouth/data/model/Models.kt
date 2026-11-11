@@ -61,17 +61,39 @@ data class OfficeBearer(
         }
 }
 
+data class ParishActivity(
+    val id: String = "",
+    val title: String = "",
+    val date: String = "",
+    val time: String = "",
+    val venue: String = "",
+    val description: String = "",
+    val coordinator: String = "",
+    val category: String = "Activity"
+)
+
 data class Parish(
     val id: String = "",
     val nameEn: String = "",
     val nameMl: String = "",
     val placeEn: String = "",
     val placeMl: String = "",
+    val location: String = "",
     val vicarEn: String = "",
     val vicarMl: String = "",
     val phone: String = "",
-    val geo: String = ""
-)
+    val geo: String = "",
+    val tag: String = "",
+    val badge: String = "",
+    val mapUrl: String = "",
+    val activities: List<ParishActivity> = emptyList()
+) {
+    val displayPlace: String
+        get() = placeEn.ifBlank { location.ifBlank { placeMl } }
+
+    val displayVicar: String
+        get() = vicarEn.ifBlank { vicarMl }
+}
 
 data class Readings(
     val lesson1: String? = null,
