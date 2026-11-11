@@ -26,12 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.toggle('active', btn.getAttribute('data-lang-val') === lang);
     });
 
+    updateLangQuickBtn();
+
     // Update static translations in DOM
     applyTranslations();
 
     // Re-render dynamic sections with new language strings
     renderPillars();
     renderKalamelaItems();
+    renderPrograms();
     renderParishes();
     renderOfficeBearers();
     renderAchievements();
@@ -40,6 +43,19 @@ document.addEventListener('DOMContentLoaded', () => {
     renderUpcomingLectionaryWidget();
     renderSongs();
     renderHomeSongsWidget();
+  }
+
+  function updateLangQuickBtn() {
+    const langQuickLabels = document.querySelectorAll('#lang-quick-label, .lang-quick-label');
+    langQuickLabels.forEach(label => {
+      if (currentLang === 'ml') {
+        label.textContent = 'മല';
+      } else if (currentLang === 'mang') {
+        label.textContent = 'MANG';
+      } else {
+        label.textContent = 'EN';
+      }
+    });
   }
 
   function applyTranslations() {
@@ -90,6 +106,15 @@ document.addEventListener('DOMContentLoaded', () => {
       setLanguage(btn.getAttribute('data-lang-val'));
     });
   });
+
+  // Single Quick Language Switcher Button (near Dark/Light toggle)
+  document.querySelectorAll('#lang-quick-btn, .lang-quick-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nextLang = currentLang === 'en' ? 'ml' : (currentLang === 'ml' ? 'mang' : 'en');
+      setLanguage(nextLang);
+    });
+  });
+  updateLangQuickBtn();
 
   // 4. Mobile Drawer Toggle
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -210,8 +235,115 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Parishes Directory
+  // -------------------------------------------------------------
+  // Upcoming Programs & Events (Google Sheet Sync)
+  // -------------------------------------------------------------
+  function renderPrograms() {
+    const container = document.getElementById('programs-grid');
+    if (!container) return;
+
+    if (!SAKHYAM_DATA.programs || SAKHYAM_DATA.programs.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+          <p>No upcoming programs scheduled at the moment. Check back soon!</p>
+        </div>
+      `;
+      return;
+    }
+
+    const dict = I18N[currentLang] || I18N.en;
+
+    container.innerHTML = SAKHYAM_DATA.programs.map(prog => {
+      const title = (currentLang === 'ml' && prog.titleMl) ? prog.titleMl : prog.title;
+      const directPoster = prog.imageUrl ? extractDriveDirectUrl(prog.imageUrl) : '';
+
+      return `
+        <div class="program-card glass-panel tilt-card">
+          <div class="program-card-badge-row">
+            <span class="program-category-pill">${prog.category || 'Centre Event'}</span>
+            ${prog.date ? `
+              <span class="program-date-pill">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                ${prog.date} ${prog.time ? '• ' + prog.time : ''}
+              </span>
+            ` : ''}
+          </div>
+
+          <h3 class="program-title">${title}</h3>
+          ${(prog.titleMl && currentLang !== 'ml') ? `<div class="program-title-ml">${prog.titleMl}</div>` : ''}
+          ${(prog.title && currentLang === 'ml' && prog.titleMl) ? `<div class="program-title-ml">${prog.title}</div>` : ''}
+
+          ${prog.venue ? `
+            <div class="program-venue">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>${prog.venue}</span>
+            </div>
+          ` : ''}
+
+          ${prog.description ? `<p class="program-desc">${prog.description}</p>` : ''}
+
+          ${prog.speakers ? `
+            <div class="program-speakers">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 16 12 12 8"/></svg>
+              <span><strong>Dignitaries:</strong> ${prog.speakers}</span>
+            </div>
+          ` : ''}
+
+          ${directPoster ? `
+            <div class="program-poster-preview" onclick="openSingleImage('${directPoster}', '${prog.title.replace(/'/g, "\\'")}')">
+              <img src="${directPoster}" alt="${prog.title}" loading="lazy" />
+              <span class="poster-zoom-pill">🔍 View Full Poster</span>
+            </div>
+          ` : ''}
+
+          <div class="program-actions">
+            ${prog.mapUrl ? `
+              <a href="${prog.mapUrl}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                <span>${dict.btnLocate || 'Directions'}</span>
+              </a>
+            ` : ''}
+            ${prog.registrationUrl ? `
+              <a href="${prog.registrationUrl}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <span>Register Now</span>
+              </a>
+            ` : ''}
+            ${prog.contactPhone ? `
+              <a href="tel:${prog.contactPhone.replace(/\s+/g, '')}" class="btn btn-secondary btn-sm" title="Call Convener">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>${prog.contactName || 'Call'}</span>
+              </a>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    initTiltEffect();
+  }
+
+  // -------------------------------------------------------------
+  // Parishes Directory (Collapsible Accordion Cards)
+  // -------------------------------------------------------------
+  const expandedParishIds = new Set();
   let parishSearchQuery = '';
+
+  window.toggleParishCard = function(id) {
+    if (expandedParishIds.has(id)) {
+      expandedParishIds.delete(id);
+    } else {
+      expandedParishIds.add(id);
+    }
+    const card = document.querySelector(`.parish-card[data-parish-id="${id}"]`);
+    if (card) {
+      const isExpanded = expandedParishIds.has(id);
+      card.classList.toggle('is-expanded', isExpanded);
+      const header = card.querySelector('.parish-card-header');
+      if (header) header.setAttribute('aria-expanded', isExpanded);
+    }
+  };
+
   function renderParishes() {
     const container = document.getElementById('parishes-grid');
     if (!container) return;
@@ -221,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const filtered = SAKHYAM_DATA.parishes.filter(p => {
       const q = parishSearchQuery.toLowerCase();
-      return p.nameEn.toLowerCase().includes(q) ||
+      return (p.nameEn && p.nameEn.toLowerCase().includes(q)) ||
              (p.nameMl && p.nameMl.toLowerCase().includes(q)) ||
              (p.nameMang && p.nameMang.toLowerCase().includes(q)) ||
              (p.location && p.location.toLowerCase().includes(q));
@@ -229,34 +361,167 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (filtered.length === 0) {
       container.innerHTML = `
-        <div class="empty-state">
+        <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 2.5rem;">
           <p>No parishes matching "${parishSearchQuery}".</p>
         </div>
       `;
       return;
     }
 
-    container.innerHTML = filtered.map(p => `
-      <div class="parish-card glass-panel tilt-card">
-        <div class="parish-card-header">
-          <div class="parish-icon">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"/><path d="M2 20h20"/><path d="M14 12v.01"/><path d="M12 2v4"/><path d="M10 4h4"/></svg>
+    container.innerHTML = filtered.map(p => {
+      const isExpanded = expandedParishIds.has(p.id);
+      const contactPhone = (p.secretaryPhone || p.phone || p.presidentPhone || '').replace(/\s+/g, '');
+      const mapDestination = p.mapUrl || ('https://maps.google.com/?q=' + encodeURIComponent(p.nameEn + ' ' + (p.location || '')));
+      const activities = p.activities || [];
+      const hasActivities = activities.length > 0;
+
+      return `
+        <div class="parish-card glass-panel tilt-card ${isExpanded ? 'is-expanded' : ''}" data-parish-id="${p.id}">
+          <div class="parish-card-header" onclick="toggleParishCard('${p.id}')" role="button" tabindex="0" aria-expanded="${isExpanded}">
+            <div class="parish-header-main">
+              <div class="parish-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"/><path d="M2 20h20"/><path d="M14 12v.01"/><path d="M12 2v4"/><path d="M10 4h4"/></svg>
+              </div>
+              <div class="parish-title-wrap">
+                <h4 class="parish-title">${p[nameKey] || p.nameEn}</h4>
+                ${(p.nameMl && currentLang !== 'ml') ? `<span class="parish-subtitle">${p.nameMl}</span>` : ''}
+                ${(p.nameEn && currentLang === 'ml') ? `<span class="parish-subtitle">${p.nameEn}</span>` : ''}
+                <div class="parish-meta-pills">
+                  ${p.location ? `
+                    <span class="parish-location-pill">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                      <span>${p.location}</span>
+                    </span>
+                  ` : ''}
+                  ${p.badge ? `<span class="parish-badge">${p.badge}</span>` : ''}
+                </div>
+              </div>
+            </div>
+
+            <div class="parish-expand-indicator">
+              <button type="button" class="parish-expand-btn" aria-label="Toggle parish details">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" class="chevron-icon"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+            </div>
           </div>
-          <span class="parish-tag">${p.tag}</span>
+
+          <div class="parish-collapse-drawer" id="parish-drawer-${p.id}">
+            <div class="parish-drawer-inner">
+              <div class="parish-drawer-divider"></div>
+
+              <!-- Parish Leadership Header -->
+              <div class="parish-section-header">
+                <div class="section-heading-left">
+                  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <h5>${dict.parishLeadership || 'Parish Leadership'}</h5>
+                </div>
+                <div class="section-actions-right">
+                  ${contactPhone ? `
+                    <a href="tel:${contactPhone}" class="parish-action-icon-btn" title="Call Leadership" onclick="event.stopPropagation()">
+                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </a>
+                  ` : ''}
+                  <a href="${mapDestination}" target="_blank" rel="noopener" class="parish-action-icon-btn directions-btn" title="Directions on Google Maps" onclick="event.stopPropagation()">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Leaders Contact Details -->
+              <div class="parish-leaders-list">
+                ${(p.presidentEn || p.vicarEn) ? `
+                  <div class="parish-leader-row">
+                    <span class="badge-role president">President</span>
+                    <span class="name-col"><strong>${p.presidentEn || p.vicarEn}</strong></span>
+                    ${p.presidentPhone ? `<a href="tel:${p.presidentPhone.replace(/\s+/g, '')}" class="leader-call-pill" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> ${p.presidentPhone}</a>` : ''}
+                  </div>
+                ` : ''}
+
+                ${p.vicePresident ? `
+                  <div class="parish-leader-row">
+                    <span class="badge-role vp">Vice President</span>
+                    <span class="name-col"><span>${p.vicePresident}</span></span>
+                    ${p.vicePresidentPhone ? `<a href="tel:${p.vicePresidentPhone.replace(/\s+/g, '')}" class="leader-call-pill" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> ${p.vicePresidentPhone}</a>` : ''}
+                  </div>
+                ` : ''}
+
+                ${p.secretary ? `
+                  <div class="parish-leader-row">
+                    <span class="badge-role sec">Secretary</span>
+                    <span class="name-col"><span>${p.secretary}</span></span>
+                    ${(p.secretaryPhone || p.phone) ? `<a href="tel:${(p.secretaryPhone || p.phone).replace(/\s+/g, '')}" class="leader-call-pill" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> ${p.secretaryPhone || p.phone}</a>` : ''}
+                  </div>
+                ` : ''}
+
+                ${p.treasurer ? `
+                  <div class="parish-leader-row">
+                    <span class="badge-role trea">Treasurer</span>
+                    <span class="name-col"><span>${p.treasurer}</span></span>
+                    ${p.treasurerPhone ? `<a href="tel:${p.treasurerPhone.replace(/\s+/g, '')}" class="leader-call-pill" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> ${p.treasurerPhone}</a>` : ''}
+                  </div>
+                ` : ''}
+
+                ${(!p.presidentEn && !p.vicarEn && !p.vicePresident && !p.secretary && !p.treasurer) ? `
+                  <div class="parish-leader-row">
+                    <span class="badge-role sec">Office</span>
+                    <span class="name-col">Parish Youth Committee</span>
+                    ${contactPhone ? `<a href="tel:${contactPhone}" class="leader-call-pill" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Call</a>` : ''}
+                  </div>
+                ` : ''}
+              </div>
+
+              <!-- Activities & Events Section -->
+              <div class="parish-activities-section">
+                <div class="parish-section-header">
+                  <div class="section-heading-left">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <h5>${dict.parishActivities || 'Parish Activities & Events'}</h5>
+                  </div>
+                  <span class="activities-count-pill">${hasActivities ? `${activities.length} Scheduled` : 'Weekly Fellowship'}</span>
+                </div>
+
+                ${hasActivities ? `
+                  <div class="parish-activities-list">
+                    ${activities.map(act => {
+                      const directActPoster = (act.directImageUrl || act.posterUrl || act.imageUrl) ? extractDriveDirectUrl(act.directImageUrl || act.posterUrl || act.imageUrl) : '';
+
+                      return `
+                        <div class="parish-activity-item">
+                          <div class="activity-top-row">
+                            <span class="activity-title">${act.title}</span>
+                            ${act.category ? `<span class="activity-cat-tag">${act.category}</span>` : ''}
+                          </div>
+                          <div class="activity-meta-row">
+                            ${act.date ? `<span><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${act.date} ${act.time ? '• ' + act.time : ''}</span>` : ''}
+                            ${act.venue ? `<span><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> ${act.venue}</span>` : ''}
+                          </div>
+                          ${act.description ? `<p class="activity-desc">${act.description}</p>` : ''}
+                          ${act.coordinator ? `<span class="activity-coord">👤 ${act.coordinator}</span>` : ''}
+                          ${directActPoster ? `
+                            <div class="activity-poster-preview" onclick="event.stopPropagation(); openSingleImage('${directActPoster}', '${act.title.replace(/'/g, "\\'")}')">
+                              <img src="${directActPoster}" alt="${act.title}" loading="lazy" />
+                              <span class="poster-zoom-pill">🔍 View Full Poster</span>
+                            </div>
+                          ` : ''}
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                ` : `
+                  <div class="parish-activity-empty">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <div>
+                      <strong>${dict.parishWeeklyFellowship || 'Weekly Youth Fellowship'}</strong>
+                      <p>${dict.parishDefaultFellowshipDesc || 'Regular Sunday gatherings, Bible discussions & cottage prayer meetings. Contact parish secretary for detailed schedule.'}</p>
+                    </div>
+                  </div>
+                `}
+              </div>
+            </div>
+          </div>
         </div>
-        <h4 class="parish-title">${p[nameKey]}</h4>
-        <div class="parish-meta">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span>${p.location}</span>
-        </div>
-        <div class="parish-footer">
-          <span class="parish-badge">${p.badge}</span>
-          <a href="https://maps.google.com/?q=${encodeURIComponent(p.nameEn + ' ' + p.location)}" target="_blank" rel="noopener" class="parish-map-btn" title="${dict.btnLocate}">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-          </a>
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
 
     initTiltEffect();
   }
@@ -1254,6 +1519,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const lazySections = [
+      { id: 'programs', render: renderPrograms },
       { id: 'lectionary', render: renderUpcomingLectionaryWidget },
       { id: 'songs', render: renderHomeSongsWidget },
       { id: 'achievements', render: renderAchievements },
@@ -1280,6 +1546,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) observer.observe(el);
       });
     } else {
+      renderPrograms();
       renderUpcomingLectionaryWidget();
       renderHomeSongsWidget();
       renderAchievements();
@@ -1335,7 +1602,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 600);
   }
 
-  // 10. Live Google Sheet Synchronization (Dynamic Programs & Leaders)
+  // 10. Live Google Sheet Synchronization (Dynamic Programs, Leaders & Parishes)
   const GOOGLE_SHEET_API = 'https://script.google.com/macros/s/AKfycbyfdOFNZ4U3Hmwvi8STt56LHB_VDhiST6T89d1vq8YyZ6gw4IswpEUHsLIH6uBMZdc/exec';
 
   function extractDriveDirectUrl(url) {
@@ -1349,64 +1616,139 @@ document.addEventListener('DOMContentLoaded', () => {
     return url;
   }
 
+  function applySyncedSheetData(data) {
+    if (!data || typeof data !== 'object') return;
+
+    let livePrograms = [];
+    let liveLeaders = [];
+    let liveParishes = [];
+
+    if (Array.isArray(data)) {
+      livePrograms = data;
+    } else {
+      if (Array.isArray(data.programs)) livePrograms = data.programs;
+      if (Array.isArray(data.leaders)) liveLeaders = data.leaders;
+      if (Array.isArray(data.parishes)) liveParishes = data.parishes;
+    }
+
+    // 1. Sync Programs
+    if (livePrograms.length > 0) {
+      SAKHYAM_DATA.programs = livePrograms;
+      renderPrograms();
+
+      const kalamela = livePrograms.find(p =>
+        (p.category && p.category.toLowerCase().includes('kalamela')) ||
+        (p.title && p.title.toLowerCase().includes('kalamela'))
+      );
+      if (kalamela) {
+        const posterImg = document.querySelector('.kalamela-poster-preview img');
+        const previewDiv = document.querySelector('.kalamela-poster-preview');
+        const directUrl = extractDriveDirectUrl(kalamela.imageUrl);
+        if (posterImg && directUrl) {
+          posterImg.src = directUrl;
+        }
+        if (previewDiv && directUrl) {
+          previewDiv.onclick = () => openSingleImage(directUrl, `${kalamela.title} Official Poster`);
+        }
+      }
+    }
+
+    // 2. Sync Leaders
+    if (liveLeaders.length > 0) {
+      liveLeaders.forEach((l, idx) => {
+        const normRole = (l.roleEn || '').toLowerCase().trim();
+        let target = SAKHYAM_DATA.officeBearers.find(b =>
+          (b.roleEn && b.roleEn.toLowerCase().trim() === normRole) ||
+          (b.nameEn && l.nameEn && b.nameEn.toLowerCase().includes(l.nameEn.toLowerCase()))
+        );
+        if (!target && idx < SAKHYAM_DATA.officeBearers.length) {
+          target = SAKHYAM_DATA.officeBearers[idx];
+        }
+
+        if (target) {
+          if (l.nameEn) target.nameEn = l.nameEn;
+          if (l.nameMl) target.nameMl = l.nameMl;
+          if (l.roleEn) target.roleEn = l.roleEn;
+          if (l.roleMl) target.roleMl = l.roleMl;
+          if (l.parishEn) target.parishEn = l.parishEn;
+          if (l.parishMl) target.parishMl = l.parishMl;
+          if (l.phone) target.phone = l.phone;
+          if (l.image) {
+            const dUrl = extractDriveDirectUrl(l.image);
+            if (dUrl) target.image = dUrl;
+          }
+        }
+      });
+      renderOfficeBearers();
+    }
+
+    // 3. Sync Parishes & Collapsible Activities
+    if (liveParishes.length > 0) {
+      liveParishes.forEach(lp => {
+        if (Array.isArray(lp.activities)) {
+          lp.activities.forEach(act => {
+            const raw = act.posterUrl || act.imageUrl || act.directImageUrl;
+            if (raw) act.directImageUrl = extractDriveDirectUrl(raw);
+          });
+        }
+
+        const normName = (lp.nameEn || '').toLowerCase().replace(/[^a-z]/g, '');
+        const existing = SAKHYAM_DATA.parishes.find(p =>
+          p.id === lp.id ||
+          (p.nameEn && p.nameEn.toLowerCase().replace(/[^a-z]/g, '') === normName)
+        );
+
+        if (existing) {
+          if (lp.nameEn) existing.nameEn = lp.nameEn;
+          if (lp.nameMl) existing.nameMl = lp.nameMl;
+          if (lp.location) existing.location = lp.location;
+          if (lp.presidentEn) existing.presidentEn = lp.presidentEn;
+          if (lp.presidentPhone) existing.presidentPhone = lp.presidentPhone;
+          if (lp.vicePresident) existing.vicePresident = lp.vicePresident;
+          if (lp.vicePresidentPhone) existing.vicePresidentPhone = lp.vicePresidentPhone;
+          if (lp.secretary) existing.secretary = lp.secretary;
+          if (lp.secretaryPhone) existing.secretaryPhone = lp.secretaryPhone;
+          if (lp.treasurer) existing.treasurer = lp.treasurer;
+          if (lp.treasurerPhone) existing.treasurerPhone = lp.treasurerPhone;
+          if (lp.mapUrl) existing.mapUrl = lp.mapUrl;
+          if (lp.badge) existing.badge = lp.badge;
+          if (lp.tag) existing.tag = lp.tag;
+          if (lp.activities && lp.activities.length > 0) {
+            existing.activities = lp.activities;
+          }
+        } else {
+          SAKHYAM_DATA.parishes.push(lp);
+        }
+      });
+
+      SAKHYAM_DATA.parishes.sort((a, b) => a.nameEn.localeCompare(b.nameEn));
+      renderParishes();
+    }
+  }
+
   async function syncLiveGoogleSheet() {
+    // 1. Check local cache first for instant UI response
+    try {
+      const cached = localStorage.getItem('sakhyam_sheet_cache_v2');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        applySyncedSheetData(parsed);
+      }
+    } catch (e) {
+      console.warn("Cached sheet parse info:", e);
+    }
+
+    // 2. Fetch fresh live data from Google Sheet
     try {
       const res = await fetch(GOOGLE_SHEET_API);
       if (!res.ok) return;
       const data = await res.json();
-
-      let livePrograms = [];
-      let liveLeaders = [];
-      let liveParishes = [];
-
-      if (Array.isArray(data)) {
-        livePrograms = data;
-      } else if (data && typeof data === 'object') {
-        if (Array.isArray(data.programs)) livePrograms = data.programs;
-        if (Array.isArray(data.leaders)) liveLeaders = data.leaders;
-        if (Array.isArray(data.parishes)) liveParishes = data.parishes;
-      }
-
-      // If live parishes were updated in Google Sheet
-      if (liveParishes.length > 0) {
-        SAKHYAM_DATA.parishes = liveParishes.sort((a, b) => a.nameEn.localeCompare(b.nameEn));
-        renderParishes();
-      }
-
-      // If live leaders were updated in Google Sheet
-      if (liveLeaders.length > 0) {
-        liveLeaders.forEach((l, idx) => {
-          if (idx < SAKHYAM_DATA.officeBearers.length) {
-            const b = SAKHYAM_DATA.officeBearers[idx];
-            if (l.nameEn) b.nameEn = l.nameEn;
-            if (l.nameMl) b.nameMl = l.nameMl;
-            if (l.roleEn) b.roleEn = l.roleEn;
-            if (l.roleMl) b.roleMl = l.roleMl;
-            if (l.parishEn) b.parishEn = l.parishEn;
-            if (l.phone) b.phone = l.phone;
-            if (l.image) b.image = extractDriveDirectUrl(l.image);
-          }
-        });
-        renderOfficeBearers();
-      }
-
-      // If live programs were updated in Google Sheet
-      if (livePrograms.length > 0) {
-        const kalamela = livePrograms.find(p => (p.category && p.category.toLowerCase().includes('kalamela')) || (p.title && p.title.toLowerCase().includes('kalamela')));
-        if (kalamela) {
-          const posterImg = document.querySelector('.kalamela-poster-preview img');
-          const previewDiv = document.querySelector('.kalamela-poster-preview');
-          const directUrl = extractDriveDirectUrl(kalamela.imageUrl);
-          if (posterImg && directUrl) {
-            posterImg.src = directUrl;
-          }
-          if (previewDiv && directUrl) {
-            previewDiv.onclick = () => openSingleImage(directUrl, `${kalamela.title} Official Poster`);
-          }
-        }
-      }
+      applySyncedSheetData(data);
+      try {
+        localStorage.setItem('sakhyam_sheet_cache_v2', JSON.stringify(data));
+      } catch (err) {}
     } catch (e) {
-      console.warn("Live Google Sheet sync info:", e);
+      console.warn("Live Google Sheet fetch info:", e);
     }
   }
 

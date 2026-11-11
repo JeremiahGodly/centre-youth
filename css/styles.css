@@ -351,6 +351,52 @@ button, input, select, textarea {
   box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
 }
 
+/* Language Quick Toggle Button (Placed near Theme Toggle) */
+.lang-quick-toggle {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  height: 38px;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+.lang-quick-toggle:hover {
+  background: var(--gold-500);
+  color: #0b0f19;
+  border-color: var(--gold-400);
+  transform: translateY(-1px);
+}
+
+.lang-quick-toggle .lang-globe-icon {
+  flex-shrink: 0;
+  color: var(--gold-400);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.lang-quick-toggle:hover .lang-globe-icon {
+  color: #0b0f19;
+  transform: rotate(20deg);
+}
+
+.lang-quick-label {
+  display: inline-block;
+  line-height: 1;
+}
+
 /* Theme Toggle Button */
 .theme-toggle {
   background: var(--bg-surface-elevated);
@@ -1209,91 +1255,555 @@ button, input, select, textarea {
   box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
 }
 
-.parishes-grid {
+/* ==========================================================================
+   Upcoming Programs & Events (Google Sheet Live Sync)
+   ========================================================================== */
+.programs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 1.5rem;
+  margin-top: 1rem;
 }
 
-.parish-card {
+.program-card {
   padding: 1.75rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-radius: var(--radius-lg);
+  position: relative;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.parish-card-header {
+.program-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-400);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+}
+
+.program-card-badge-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.program-category-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--gold-400);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.program-date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.program-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.3;
+  margin-bottom: 0.35rem;
+}
+
+.program-title-ml {
+  font-size: 0.95rem;
+  color: var(--gold-400);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.program-venue {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
+}
+
+.program-venue svg {
+  color: var(--cyan-400);
+  flex-shrink: 0;
+}
+
+.program-desc {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.program-speakers {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--gold-300);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-sm);
   margin-bottom: 1rem;
 }
 
+.program-poster-preview {
+  margin-bottom: 1.25rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  max-height: 220px;
+  cursor: pointer;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.program-poster-preview img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.program-poster-preview:hover img {
+  transform: scale(1.03);
+}
+
+.program-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-glass);
+}
+
+/* ==========================================================================
+   Collapsible Parish Cards (15 Parishes)
+   ========================================================================== */
+.parishes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 1.25rem;
+}
+
+.parish-card {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-fast);
+}
+
+.parish-card:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.parish-card.is-expanded {
+  border-color: rgba(245, 158, 11, 0.7);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+}
+
+.parish-card-header {
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  background: transparent;
+  transition: background var(--transition-fast);
+}
+
+.parish-card-header:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.parish-header-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  flex: 1;
+  min-width: 0;
+}
+
 .parish-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: var(--radius-sm);
-  background: rgba(245, 158, 11, 0.12);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--gold-500);
+  color: var(--gold-400);
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
-.parish-tag {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-accent);
+.parish-title-wrap {
+  flex: 1;
+  min-width: 0;
 }
 
 .parish-title {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.08rem;
   font-weight: 800;
-  margin-bottom: 0.65rem;
+  margin: 0;
   line-height: 1.35;
+  color: var(--text-main);
 }
 
-.parish-meta {
+.parish-subtitle {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--gold-400);
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+
+.parish-meta-pills {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
+  gap: 0.45rem;
+  margin-top: 0.45rem;
+}
+
+.parish-location-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
-  margin-bottom: 1.25rem;
-}
-
-.parish-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid var(--border-glass);
-  padding-top: 0.85rem;
 }
 
 .parish-badge {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: var(--cyan-400);
+  background: rgba(56, 189, 248, 0.1);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
 }
 
-.parish-map-btn {
-  width: 32px;
-  height: 32px;
+.parish-expand-indicator {
+  flex-shrink: 0;
+}
+
+.parish-expand-btn {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-glass);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-main);
+  color: var(--text-secondary);
+  cursor: pointer;
   transition: all var(--transition-fast);
 }
 
-.parish-map-btn:hover {
+.parish-card.is-expanded .parish-expand-btn {
   background: var(--gold-500);
   color: #0b0f19;
-  transform: scale(1.1);
+  border-color: var(--gold-400);
+}
+
+.parish-card .chevron-icon {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.parish-card.is-expanded .chevron-icon {
+  transform: rotate(180deg);
+}
+
+/* Collapsible Drawer */
+.parish-collapse-drawer {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+}
+
+.parish-card.is-expanded .parish-collapse-drawer {
+  max-height: 1400px;
+  opacity: 1;
+}
+
+.parish-drawer-inner {
+  padding: 0 1.25rem 1.25rem 1.25rem;
+  cursor: default;
+}
+
+.parish-drawer-divider {
+  height: 1px;
+  background: var(--border-glass);
+  margin-bottom: 1rem;
+}
+
+.parish-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.65rem;
+}
+
+.section-heading-left {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--gold-400);
+}
+
+.section-heading-left h5 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.section-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.parish-action-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-glass);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-400);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.parish-action-icon-btn:hover {
+  background: var(--gold-500);
+  color: #0b0f19;
+}
+
+.parish-action-icon-btn.directions-btn {
+  color: var(--cyan-400);
+}
+
+.parish-action-icon-btn.directions-btn:hover {
+  background: var(--cyan-400);
+  color: #0b0f19;
+}
+
+.parish-leaders-list {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 1.1rem;
+}
+
+.parish-leader-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.parish-leader-row .name-col {
+  flex: 1;
+  min-width: 140px;
+  color: var(--text-main);
+}
+
+.badge-role {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-role.president {
+  background: rgba(245, 158, 11, 0.18);
+  color: var(--gold-400);
+}
+
+.badge-role.vp {
+  background: rgba(56, 189, 248, 0.18);
+  color: #38bdf8;
+}
+
+.badge-role.sec {
+  background: rgba(34, 197, 94, 0.18);
+  color: #22c55e;
+}
+
+.badge-role.trea {
+  background: rgba(168, 85, 247, 0.18);
+  color: #c084fc;
+}
+
+.leader-call-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--gold-400);
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.leader-call-pill:hover {
+  background: var(--gold-500);
+  color: #0b0f19;
+}
+
+.parish-activities-section {
+  margin-top: 0.5rem;
+}
+
+.activities-count-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--gold-400);
+}
+
+.parish-activity-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  margin-bottom: 0.65rem;
+}
+
+.activity-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.activity-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.activity-cat-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  background: var(--bg-surface-elevated);
+  color: var(--text-secondary);
+}
+
+.activity-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.activity-meta-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.activity-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-bottom: 0.35rem;
+}
+
+.activity-coord {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--gold-400);
+}
+
+.activity-poster-preview {
+  margin-top: 0.65rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  max-height: 180px;
+  cursor: pointer;
+}
+
+.activity-poster-preview img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.activity-poster-preview:hover img {
+  transform: scale(1.03);
+}
+
+.parish-activity-empty {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed var(--border-glass);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+.parish-activity-empty strong {
+  display: block;
+  color: var(--text-main);
+  margin-bottom: 0.2rem;
+}
+
+.parish-activity-empty p {
+  margin: 0;
+  line-height: 1.4;
+  color: var(--text-muted);
 }
 
 /* ==========================================================================
@@ -3598,19 +4108,29 @@ textarea.form-control {
   }
 
   .parishes-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.65rem;
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem;
   }
   .parish-card {
-    padding: 0.85rem;
+    padding: 0;
+  }
+  .parish-card-header {
+    padding: 1rem 0.85rem;
   }
   .parish-title {
-    font-size: 0.88rem;
-    margin-bottom: 0.3rem;
+    font-size: 0.96rem;
+    margin-bottom: 0.15rem;
   }
   .parish-meta {
     font-size: 0.72rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+  .programs-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.85rem;
+  }
+  .program-card {
+    padding: 1.15rem;
   }
 
   .leaders-grid {
