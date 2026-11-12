@@ -18,9 +18,12 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
@@ -36,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.media3.common.MediaItem
@@ -49,6 +53,7 @@ import com.google.common.util.concurrent.MoreExecutors
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.marthoma.centreyouth.data.CentreRepository
+import org.marthoma.centreyouth.data.model.AppThemeMode
 import org.marthoma.centreyouth.data.model.QuizLanguage
 import org.marthoma.centreyouth.data.model.Song
 import org.marthoma.centreyouth.service.AudioPlaybackService
@@ -66,6 +71,10 @@ enum class Screen(val title: String, val iconRes: Int) {
     SONGS("Songs", R.drawable.ic_nav_songs),
     PARISHES("Parishes", R.drawable.ic_nav_church),
     MORE("More", R.drawable.ic_nav_more),
+    PRAYER_WALL("Prayer Wall", R.drawable.ic_stat_scripture),
+    GALLERY("Centre Gallery", R.drawable.ic_stat_scripture),
+    LEADERBOARD("Quiz Leaderboard", R.drawable.ic_nav_quiz),
+    SETTINGS("App Settings", R.drawable.ic_stat_scripture),
     LEADERSHIP("Leadership", R.drawable.ic_stat_scripture),
     EVENTS("Events", R.drawable.ic_stat_scripture),
     ABOUT("About", R.drawable.ic_stat_scripture),
@@ -84,6 +93,7 @@ class MainActivity : ComponentActivity() {
     private var currentPositionState = mutableLongStateOf(0L)
     private var durationState = mutableLongStateOf(0L)
     private var activeScreenState = mutableStateOf(Screen.HOME)
+    private var themeModeState = mutableStateOf(AppThemeMode.SYSTEM)
 
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -100,6 +110,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         repository = CentreRepository(this)
+        themeModeState.value = repository.getThemeMode()
         handleIntent(intent)
         checkNotificationPermission()
         initializeMediaController()
@@ -107,7 +118,14 @@ class MainActivity : ComponentActivity() {
         val hasDirectNavigation = intent?.data != null || intent?.getStringExtra("navigate_to") != null
 
         setContent {
-            CentreYouthTheme {
+            val activeThemeMode by themeModeState
+            val useDarkTheme = when (activeThemeMode) {
+                AppThemeMode.SYSTEM -> isSystemInDarkTheme()
+                AppThemeMode.DARK -> true
+                AppThemeMode.LIGHT -> false
+            }
+
+            CentreYouthTheme(darkTheme = useDarkTheme) {
                 var showStartupEntry by rememberSaveable { mutableStateOf(!hasDirectNavigation) }
 
                 Crossfade(
@@ -265,8 +283,19 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        BackHandler(enabled = currentScreen == Screen.LECTIONARY) {
-            currentScreen = Screen.HOME
+        val moreSubScreens = setOf(
+            Screen.PRAYER_WALL,
+            Screen.GALLERY,
+            Screen.LEADERBOARD,
+            Screen.SETTINGS,
+            Screen.LEADERSHIP,
+            Screen.EVENTS,
+            Screen.ABOUT,
+            Screen.POLICY
+        )
+
+        BackHandler(enabled = currentScreen == Screen.LECTIONARY || currentScreen in moreSubScreens) {
+            currentScreen = if (currentScreen == Screen.LECTIONARY) Screen.HOME else Screen.MORE
         }
 
         Scaffold(
@@ -297,11 +326,15 @@ class MainActivity : ComponentActivity() {
                 } else if (currentScreen != Screen.POLICY) {
                     CenterAlignedTopAppBar(
                         navigationIcon = {
-                            if (currentScreen == Screen.LECTIONARY) {
-                                IconButton(onClick = { currentScreen = Screen.HOME }) {
+                            if (currentScreen == Screen.LECTIONARY || currentScreen in moreSubScreens) {
+                                IconButton(
+                                    onClick = {
+                                        currentScreen = if (currentScreen == Screen.LECTIONARY) Screen.HOME else Screen.MORE
+                                    }
+                                ) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = "Back to Home"
+                                        contentDescription = "Back"
                                     )
                                 }
                             }
@@ -314,6 +347,10 @@ class MainActivity : ComponentActivity() {
                                     Screen.LECTIONARY -> "Liturgical Lectionary"
                                     Screen.SONGS -> "Youth Songs"
                                     Screen.PARISHES -> "Centre Parishes"
+                                    Screen.PRAYER_WALL -> "Prayer Wall"
+                                    Screen.GALLERY -> "Centre Gallery"
+                                    Screen.LEADERBOARD -> "Quiz Leaderboard"
+                                    Screen.SETTINGS -> "App Settings"
                                     Screen.LEADERSHIP -> "Leadership"
                                     Screen.EVENTS -> "Events & Camps"
                                     Screen.ABOUT -> "About Sakhyam"
@@ -364,7 +401,7 @@ class MainActivity : ComponentActivity() {
                                     )
                                 },
                                 label = { Text(screen.title) },
-                                selected = currentScreen == screen || (screen == Screen.MORE && (currentScreen == Screen.LEADERSHIP || currentScreen == Screen.EVENTS || currentScreen == Screen.ABOUT)),
+                                selected = currentScreen == screen || (screen == Screen.MORE && currentScreen in moreSubScreens),
                                 onClick = { currentScreen = screen }
                             )
                         }
@@ -399,6 +436,16 @@ class MainActivity : ComponentActivity() {
                         onSongSelected = { song -> playSong(song) }
                     )
                     Screen.PARISHES -> ParishesScreen(repository = repository)
+                    Screen.PRAYER_WALL -> PrayerWallScreen(repository = repository)
+                    Screen.GALLERY -> GalleryScreen(repository = repository)
+                    Screen.LEADERBOARD -> LeaderboardScreen(repository = repository)
+                    Screen.SETTINGS -> SettingsScreen(
+                        repository = repository,
+                        currentThemeMode = themeModeState.value,
+                        onThemeModeChanged = { themeModeState.value = it },
+                        currentQuizLanguage = quizLanguage,
+                        onQuizLanguageChanged = { quizLanguage = it }
+                    )
                     Screen.LEADERSHIP -> LeadershipScreen(repository = repository)
                     Screen.EVENTS -> EventsScreen(repository = repository)
                     Screen.ABOUT -> AboutScreen(
@@ -408,6 +455,10 @@ class MainActivity : ComponentActivity() {
                     Screen.POLICY -> PolicyScreen(onBack = { currentScreen = Screen.MORE })
                     Screen.MORE -> MoreMenuScreen(
                         repository = repository,
+                        onNavigateToPrayerWall = { currentScreen = Screen.PRAYER_WALL },
+                        onNavigateToGallery = { currentScreen = Screen.GALLERY },
+                        onNavigateToLeaderboard = { currentScreen = Screen.LEADERBOARD },
+                        onNavigateToSettings = { currentScreen = Screen.SETTINGS },
                         onNavigateToLeadership = { currentScreen = Screen.LEADERSHIP },
                         onNavigateToEvents = { currentScreen = Screen.EVENTS },
                         onNavigateToAbout = { currentScreen = Screen.ABOUT },
@@ -448,6 +499,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MoreMenuScreen(
     repository: CentreRepository,
+    onNavigateToPrayerWall: () -> Unit,
+    onNavigateToGallery: () -> Unit,
+    onNavigateToLeaderboard: () -> Unit,
+    onNavigateToSettings: () -> Unit,
     onNavigateToLeadership: () -> Unit,
     onNavigateToEvents: () -> Unit,
     onNavigateToAbout: () -> Unit,
@@ -461,8 +516,9 @@ fun MoreMenuScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp)
+            .verticalScroll(rememberScrollState())
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 100.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
             text = "Explore Keezhillam - Munnar Centre",
@@ -546,6 +602,9 @@ fun MoreMenuScreen(
                                 repository.syncProgramsFromGoogleSheet()
                                 repository.syncLeadersFromGoogleSheet()
                                 repository.syncParishesFromGoogleSheet()
+                                repository.syncPrayerWallFromGoogleSheet()
+                                repository.syncGalleryFromGoogleSheet()
+                                repository.syncLeaderboardFromGoogleSheet()
                                 lastSyncedText = repository.getLastSyncedFormatted()
                                 isCheckingSync = false
                                 Toast.makeText(context, "Checked: Up to date", Toast.LENGTH_SHORT).show()
@@ -573,6 +632,38 @@ fun MoreMenuScreen(
         }
 
         Spacer(modifier = Modifier.height(2.dp))
+
+        MoreMenuItem(
+            title = "Prayer Wall & Requests",
+            subtitle = "Submit prayer requests anonymously or by parish",
+            iconRes = R.drawable.ic_stat_scripture,
+            emojiIcon = "🙏",
+            onClick = onNavigateToPrayerWall
+        )
+
+        MoreMenuItem(
+            title = "Centre Photo Gallery",
+            subtitle = "C-SHORE Camp, Kalamela & Google Drive memories",
+            iconRes = R.drawable.ic_stat_scripture,
+            emojiIcon = "📸",
+            onClick = onNavigateToGallery
+        )
+
+        MoreMenuItem(
+            title = "Quiz Leaderboard",
+            subtitle = "Centre-wide Bible Quiz scores synced with Google Sheet",
+            iconRes = R.drawable.ic_nav_quiz,
+            emojiIcon = "🏆",
+            onClick = onNavigateToLeaderboard
+        )
+
+        MoreMenuItem(
+            title = "App Settings",
+            subtitle = "Dark / Light / System theme, notifications & cloud sync",
+            iconRes = R.drawable.ic_nav_more,
+            emojiIcon = "⚙️",
+            onClick = onNavigateToSettings
+        )
 
         MoreMenuItem(
             title = "Leadership & Office Bearers",
@@ -609,6 +700,7 @@ fun MoreMenuItem(
     title: String,
     subtitle: String,
     iconRes: Int,
+    emojiIcon: String? = null,
     onClick: () -> Unit
 ) {
     Surface(
@@ -631,12 +723,16 @@ fun MoreMenuItem(
                     .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    painter = painterResource(id = iconRes),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
-                )
+                if (emojiIcon != null) {
+                    Text(text = emojiIcon, fontSize = 21.sp)
+                } else {
+                    Icon(
+                        painter = painterResource(id = iconRes),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -655,7 +751,7 @@ fun MoreMenuItem(
             }
 
             Icon(
-                imageVector = Icons.Default.ArrowForward,
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )

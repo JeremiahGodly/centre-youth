@@ -29,6 +29,9 @@ class CentreRepository(private val context: Context) {
     private var cachedLectionary: List<LectionaryEntry> = emptyList()
     private var cachedSongs: List<Song> = emptyList()
     private var cachedPrograms: List<ProgramEvent> = emptyList()
+    private var cachedPrayerWall: List<PrayerRequest> = emptyList()
+    private var cachedGalleryPhotos: List<GalleryPhoto> = emptyList()
+    private var cachedLeaderboard: List<LeaderboardEntry> = emptyList()
 
     // Configurable Google Sheet Web App / JSON URL
     private val PREF_SHEET_URL = "google_sheet_programs_url"
@@ -102,6 +105,55 @@ class CentreRepository(private val context: Context) {
             }
             if (cachedPrograms.isEmpty()) {
                 cachedPrograms = buildInitialDefaultPrograms(root)
+            }
+
+            // Load Prayer Wall
+            val cachedPrayerJson = prefs.getString("cached_prayer_wall_json", null)
+            if (!cachedPrayerJson.isNullOrBlank()) {
+                val pType = object : TypeToken<List<PrayerRequest>>() {}.type
+                cachedPrayerWall = gson.fromJson(cachedPrayerJson, pType)
+            }
+            if (cachedPrayerWall.isEmpty()) {
+                cachedPrayerWall = buildDefaultPrayerRequests()
+            }
+
+            // Load Gallery Photos (Sheet/Drive cache first, else bundled sakhyam_data.json gallery)
+            val cachedGalleryJson = prefs.getString("cached_gallery_json", null)
+            if (!cachedGalleryJson.isNullOrBlank()) {
+                val gType = object : TypeToken<List<GalleryPhoto>>() {}.type
+                cachedGalleryPhotos = gson.fromJson(cachedGalleryJson, gType)
+            }
+            if (cachedGalleryPhotos.isEmpty() && root.has("gallery")) {
+                val gArray = root.getJSONArray("gallery")
+                val gList = mutableListOf<GalleryPhoto>()
+                for (i in 0 until gArray.length()) {
+                    val obj = gArray.getJSONObject(i)
+                    gList.add(
+                        GalleryPhoto(
+                            id = obj.optString("id", "gal-$i"),
+                            title = obj.optString("titleEn", ""),
+                            titleMl = obj.optString("titleMl", ""),
+                            category = obj.optString("category", "Memories").replaceFirstChar { it.uppercase() },
+                            date = "2026",
+                            imageUrl = obj.optString("src", ""),
+                            caption = obj.optString("titleEn", ""),
+                            isActive = true
+                        )
+                    )
+                }
+                cachedGalleryPhotos = gList
+            }
+
+            // Load Leaderboard
+            val cachedLeaderboardJson = prefs.getString("cached_leaderboard_json", null)
+            if (!cachedLeaderboardJson.isNullOrBlank()) {
+                val lbType = object : TypeToken<List<LeaderboardEntry>>() {}.type
+                val lList: List<LeaderboardEntry> = gson.fromJson(cachedLeaderboardJson, lbType)
+                cachedLeaderboard = lList.sortedWith(
+                    compareByDescending<LeaderboardEntry> { it.score }
+                        .thenByDescending { it.stars }
+                        .thenByDescending { it.highestLevel }
+                )
             }
 
         } catch (e: Exception) {
@@ -337,6 +389,37 @@ class CentreRepository(private val context: Context) {
                             .apply()
                     }
                 }
+                if (root.has("prayerWall")) {
+                    val pwArray = root.getJSONArray("prayerWall").toString()
+                    val pwType = object : TypeToken<List<PrayerRequest>>() {}.type
+                    val pwList: List<PrayerRequest> = gson.fromJson(pwArray, pwType)
+                    if (pwList.isNotEmpty()) {
+                        cachedPrayerWall = pwList
+                        prefs.edit().putString("cached_prayer_wall_json", pwArray).apply()
+                    }
+                }
+                if (root.has("gallery")) {
+                    val galArray = root.getJSONArray("gallery").toString()
+                    val galType = object : TypeToken<List<GalleryPhoto>>() {}.type
+                    val gList: List<GalleryPhoto> = gson.fromJson(galArray, galType)
+                    if (gList.isNotEmpty()) {
+                        cachedGalleryPhotos = gList
+                        prefs.edit().putString("cached_gallery_json", galArray).apply()
+                    }
+                }
+                if (root.has("leaderboard")) {
+                    val lbArray = root.getJSONArray("leaderboard").toString()
+                    val lbType = object : TypeToken<List<LeaderboardEntry>>() {}.type
+                    val lbList: List<LeaderboardEntry> = gson.fromJson(lbArray, lbType)
+                    if (lbList.isNotEmpty()) {
+                        cachedLeaderboard = lbList.sortedWith(
+                            compareByDescending<LeaderboardEntry> { it.score }
+                                .thenByDescending { it.stars }
+                                .thenByDescending { it.highestLevel }
+                        )
+                        prefs.edit().putString("cached_leaderboard_json", lbArray).apply()
+                    }
+                }
                 Result.success(cachedPrograms)
             } else if (jsonText.startsWith("[")) {
                 val progType = object : TypeToken<List<ProgramEvent>>() {}.type
@@ -529,5 +612,397 @@ class CentreRepository(private val context: Context) {
 
     fun saveQuizLanguage(language: QuizLanguage) {
         prefs.edit().putString("quiz_language", language.name).apply()
+    }
+
+    fun getHighestQuizLevel(): Int {
+        return (10 downTo 1).firstOrNull { getQuizBestScore(it) > 0 } ?: 1
+    }
+
+    fun getPlayerName(): String = prefs.getString("player_profile_name", "") ?: ""
+
+    fun getPlayerParish(): String = prefs.getString("player_profile_parish", "") ?: ""
+
+    fun savePlayerProfile(name: String, parish: String) {
+        prefs.edit()
+            .putString("player_profile_name", name.trim())
+            .putString("player_profile_parish", parish.trim())
+            .apply()
+    }
+
+    // ==================== APP SETTINGS (THEME & NOTIFICATIONS) ====================
+
+    fun getThemeMode(): AppThemeMode {
+        val raw = prefs.getString("app_theme_mode", AppThemeMode.SYSTEM.name)
+        return try {
+            AppThemeMode.valueOf(raw ?: AppThemeMode.SYSTEM.name)
+        } catch (_: Exception) {
+            AppThemeMode.SYSTEM
+        }
+    }
+
+    fun saveThemeMode(mode: AppThemeMode) {
+        prefs.edit().putString("app_theme_mode", mode.name).apply()
+    }
+
+    fun isDailyNotificationsEnabled(): Boolean = prefs.getBoolean("daily_notifications_enabled", true)
+
+    fun setDailyNotificationsEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean("daily_notifications_enabled", enabled).apply()
+    }
+
+    fun getDefaultSheetUrl(): String = DEFAULT_SHEET_URL
+
+    fun resetGoogleSheetUrl() {
+        prefs.edit().remove(PREF_SHEET_URL).apply()
+    }
+
+    // ==================== PRAYER WALL ====================
+
+    private fun buildDefaultPrayerRequests(): List<PrayerRequest> {
+        return listOf(
+            PrayerRequest(
+                id = "pw-1",
+                name = "Centre Prayer Cell",
+                parish = "Keezhillam Nazareth MTC",
+                category = "Church & Youth",
+                request = "Pray for the spiritual growth of all youth across the 15 parishes in Keezhillam - Munnar Centre and upcoming Kalamela & Camp preparations.",
+                date = "Today",
+                prayedCount = 18
+            ),
+            PrayerRequest(
+                id = "pw-2",
+                name = "Anonymous",
+                parish = "Perumbavoor St. Paul's MTC",
+                category = "Exams / Career",
+                request = "Please uphold our youth preparing for university, board, and competitive examinations for wisdom, peace, and strength.",
+                date = "Recent",
+                prayedCount = 12
+            ),
+            PrayerRequest(
+                id = "pw-3",
+                name = "Fellowship Member",
+                parish = "Valakom MTC",
+                category = "Healing",
+                request = "Praying for complete healing and comfort for all sick elders and hospitalized members in our parishes.",
+                date = "Recent",
+                prayedCount = 24
+            )
+        )
+    }
+
+    fun getPrayerRequests(): List<PrayerRequest> = cachedPrayerWall.filter { it.isActive }
+
+    fun hasPrayedFor(prayerId: String): Boolean {
+        val prayedSet = prefs.getStringSet("prayed_prayer_ids", emptySet()) ?: emptySet()
+        return prayedSet.contains(prayerId)
+    }
+
+    suspend fun markPrayerAsPrayed(prayerId: String) = withContext(Dispatchers.IO) {
+        val prayedSet = (prefs.getStringSet("prayed_prayer_ids", emptySet()) ?: emptySet()).toMutableSet()
+        if (prayedSet.contains(prayerId)) return@withContext
+
+        prayedSet.add(prayerId)
+        cachedPrayerWall = cachedPrayerWall.map {
+            if (it.id == prayerId) it.copy(prayedCount = it.prayedCount + 1) else it
+        }
+        prefs.edit()
+            .putStringSet("prayed_prayer_ids", prayedSet)
+            .putString("cached_prayer_wall_json", gson.toJson(cachedPrayerWall))
+            .apply()
+
+        try {
+            val baseUrl = getGoogleSheetUrl()
+            if (baseUrl.isNotBlank()) {
+                val payload = JSONObject().apply {
+                    put("action", "prayIncrement")
+                    put("id", prayerId)
+                }
+                postJsonToSheet(baseUrl, payload.toString())
+            }
+        } catch (_: Exception) {
+            // Local count already updated gracefully
+        }
+    }
+
+    suspend fun syncPrayerWallFromGoogleSheet(): Result<List<PrayerRequest>> = withContext(Dispatchers.IO) {
+        val baseUrl = getGoogleSheetUrl()
+        if (baseUrl.isBlank()) return@withContext Result.failure(Exception("No Google Sheet URL configured"))
+        val endpoint = if (baseUrl.contains("?")) "$baseUrl&tab=prayerwall" else "$baseUrl?tab=prayerwall"
+
+        try {
+            val jsonText = fetchUrlWithRedirects(endpoint).trim()
+            if (jsonText.startsWith("[")) {
+                val pwType = object : TypeToken<List<PrayerRequest>>() {}.type
+                val list: List<PrayerRequest> = gson.fromJson(jsonText, pwType)
+                if (list.isNotEmpty()) {
+                    cachedPrayerWall = list
+                    prefs.edit().putString("cached_prayer_wall_json", jsonText).apply()
+                }
+                Result.success(cachedPrayerWall)
+            } else if (jsonText.startsWith("{")) {
+                val root = JSONObject(jsonText)
+                if (root.has("prayerWall")) {
+                    val arr = root.getJSONArray("prayerWall").toString()
+                    val pwType = object : TypeToken<List<PrayerRequest>>() {}.type
+                    val list: List<PrayerRequest> = gson.fromJson(arr, pwType)
+                    if (list.isNotEmpty()) {
+                        cachedPrayerWall = list
+                        prefs.edit().putString("cached_prayer_wall_json", arr).apply()
+                    }
+                    Result.success(cachedPrayerWall)
+                } else {
+                    Result.success(cachedPrayerWall)
+                }
+            } else {
+                Result.failure(Exception("Invalid Prayer Wall response"))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure(e)
+        }
+    }
+
+    suspend fun submitPrayerRequest(
+        name: String,
+        parish: String,
+        category: String,
+        request: String
+    ): Result<PrayerRequest> = withContext(Dispatchers.IO) {
+        val cleanName = name.trim().ifBlank { "Anonymous" }
+        val cleanParish = parish.trim().ifBlank { "Centre General" }
+        val cleanCategory = category.trim().ifBlank { "General" }
+        val cleanRequest = request.trim()
+        val dateStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val newEntry = PrayerRequest(
+            id = "pw-${System.currentTimeMillis()}",
+            name = cleanName,
+            parish = cleanParish,
+            category = cleanCategory,
+            request = cleanRequest,
+            date = dateStr,
+            prayedCount = 1,
+            isActive = true
+        )
+
+        // Update local wall immediately for instant visual feedback
+        cachedPrayerWall = listOf(newEntry) + cachedPrayerWall
+        prefs.edit().putString("cached_prayer_wall_json", gson.toJson(cachedPrayerWall)).apply()
+
+        val baseUrl = getGoogleSheetUrl()
+        if (baseUrl.isBlank()) {
+            return@withContext Result.success(newEntry)
+        }
+
+        try {
+            val payload = JSONObject().apply {
+                put("action", "submitPrayer")
+                put("id", newEntry.id)
+                put("name", cleanName)
+                put("parish", cleanParish)
+                put("category", cleanCategory)
+                put("request", cleanRequest)
+                put("date", dateStr)
+            }
+            postJsonToSheet(baseUrl, payload.toString())
+            Result.success(newEntry)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Prayer saved locally; report failure only so UI can note "Saved locally"
+            Result.failure(e)
+        }
+    }
+
+    // ==================== CENTRE PHOTO GALLERY (DRIVE + SHEET) ====================
+
+    fun getGalleryPhotos(): List<GalleryPhoto> = cachedGalleryPhotos.filter { it.isActive && it.imageUrl.isNotBlank() }
+
+    suspend fun syncGalleryFromGoogleSheet(): Result<List<GalleryPhoto>> = withContext(Dispatchers.IO) {
+        val baseUrl = getGoogleSheetUrl()
+        if (baseUrl.isBlank()) return@withContext Result.failure(Exception("No Google Sheet URL configured"))
+        val endpoint = if (baseUrl.contains("?")) "$baseUrl&tab=gallery" else "$baseUrl?tab=gallery"
+
+        try {
+            val jsonText = fetchUrlWithRedirects(endpoint).trim()
+            if (jsonText.startsWith("[")) {
+                val gType = object : TypeToken<List<GalleryPhoto>>() {}.type
+                val list: List<GalleryPhoto> = gson.fromJson(jsonText, gType)
+                if (list.isNotEmpty()) {
+                    cachedGalleryPhotos = list
+                    prefs.edit().putString("cached_gallery_json", jsonText).apply()
+                }
+                Result.success(cachedGalleryPhotos)
+            } else if (jsonText.startsWith("{")) {
+                val root = JSONObject(jsonText)
+                if (root.has("gallery")) {
+                    val arr = root.getJSONArray("gallery").toString()
+                    val gType = object : TypeToken<List<GalleryPhoto>>() {}.type
+                    val list: List<GalleryPhoto> = gson.fromJson(arr, gType)
+                    if (list.isNotEmpty()) {
+                        cachedGalleryPhotos = list
+                        prefs.edit().putString("cached_gallery_json", arr).apply()
+                    }
+                    Result.success(cachedGalleryPhotos)
+                } else {
+                    Result.success(cachedGalleryPhotos)
+                }
+            } else {
+                Result.failure(Exception("Invalid gallery JSON"))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure(e)
+        }
+    }
+
+    // ==================== QUIZ LEADERBOARD (GOOGLE SHEET) ====================
+
+    fun getLeaderboard(): List<LeaderboardEntry> {
+        return cachedLeaderboard.sortedWith(
+            compareByDescending<LeaderboardEntry> { it.score }
+                .thenByDescending { it.stars }
+                .thenByDescending { it.highestLevel }
+        )
+    }
+
+    suspend fun syncLeaderboardFromGoogleSheet(): Result<List<LeaderboardEntry>> = withContext(Dispatchers.IO) {
+        val baseUrl = getGoogleSheetUrl()
+        if (baseUrl.isBlank()) return@withContext Result.failure(Exception("No Google Sheet URL configured"))
+        val endpoint = if (baseUrl.contains("?")) "$baseUrl&tab=leaderboard" else "$baseUrl?tab=leaderboard"
+
+        try {
+            val jsonText = fetchUrlWithRedirects(endpoint).trim()
+            if (jsonText.startsWith("[")) {
+                val lbType = object : TypeToken<List<LeaderboardEntry>>() {}.type
+                val list: List<LeaderboardEntry> = gson.fromJson(jsonText, lbType)
+                if (list.isNotEmpty()) {
+                    cachedLeaderboard = list.sortedWith(
+                        compareByDescending<LeaderboardEntry> { it.score }
+                            .thenByDescending { it.stars }
+                            .thenByDescending { it.highestLevel }
+                    )
+                    prefs.edit().putString("cached_leaderboard_json", gson.toJson(cachedLeaderboard)).apply()
+                }
+                Result.success(getLeaderboard())
+            } else if (jsonText.startsWith("{")) {
+                val root = JSONObject(jsonText)
+                if (root.has("leaderboard")) {
+                    val arr = root.getJSONArray("leaderboard").toString()
+                    val lbType = object : TypeToken<List<LeaderboardEntry>>() {}.type
+                    val list: List<LeaderboardEntry> = gson.fromJson(arr, lbType)
+                    if (list.isNotEmpty()) {
+                        cachedLeaderboard = list.sortedWith(
+                            compareByDescending<LeaderboardEntry> { it.score }
+                                .thenByDescending { it.stars }
+                                .thenByDescending { it.highestLevel }
+                        )
+                        prefs.edit().putString("cached_leaderboard_json", gson.toJson(cachedLeaderboard)).apply()
+                    }
+                    Result.success(getLeaderboard())
+                } else {
+                    Result.success(getLeaderboard())
+                }
+            } else {
+                Result.failure(Exception("Invalid leaderboard JSON"))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure(e)
+        }
+    }
+
+    suspend fun submitQuizLeaderboardScore(
+        name: String,
+        parish: String
+    ): Result<LeaderboardEntry> = withContext(Dispatchers.IO) {
+        val cleanName = name.trim()
+        val cleanParish = parish.trim().ifBlank { "Centre Youth" }
+        savePlayerProfile(cleanName, cleanParish)
+
+        val totalScore = getQuizTotalScore()
+        val totalStars = getQuizTotalStars()
+        val maxLvl = getHighestQuizLevel()
+        val dateStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        val entry = LeaderboardEntry(
+            id = "${cleanName.lowercase()}-${cleanParish.lowercase()}",
+            name = cleanName,
+            parish = cleanParish,
+            score = totalScore,
+            stars = totalStars,
+            highestLevel = maxLvl,
+            updatedAt = dateStr
+        )
+
+        // Upsert locally
+        val mutable = cachedLeaderboard.toMutableList()
+        val existingIdx = mutable.indexOfFirst {
+            it.name.equals(cleanName, ignoreCase = true) && it.parish.equals(cleanParish, ignoreCase = true)
+        }
+        if (existingIdx != -1) {
+            mutable[existingIdx] = entry
+        } else {
+            mutable.add(entry)
+        }
+        cachedLeaderboard = mutable.sortedWith(
+            compareByDescending<LeaderboardEntry> { it.score }
+                .thenByDescending { it.stars }
+                .thenByDescending { it.highestLevel }
+        )
+        prefs.edit().putString("cached_leaderboard_json", gson.toJson(cachedLeaderboard)).apply()
+
+        val baseUrl = getGoogleSheetUrl()
+        if (baseUrl.isBlank()) {
+            return@withContext Result.success(entry)
+        }
+
+        try {
+            val payload = JSONObject().apply {
+                put("action", "submitScore")
+                put("name", cleanName)
+                put("parish", cleanParish)
+                put("score", totalScore)
+                put("stars", totalStars)
+                put("highestLevel", maxLvl)
+                put("updatedAt", dateStr)
+            }
+            postJsonToSheet(baseUrl, payload.toString())
+            Result.success(entry)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure(e)
+        }
+    }
+
+    private fun postJsonToSheet(urlString: String, jsonBody: String): String {
+        val url = URL(urlString)
+        val conn = url.openConnection() as HttpURLConnection
+        conn.requestMethod = "POST"
+        conn.doOutput = true
+        conn.instanceFollowRedirects = false
+        conn.connectTimeout = 10000
+        conn.readTimeout = 10000
+        conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8")
+        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Android; Mobile)")
+
+        conn.outputStream.use { os ->
+            os.write(jsonBody.toByteArray(Charsets.UTF_8))
+            os.flush()
+        }
+
+        val status = conn.responseCode
+        if (status == HttpURLConnection.HTTP_MOVED_TEMP ||
+            status == HttpURLConnection.HTTP_MOVED_PERM ||
+            status == HttpURLConnection.HTTP_SEE_OTHER ||
+            status == 307 || status == 308
+        ) {
+            val redirectUrl = conn.getHeaderField("Location")
+            if (!redirectUrl.isNullOrBlank()) {
+                return fetchUrlWithRedirects(redirectUrl)
+            }
+        }
+        if (status in 200..299) {
+            return conn.inputStream.bufferedReader().use { it.readText() }
+        }
+        throw Exception("HTTP POST Error: $status")
     }
 }

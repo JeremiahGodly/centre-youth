@@ -245,3 +245,56 @@ data class ProgramEvent(
         }
     }
 }
+
+enum class AppThemeMode(val label: String, val labelMl: String) {
+    SYSTEM("System Default", "സിസ്റ്റം തീം"),
+    LIGHT("Light Mode", "ലൈറ്റ് മോഡ്"),
+    DARK("Dark Mode", "ഡാർക്ക് മോഡ്")
+}
+
+data class PrayerRequest(
+    val id: String = "",
+    val name: String = "Anonymous",
+    val parish: String = "Centre General",
+    val category: String = "General",
+    val request: String = "",
+    val date: String = "",
+    val prayedCount: Int = 0,
+    val isActive: Boolean = true
+)
+
+data class GalleryPhoto(
+    val id: String = "",
+    val title: String = "",
+    val titleMl: String = "",
+    val category: String = "Memories",
+    val date: String = "",
+    val imageUrl: String = "",
+    val caption: String = "",
+    val isActive: Boolean = true
+) {
+    val directImageUrl: String
+        get() {
+            if (imageUrl.isBlank()) return ""
+            if (imageUrl.contains("drive.google.com") || imageUrl.contains("drive.usercontent.google.com")) {
+                val fileId = ProgramEvent.extractGoogleDriveFileId(imageUrl)
+                if (fileId.isNotBlank()) {
+                    return "https://lh3.googleusercontent.com/d/$fileId"
+                }
+            }
+            if (imageUrl.startsWith("assets/")) {
+                return "https://jeremiahgodly.github.io/centre-youth/$imageUrl"
+            }
+            return imageUrl
+        }
+}
+
+data class LeaderboardEntry(
+    val id: String = "",
+    val name: String = "",
+    val parish: String = "",
+    val score: Int = 0,
+    val stars: Int = 0,
+    val highestLevel: Int = 1,
+    val updatedAt: String = ""
+)

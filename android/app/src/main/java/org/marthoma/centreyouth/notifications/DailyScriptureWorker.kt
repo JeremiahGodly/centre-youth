@@ -14,6 +14,9 @@ class DailyScriptureWorker(
     override suspend fun doWork(): Result {
         return try {
             val repo = CentreRepository(appContext)
+            if (!repo.isDailyNotificationsEnabled()) {
+                return Result.success()
+            }
             val upcoming = repo.getUpcomingSunday()
             val centreInfo = repo.getCentreInfo()
 
@@ -70,6 +73,10 @@ class DailyScriptureWorker(
                 ExistingPeriodicWorkPolicy.KEEP,
                 dailyWorkRequest
             )
+        }
+
+        fun cancelDailyScripture(context: Context) {
+            WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
         }
     }
 }

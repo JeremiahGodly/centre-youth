@@ -131,8 +131,11 @@ In your Google Sheet, open **Extensions** > **Apps Script**, replace everything 
  * Supports:
  *  - Programs (Events, Kalamela, Camps, Posters)
  *  - Leaders (Office Bearers, Photos, Contact Info)
- *  - Parishes (15 Parishes in Alphabetical order, Vicars, Maps, Contacts)
+ *  - Parishes (15 Parishes in Alphabetical order, Presidents, Maps, Contacts)
  *  - ParishActivities (Activities & Events under each Parish collapsible window)
+ *  - PrayerWall (Shared prayer requests + live POST submissions & pray counter)
+ *  - Gallery (Google Drive image links & entire Google Drive Folders)
+ *  - Leaderboard (Centre Bible Quiz high scores)
  */
 
 function doGet(e) {
@@ -149,8 +152,17 @@ function doGet(e) {
   // 3. Get Parishes & Parish Activities
   var parishSheet = ss.getSheetByName("Parishes") || ss.getSheetByName("Parish") || ss.getSheetByName("Churches");
   var parishEventsSheet = ss.getSheetByName("ParishActivities") || ss.getSheetByName("ParishEvents") || ss.getSheetByName("Activities");
-  
   var parishes = parseParishes(parishSheet, parishEventsSheet);
+
+  // 4. Get Prayer Wall, Gallery & Leaderboard
+  var prayerSheet = ss.getSheetByName("PrayerWall") || ss.getSheetByName("Prayers");
+  var prayerWall = prayerSheet ? parsePrayerWall(prayerSheet) : [];
+
+  var gallerySheet = ss.getSheetByName("Gallery") || ss.getSheetByName("Photos");
+  var gallery = gallerySheet ? parseGallery(gallerySheet) : [];
+
+  var leaderboardSheet = ss.getSheetByName("Leaderboard") || ss.getSheetByName("QuizScores");
+  var leaderboard = leaderboardSheet ? parseLeaderboard(leaderboardSheet) : [];
 
   var tabParam = (e && e.parameter && e.parameter.tab) ? e.parameter.tab.toLowerCase().trim() : "";
   if (tabParam === "leaders") {
@@ -162,13 +174,102 @@ function doGet(e) {
   if (tabParam === "parishes" || tabParam === "parish") {
     return createJsonResponse(parishes);
   }
+  if (tabParam === "prayerwall" || tabParam === "prayers") {
+    return createJsonResponse(prayerWall);
+  }
+  if (tabParam === "gallery" || tabParam === "photos") {
+    return createJsonResponse(gallery);
+  }
+  if (tabParam === "leaderboard" || tabParam === "scores") {
+    return createJsonResponse(leaderboard);
+  }
 
   // Default: Return combined payload
   return createJsonResponse({
     programs: programs,
     leaders: leaders,
-    parishes: parishes
+    parishes: parishes,
+    prayerWall: prayerWall,
+    gallery: gallery,
+    leaderboard: leaderboard
   });
+}
+
+function doPost(e) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var body = JSON.parse(e.postData.contents || "{}");
+    var action = body.action || "";
+
+    if (action === "submitPrayer") {
+      var sheet = ss.getSheetByName("PrayerWall");
+      if (!sheet) {
+        sheet = ss.insertSheet("PrayerWall");
+        sheet.appendRow(["Id", "Name", "Parish", "Category", "Request", "Date", "PrayedCount", "IsActive"]);
+      }
+      sheet.insertRowBefore(2);
+      sheet.getRange(2, 1, 1, 8).setValues([[
+        body.id || ("pw-" + Date.now()),
+        body.name || "Anonymous",
+        body.parish || "Centre General",
+        body.category || "General",
+        body.request || "",
+        body.date || Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd"),
+        1,
+        true
+      ]]);
+      return createJsonResponse({ status: "ok", action: action });
+    }
+
+    if (action === "prayIncrement") {
+      var pSheet = ss.getSheetByName("PrayerWall");
+      if (pSheet && pSheet.getLastRow() >= 2) {
+        var rows = pSheet.getDataRange().getValues();
+        for (var i = 1; i < rows.length; i++) {
+          if (String(rows[i][0]).trim() === String(body.id).trim()) {
+            var current = parseInt(rows[i][6], 10) || 0;
+            pSheet.getRange(i + 1, 7).setValue(current + 1);
+            break;
+          }
+        }
+      }
+      return createJsonResponse({ status: "ok", action: action });
+    }
+
+    if (action === "submitScore") {
+      var lbSheet = ss.getSheetByName("Leaderboard");
+      if (!lbSheet) {
+        lbSheet = ss.insertSheet("Leaderboard");
+        lbSheet.appendRow(["Name", "Parish", "Score", "Stars", "HighestLevel", "UpdatedAt"]);
+      }
+      var targetName = String(body.name || "").trim();
+      var targetParish = String(body.parish || "").trim();
+      var newScore = parseInt(body.score, 10) || 0;
+      var newStars = parseInt(body.stars, 10) || 0;
+      var newLvl = parseInt(body.highestLevel, 10) || 1;
+      var updated = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd");
+
+      var lbRows = lbSheet.getDataRange().getValues();
+      var foundRow = -1;
+      for (var r = 1; r < lbRows.length; r++) {
+        if (String(lbRows[r][0]).trim().toLowerCase() === targetName.toLowerCase() &&
+            String(lbRows[r][1]).trim().toLowerCase() === targetParish.toLowerCase()) {
+          foundRow = r + 1;
+          break;
+        }
+      }
+      if (foundRow > 0) {
+        lbSheet.getRange(foundRow, 3, 1, 4).setValues([[newScore, newStars, newLvl, updated]]);
+      } else {
+        lbSheet.appendRow([targetName, targetParish, newScore, newStars, newLvl, updated]);
+      }
+      return createJsonResponse({ status: "ok", action: action });
+    }
+
+    return createJsonResponse({ status: "ignored", message: "Unknown action" });
+  } catch (err) {
+    return createJsonResponse({ status: "error", message: String(err) });
+  }
 }
 
 function parseSheet(sheet, type) {
@@ -433,6 +534,127 @@ function parseParishes(parishSheet, activitiesSheet) {
   return parishes;
 }
 
+function parsePrayerWall(sheet) {
+  if (!sheet || sheet.getLastRow() < 2) return [];
+  var rows = sheet.getDataRange().getValues();
+  var headers = rows[0].map(function(h) { return String(h).trim().toLowerCase().replace(/[^a-z0-9]/g, ''); });
+  var result = [];
+  for (var i = 1; i < rows.length; i++) {
+    var r = rows[i];
+    if (!r[0] && !r[4]) continue;
+    var obj = {};
+    for (var j = 0; j < headers.length; j++) {
+      var val = r[j];
+      if (val instanceof Date) val = Utilities.formatDate(val, Session.getScriptTimeZone(), "yyyy-MM-dd");
+      obj[headers[j]] = String(val || "").trim();
+    }
+    var reqText = obj.request || obj.prayer || obj.message || "";
+    if (!reqText) continue;
+    var isActive = (obj.isactive !== undefined && obj.isactive !== "") ? String(obj.isactive).toUpperCase() !== "FALSE" : true;
+    if (!isActive) continue;
+    result.push({
+      id: obj.id || ("pw-" + i),
+      name: obj.name || "Anonymous",
+      parish: obj.parish || "Centre General",
+      category: obj.category || "General",
+      request: reqText,
+      date: obj.date || "",
+      prayedCount: parseInt(obj.prayedcount, 10) || 0,
+      isActive: true
+    });
+  }
+  return result;
+}
+
+function parseGallery(sheet) {
+  if (!sheet || sheet.getLastRow() < 2) return [];
+  var rows = sheet.getDataRange().getValues();
+  var headers = rows[0].map(function(h) { return String(h).trim().toLowerCase().replace(/[^a-z0-9]/g, ''); });
+  var result = [];
+  for (var i = 1; i < rows.length; i++) {
+    var r = rows[i];
+    if (!r[0] && !r[1] && !r[4]) continue;
+    var obj = {};
+    for (var j = 0; j < headers.length; j++) {
+      var val = r[j];
+      if (val instanceof Date) val = Utilities.formatDate(val, Session.getScriptTimeZone(), "yyyy-MM-dd");
+      obj[headers[j]] = String(val || "").trim();
+    }
+    var url = obj.imageurl || obj.drivelink || obj.url || obj.src || obj.folderurl || "";
+    if (!url) continue;
+    var isActive = (obj.isactive !== undefined && obj.isactive !== "") ? String(obj.isactive).toUpperCase() !== "FALSE" : true;
+    if (!isActive) continue;
+
+    // Automatically expand a Google Drive Folder link into individual images
+    var folderMatch = url.match(/folders\/([a-zA-Z0-9_-]+)/);
+    if (folderMatch && folderMatch[1]) {
+      try {
+        var folder = DriveApp.getFolderById(folderMatch[1]);
+        var files = folder.getFiles();
+        var count = 0;
+        while (files.hasNext() && count < 40) {
+          var file = files.next();
+          if (file.getMimeType().indexOf("image/") === 0) {
+            result.push({
+              id: "gal-drv-" + file.getId(),
+              title: file.getName().replace(/\.[^/.]+$/, ""),
+              titleMl: obj.titleml || "",
+              category: obj.category || "Drive Memories",
+              date: obj.date || Utilities.formatDate(file.getDateCreated(), Session.getScriptTimeZone(), "yyyy-MM-dd"),
+              imageUrl: "https://drive.google.com/file/d/" + file.getId() + "/view?usp=sharing",
+              caption: obj.caption || folder.getName(),
+              isActive: true
+            });
+            count++;
+          }
+        }
+      } catch (err) {}
+    } else {
+      result.push({
+        id: obj.id || ("gal-" + i),
+        title: obj.title || obj.titleen || "Centre Memory",
+        titleMl: obj.titleml || "",
+        category: obj.category || "Memories",
+        date: obj.date || "",
+        imageUrl: url,
+        caption: obj.caption || "",
+        isActive: true
+      });
+    }
+  }
+  return result;
+}
+
+function parseLeaderboard(sheet) {
+  if (!sheet || sheet.getLastRow() < 2) return [];
+  var rows = sheet.getDataRange().getValues();
+  var headers = rows[0].map(function(h) { return String(h).trim().toLowerCase().replace(/[^a-z0-9]/g, ''); });
+  var result = [];
+  for (var i = 1; i < rows.length; i++) {
+    var r = rows[i];
+    if (!r[0]) continue;
+    var obj = {};
+    for (var j = 0; j < headers.length; j++) {
+      var val = r[j];
+      if (val instanceof Date) val = Utilities.formatDate(val, Session.getScriptTimeZone(), "yyyy-MM-dd");
+      obj[headers[j]] = String(val || "").trim();
+    }
+    var name = obj.name || "";
+    if (!name) continue;
+    result.push({
+      id: "lb-" + i,
+      name: name,
+      parish: obj.parish || "Centre Youth",
+      score: parseInt(obj.score, 10) || 0,
+      stars: parseInt(obj.stars, 10) || 0,
+      highestLevel: parseInt(obj.highestlevel, 10) || 1,
+      updatedAt: obj.updatedat || ""
+    });
+  }
+  result.sort(function(a, b) { return b.score - a.score; });
+  return result;
+}
+
 function createJsonResponse(data) {
   var output = ContentService.createTextOutput(JSON.stringify(data));
   output.setMimeType(ContentService.MimeType.JSON);
@@ -442,9 +664,18 @@ function createJsonResponse(data) {
 
 ---
 
-## 7. How to Deploy the Updated Web App
+## 7. Optional New Tabs (`PrayerWall`, `Gallery`, `Leaderboard`)
+You can add these optional tabs to your Sheet (`PrayerWall` and `Leaderboard` are also **auto-created automatically** by the app the very first time anyone submits a prayer or score!):
+
+* **`Gallery` Tab Columns:** `Title` | `TitleMl` | `Category` | `Date` | `ImageUrl` (paste either a single Drive photo link OR an entire shared **Google Drive Folder link**!) | `Caption` | `IsActive`
+* **`PrayerWall` Tab Columns:** `Id` | `Name` | `Parish` | `Category` | `Request` | `Date` | `PrayedCount` | `IsActive`
+* **`Leaderboard` Tab Columns:** `Name` | `Parish` | `Score` | `Stars` | `HighestLevel` | `UpdatedAt`
+
+---
+
+## 8. How to Deploy the Updated Web App
 1. In Google Apps Script, click **Deploy** > **Manage deployments**.
 2. Click the **pencil icon (Edit)** next to your active Web app deployment.
 3. Under **Version**, select **New version**.
-4. Click **Deploy**.
-   > Your Web App URL remains the exact same, and both the Android App and website will immediately start syncing all Parishes and Parish Activities!
+4. Click **Deploy** (accept any Drive read permission prompt if using Drive folder auto-sync).
+   > Your Web App URL remains the exact same, and all tabs (Programs, Leaders, Parishes, Parish Activities, Prayer Wall, Gallery, and Quiz Leaderboard) will sync live!
