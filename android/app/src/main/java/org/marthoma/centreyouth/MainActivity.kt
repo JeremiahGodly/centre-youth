@@ -110,6 +110,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         repository = CentreRepository(this)
+        repository.recordDailyStreakCheckIn()
         themeModeState.value = repository.getThemeMode()
         handleIntent(intent)
         checkNotificationPermission()

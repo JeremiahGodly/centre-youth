@@ -5,7 +5,10 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -123,10 +126,11 @@ fun BibleQuizScreen(
 
     // Saved totals refresh trigger
     var refreshTrigger by remember { mutableIntStateOf(0) }
+    val context = LocalContext.current
 
     fun startLevel(levelNum: Int) {
-        activeLevel = levelNum.coerceIn(1, 10)
-        questions = BibleQuizBank.getQuestionsForLevel(activeLevel)
+        activeLevel = levelNum.coerceIn(1, 100)
+        questions = BibleQuizBank.getQuestionsForLevel(context, activeLevel)
         currentIndex = 0
         selectedOption = null
         isTimedOut = false
@@ -268,7 +272,7 @@ fun BibleQuizScreen(
                                         if (nextStreak > maxStreak) maxStreak = nextStreak
                                         correctCount++
 
-                                        val levelMultiplier = 1.0f + (levelInfo.level - 1) * 0.25f
+                                        val levelMultiplier = 1.0f + (levelInfo.level - 1) * 0.04f
                                         val timeBonus = ((remainingSec.toFloat() / levelInfo.timePerQuestionSec.toFloat()) * 60f).toInt()
                                         val streakBonus = (nextStreak - 1) * 20
                                         val earned = ((100 + timeBonus + streakBonus) * levelMultiplier).toInt()
@@ -304,6 +308,7 @@ fun BibleQuizScreen(
                                         correctCount = correctCount,
                                         totalCount = questions.size
                                     )
+                                    repository.markQuizPlayedToday()
                                     refreshTrigger++
                                     stage = QuizStage.RESULT
                                 }
@@ -325,7 +330,7 @@ fun BibleQuizScreen(
                         isNewHighScore = isNewHighScore,
                         rainbowSpin = rainbowSpin,
                         onNextLevel = {
-                            if (activeLevel < 10) {
+                            if (activeLevel < 100) {
                                 startLevel(activeLevel + 1)
                             } else {
                                 stage = QuizStage.LEVEL_HUB
@@ -350,8 +355,17 @@ private fun QuizLevelHubView(
 ) {
     val totalStars = remember(refreshTrigger) { repository.getQuizTotalStars() }
     val totalScore = remember(refreshTrigger) { repository.getQuizTotalScore() }
+    val dailyStreak = remember(refreshTrigger) { repository.getDailyStreak().coerceAtLeast(1) }
+    val longestStreak = remember(refreshTrigger) { repository.getLongestDailyStreak().coerceAtLeast(1) }
     val recommendedLevel = remember(refreshTrigger) {
-        (1..10).firstOrNull { repository.getQuizStars(it) < 3 } ?: 1
+        (1..100).firstOrNull { repository.getQuizStars(it) < 3 } ?: 1
+    }
+    var selectedTier by remember {
+        mutableIntStateOf(((recommendedLevel - 1) / 10) + 1)
+    }
+    val displayedLevels = remember(selectedTier) {
+        if (selectedTier == 0) BibleQuizBank.levels
+        else BibleQuizBank.levels.filter { ((it.level - 1) / 10) + 1 == selectedTier }
     }
 
     LazyColumn(
@@ -401,9 +415,9 @@ private fun QuizLevelHubView(
                         shape = CircleShape
                     ) {
                         val badgeText = when (language) {
-                            QuizLanguage.EN -> "⚡ 120 QUESTIONS • 10 LEVELS ⚡"
-                            QuizLanguage.ML -> "⚡ 120 ചോദ്യങ്ങൾ • 10 ലെവലുകൾ ⚡"
-                            QuizLanguage.BOTH -> "⚡ 120 QUESTIONS • 120 ചോദ്യങ്ങൾ ⚡"
+                            QuizLanguage.EN -> "⚡ 500 QUESTIONS • 100 LEVELS ⚡"
+                            QuizLanguage.ML -> "⚡ 500 ചോദ്യങ്ങൾ • 100 ലെവലുകൾ ⚡"
+                            QuizLanguage.BOTH -> "⚡ 500 QUESTIONS • 100 ലെവലുകൾ ⚡"
                         }
                         Text(
                             text = badgeText,
@@ -458,7 +472,7 @@ private fun QuizLevelHubView(
 
                     if (language != QuizLanguage.ML) {
                         Text(
-                            text = "Progressive difficulty from Level 1 (Easy) to Level 10 (Ultra Hard) with tighter countdown timers!",
+                            text = "Progressive difficulty from Level 1 (Easy) to Level 100 (Master) with tighter countdown timers!",
                             color = Color(0xFFCBD5E1),
                             fontSize = 12.5.sp,
                             textAlign = TextAlign.Center,
@@ -467,7 +481,7 @@ private fun QuizLevelHubView(
                     }
                     if (language != QuizLanguage.EN) {
                         Text(
-                            text = "ലെവൽ 1 (ലളിതം) മുതൽ ലെവൽ 10 (മഹാ കഠിനം) വരെ സമയപരിധിയോടെയുള്ള മത്സരം!",
+                            text = "ലെവൽ 1 (ലളിതം) മുതൽ ലെവൽ 100 (മഹാവിദഗ്ധം) വരെ സമയപരിധിയോടെയുള്ള മത്സരം!",
                             color = if (language == QuizLanguage.BOTH) Color(0xFF94A3B8) else Color(0xFFCBD5E1),
                             fontSize = 12.sp,
                             textAlign = TextAlign.Center,
@@ -479,26 +493,36 @@ private fun QuizLevelHubView(
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         ArenaStatPill(
                             label = when (language) {
-                                QuizLanguage.EN -> "STARS EARNED"
-                                QuizLanguage.ML -> "നേടിയ നക്ഷത്രങ്ങൾ"
-                                QuizLanguage.BOTH -> "STARS • നക്ഷത്രങ്ങൾ"
+                                QuizLanguage.EN -> "STARS"
+                                QuizLanguage.ML -> "നക്ഷത്രങ്ങൾ"
+                                QuizLanguage.BOTH -> "STARS"
                             },
-                            value = "⭐ $totalStars / 30",
+                            value = "⭐ $totalStars/300",
                             accent = Color(0xFFFBBF24),
                             modifier = Modifier.weight(1f)
                         )
                         ArenaStatPill(
                             label = when (language) {
-                                QuizLanguage.EN -> "TOTAL SCORE"
-                                QuizLanguage.ML -> "ആകെ സ്കോർ"
-                                QuizLanguage.BOTH -> "SCORE • സ്കോർ"
+                                QuizLanguage.EN -> "SCORE"
+                                QuizLanguage.ML -> "സ്കോർ"
+                                QuizLanguage.BOTH -> "SCORE"
                             },
                             value = "🏆 $totalScore",
                             accent = Color(0xFF22D3EE),
+                            modifier = Modifier.weight(1f)
+                        )
+                        ArenaStatPill(
+                            label = when (language) {
+                                QuizLanguage.EN -> "STREAK (MAX $longestStreak)"
+                                QuizLanguage.ML -> "സ്ട്രീക്ക് (മികച്ചത് $longestStreak)"
+                                QuizLanguage.BOTH -> "STREAK • $longestStreak"
+                            },
+                            value = "🔥 $dailyStreak ${if (dailyStreak == 1) "Day" else "Days"}",
+                            accent = Color(0xFFFB923C),
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -553,23 +577,86 @@ private fun QuizLevelHubView(
             }
         }
 
-        // Section Label
+        // Section Label + Tier Jump Filter Chips
         item {
-            Text(
-                text = when (language) {
-                    QuizLanguage.EN -> "Select Difficulty Level (1 → 10)"
-                    QuizLanguage.ML -> "ലെവൽ തിരഞ്ഞെടുക്കുക (1 → 10)"
-                    QuizLanguage.BOTH -> "Select Level • ലെവൽ തിരഞ്ഞെടുക്കുക (1 → 10)"
-                },
-                color = Color.White,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 4.dp)
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text(
+                    text = when (language) {
+                        QuizLanguage.EN -> "Select Difficulty Level (1 → 100)"
+                        QuizLanguage.ML -> "ലെവൽ തിരഞ്ഞെടുക്കുക (1 → 100)"
+                        QuizLanguage.BOTH -> "Select Level • ലെവൽ തിരഞ്ഞെടുക്കുക (1 → 100)"
+                    },
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    item {
+                        val isSelected = selectedTier == 0
+                        FilterChip(
+                            selected = isSelected,
+                            onClick = { selectedTier = 0 },
+                            label = {
+                                Text(
+                                    text = if (language == QuizLanguage.ML) "എല്ലാം (1–100)" else "All (1–100)",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 12.sp
+                                )
+                            },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = Color(0xFF0EA5E9).copy(alpha = 0.28f),
+                                selectedLabelColor = Color(0xFF7DD3FC),
+                                containerColor = Color.White.copy(alpha = 0.08f),
+                                labelColor = Color(0xFFCBD5E1)
+                            ),
+                            border = FilterChipDefaults.filterChipBorder(
+                                enabled = true,
+                                selected = isSelected,
+                                borderColor = Color.White.copy(alpha = 0.16f),
+                                selectedBorderColor = Color(0xFF38BDF8)
+                            )
+                        )
+                    }
+                    items(BibleQuizBank.tiers) { tierSpec ->
+                        val startLvl = (tierSpec.tier - 1) * 10 + 1
+                        val endLvl = tierSpec.tier * 10
+                        val isSelected = selectedTier == tierSpec.tier
+                        val tierColor = Color(tierSpec.primaryColorHex)
+                        FilterChip(
+                            selected = isSelected,
+                            onClick = { selectedTier = tierSpec.tier },
+                            label = {
+                                Text(
+                                    text = "$startLvl–$endLvl",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 12.sp
+                                )
+                            },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = tierColor.copy(alpha = 0.28f),
+                                selectedLabelColor = Color.White,
+                                containerColor = Color.White.copy(alpha = 0.08f),
+                                labelColor = Color(0xFFCBD5E1)
+                            ),
+                            border = FilterChipDefaults.filterChipBorder(
+                                enabled = true,
+                                selected = isSelected,
+                                borderColor = Color.White.copy(alpha = 0.16f),
+                                selectedBorderColor = tierColor
+                            )
+                        )
+                    }
+                }
+            }
         }
 
-        // 10 Glowing Level Cards
-        items(BibleQuizBank.levels) { lvl ->
+        // Filtered Glowing Level Cards
+        items(displayedLevels, key = { it.level }) { lvl ->
             val bestScore = remember(refreshTrigger, lvl.level) {
                 repository.getQuizBestScore(lvl.level)
             }
@@ -1543,7 +1630,7 @@ private fun QuizLevelResultView(
 
         Spacer(modifier = Modifier.height(22.dp))
 
-        if (levelInfo.level < 10) {
+        if (levelInfo.level < 100) {
             Button(
                 onClick = onNextLevel,
                 modifier = Modifier
@@ -1581,9 +1668,9 @@ private fun QuizLevelResultView(
             ) {
                 Text(
                     text = when (language) {
-                        QuizLanguage.EN -> "👑 You reached Omega Grandmaster (Level 10)!"
-                        QuizLanguage.ML -> "👑 നിങ്ങൾ ഒമേഗ മഹാഗുരു (ലെവൽ 10) പൂർത്തിയാക്കി!"
-                        QuizLanguage.BOTH -> "👑 Omega Grandmaster (Level 10 • ലെവൽ 10)!"
+                        QuizLanguage.EN -> "👑 You conquered Bible Quiz Mastery (Level 100)!"
+                        QuizLanguage.ML -> "👑 നിങ്ങൾ ബൈബിൾ ക്വിസ് മഹാഗുരു (ലെവൽ 100) പൂർത്തിയാക്കി!"
+                        QuizLanguage.BOTH -> "👑 Bible Quiz Grandmaster (Level 100 • ലെവൽ 100)!"
                     },
                     color = Color(0xFFFDE68A),
                     fontSize = 14.sp,

@@ -46,6 +46,9 @@ fun HomeScreen(
     val stats = repository.getStats()
     val pillars = repository.getPillars()
     val todayLectionary = repository.getTodayLectionary()
+    val dailyStreak = remember { repository.getDailyStreak().coerceAtLeast(1) }
+    val longestStreak = remember { repository.getLongestDailyStreak().coerceAtLeast(1) }
+    val playedQuizToday = remember { repository.hasPlayedQuizToday() }
 
     var selectedProgram by remember { mutableStateOf<ProgramEvent?>(null) }
     var programsList by remember { mutableStateOf(repository.getPrograms()) }
@@ -115,6 +118,33 @@ fun HomeScreen(
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f),
+                        border = BorderStroke(
+                            1.dp,
+                            if (playedQuizToday) GoldAccent.copy(alpha = 0.7f)
+                            else MaterialTheme.colorScheme.outlineVariant
+                        ),
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable { onNavigateToQuiz() }
+                    ) {
+                        Text(
+                            text = if (playedQuizToday) {
+                                "🔥 $dailyStreak-Day Streak • Quiz Played Today ✓"
+                            } else {
+                                "🔥 $dailyStreak-Day Streak (Best $longestStreak) • Play Daily Quiz →"
+                            },
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = if (playedQuizToday) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                         )
                     }

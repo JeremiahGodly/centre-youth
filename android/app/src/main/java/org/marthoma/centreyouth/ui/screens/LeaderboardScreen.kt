@@ -135,8 +135,9 @@ fun LeaderboardScreen(
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
                         MyStatChip("Your Score", "$myScore pts", Color(0xFF38BDF8))
-                        MyStatChip("Stars", "⭐ $myStars/30", Color(0xFFFBBF24))
+                        MyStatChip("Stars", "⭐ $myStars/300", Color(0xFFFBBF24))
                         MyStatChip("Max Level", "Lvl $myHighestLevel", Color(0xFF34D399))
+                        MyStatChip("Streak", "🔥 ${repository.getDailyStreak().coerceAtLeast(1)}d", Color(0xFFFB923C))
                     }
 
                     Spacer(modifier = Modifier.height(14.dp))
@@ -382,7 +383,7 @@ private fun SubmitScoreDialog(
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
-                    text = "Score: $score pts • ⭐ $stars / 30 Stars",
+                    text = "Score: $score pts • ⭐ $stars / 300 Stars",
                     style = MaterialTheme.typography.labelLarge,
                     color = GoldAccent,
                     fontWeight = FontWeight.Bold

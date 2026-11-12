@@ -597,9 +597,9 @@ class CentreRepository(private val context: Context) {
 
     fun getQuizBestCorrect(level: Int): Int = prefs.getInt("quiz_best_correct_$level", 0)
 
-    fun getQuizTotalScore(): Int = (1..10).sumOf { getQuizBestScore(it) }
+    fun getQuizTotalScore(): Int = (1..100).sumOf { getQuizBestScore(it) }
 
-    fun getQuizTotalStars(): Int = (1..10).sumOf { getQuizStars(it) }
+    fun getQuizTotalStars(): Int = (1..100).sumOf { getQuizStars(it) }
 
     fun getQuizLanguage(): QuizLanguage {
         val raw = prefs.getString("quiz_language", QuizLanguage.BOTH.name)
@@ -615,7 +615,71 @@ class CentreRepository(private val context: Context) {
     }
 
     fun getHighestQuizLevel(): Int {
-        return (10 downTo 1).firstOrNull { getQuizBestScore(it) > 0 } ?: 1
+        return (100 downTo 1).firstOrNull { getQuizBestScore(it) > 0 } ?: 1
+    }
+
+    // ==================== DAILY STREAK TRACKER ====================
+
+    private fun dateKeyForCalendar(cal: Calendar): String {
+        return "${cal.get(Calendar.YEAR)}-${cal.get(Calendar.DAY_OF_YEAR)}"
+    }
+
+    fun recordDailyStreakCheckIn(): Int {
+        val todayCal = Calendar.getInstance()
+        val yesterdayCal = (todayCal.clone() as Calendar).apply {
+            add(Calendar.DAY_OF_YEAR, -1)
+        }
+        val todayKey = dateKeyForCalendar(todayCal)
+        val yesterdayKey = dateKeyForCalendar(yesterdayCal)
+
+        val lastDay = prefs.getString("daily_streak_last_day", null)
+        val current = prefs.getInt("daily_streak_current", 0)
+        val longest = prefs.getInt("daily_streak_longest", 0)
+
+        val updated = when (lastDay) {
+            todayKey -> current.coerceAtLeast(1)
+            yesterdayKey -> current + 1
+            else -> 1
+        }
+        val newLongest = maxOf(longest, updated)
+
+        if (lastDay != todayKey || updated != current || newLongest != longest) {
+            prefs.edit()
+                .putInt("daily_streak_current", updated)
+                .putInt("daily_streak_longest", newLongest)
+                .putString("daily_streak_last_day", todayKey)
+                .apply()
+        }
+        return updated
+    }
+
+    fun getDailyStreak(): Int {
+        val todayCal = Calendar.getInstance()
+        val yesterdayCal = (todayCal.clone() as Calendar).apply {
+            add(Calendar.DAY_OF_YEAR, -1)
+        }
+        val todayKey = dateKeyForCalendar(todayCal)
+        val yesterdayKey = dateKeyForCalendar(yesterdayCal)
+        val lastDay = prefs.getString("daily_streak_last_day", null)
+        return when (lastDay) {
+            todayKey, yesterdayKey -> prefs.getInt("daily_streak_current", 0).coerceAtLeast(1)
+            else -> 0
+        }
+    }
+
+    fun getLongestDailyStreak(): Int {
+        return maxOf(prefs.getInt("daily_streak_longest", 0), getDailyStreak())
+    }
+
+    fun hasPlayedQuizToday(): Boolean {
+        val todayKey = dateKeyForCalendar(Calendar.getInstance())
+        return prefs.getString("daily_quiz_played_day", null) == todayKey
+    }
+
+    fun markQuizPlayedToday() {
+        recordDailyStreakCheckIn()
+        val todayKey = dateKeyForCalendar(Calendar.getInstance())
+        prefs.edit().putString("daily_quiz_played_day", todayKey).apply()
     }
 
     fun getPlayerName(): String = prefs.getString("player_profile_name", "") ?: ""
