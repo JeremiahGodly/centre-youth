@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_app">സെന്റർ യൂത്ത് ആപ്പിനെക്കുറിച്ച്</string>
+    <string name="about_app">കീഴില്ലം-മൂന്നാർ MTYS-നെക്കുറിച്ച്</string>
     <string name="all_categories">എല്ലാം</string>
     <string name="app_full_name">കീഴില്ലം - മൂന്നാർ സെന്റർ മാർത്തോമ്മാ യുവജനസഖ്യം</string>
     <string name="app_motto_verse">"ഈ ലോകത്തിന് അനുരൂപരാകാതെ, നിങ്ങളുടെ മനസ്സിനെ നവീകരിച്ച് രൂപാന്തരപ്പെടുവിൻ." — റോമർ 12:2</string>
-    <string name="app_name">സെന്റർ യൂത്ത്</string>
+    <string name="app_name">കീഴില്ലം-മൂന്നാർ MTYS</string>
     <string name="call">വിളിക്കുക</string>
     <string name="camp_banner_subtitle">ആരാധന, സാക്ഷ്യം, കൂട്ടായ്മ</string>
     <string name="camp_banner_title">സി-ഷോർ യൂത്ത് ക്യാമ്പ് 2026</string>
@@ -47,6 +47,8 @@
     <string name="shortcut_leadership_short">നേതാക്കൾ</string>
     <string name="shortcut_lectionary_long">ഇന്നത്തെ ലെക്ഷനറി</string>
     <string name="shortcut_lectionary_short">ലെക്ഷനറി</string>
+    <string name="shortcut_quiz_long">ബൈബിൾ ക്വിസ് (10 ലെവലുകൾ)</string>
+    <string name="shortcut_quiz_short">ബൈബിൾ ക്വിസ്</string>
     <string name="shortcut_songs_long">യുവജന ഗാനങ്ങൾ</string>
     <string name="shortcut_songs_short">ഗാനങ്ങൾ</string>
     <string name="terms_of_service">സേവന നിബന്ധനകൾ (Terms)</string>

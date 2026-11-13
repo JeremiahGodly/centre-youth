@@ -6,6 +6,7 @@
     <color name="gold_light">#FDE68A</color>
     <color name="purple_primary">#5B21B6</color>
     <color name="purple_primary_variant">#4C1D95</color>
+    <color name="startup_cosmic">#090D16</color>
     <color name="surface_dark">#151D2F</color>
     <color name="surface_light">#FFFFFF</color>
     <color name="teal_secondary">#0D9488</color>
@@ -13,12 +14,12 @@
     <color name="text_primary_light">#0F172A</color>
     <color name="text_secondary_dark">#94A3B8</color>
     <color name="text_secondary_light">#475569</color>
-    <string name="about_app">About Centre Youth</string>
+    <string name="about_app">About Keezhillam-Munnar MTYS</string>
     <string name="all_categories">All</string>
     <string name="allow">Allow</string>
     <string name="app_full_name">Keezhillam - Munnar Centre Mar Thoma Yuvajana Sakhyam</string>
     <string name="app_motto_verse">"Do not conform to the pattern of this world, but be transformed by the renewing of your mind." — Romans 12:2</string>
-    <string name="app_name">Centre Youth</string>
+    <string name="app_name">Keezhillam-Munnar MTYS</string>
     <string name="call">Call</string>
     <string name="camp_banner_subtitle">Rooted in Worship, Witness &amp; Fellowship</string>
     <string name="camp_banner_title">C-SHORE Youth Camp 2026</string>
@@ -66,6 +67,8 @@
     <string name="shortcut_leadership_short">Leaders</string>
     <string name="shortcut_lectionary_long">Today’s Liturgical Lectionary</string>
     <string name="shortcut_lectionary_short">Lectionary</string>
+    <string name="shortcut_quiz_long">Bible Quiz Arena (10 Levels)</string>
+    <string name="shortcut_quiz_short">Bible Quiz</string>
     <string name="shortcut_songs_long">Youth Songs &amp; Hymns</string>
     <string name="shortcut_songs_short">Songs</string>
     <string name="terms_of_service">Terms of Service</string>
@@ -79,8 +82,9 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
     <style name="Theme.CentreYouth.Splash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/bg_light</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="windowSplashScreenBackground">@color/startup_cosmic</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_transparent</item>
+        <item name="android:windowBackground">@color/startup_cosmic</item>
         <item name="postSplashScreenTheme">@style/Theme.CentreYouth</item>
     </style>
 </resources>

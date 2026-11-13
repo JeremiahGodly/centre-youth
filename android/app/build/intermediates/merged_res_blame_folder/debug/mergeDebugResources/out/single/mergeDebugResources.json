@@ -8,14 +8,6 @@
         "source": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-main-82:/drawable/ic_stat_scripture.xml"
     },
     {
-        "merged": "org.marthoma.centreyouth.app-debug-80:/drawable_leader_gibin_saji.jpg.flat",
-        "source": "org.marthoma.centreyouth.app-main-82:/drawable/leader_gibin_saji.jpg"
-    },
-    {
-        "merged": "org.marthoma.centreyouth.app-debug-80:/drawable_leader_rev_james_george.jpg.flat",
-        "source": "org.marthoma.centreyouth.app-main-82:/drawable/leader_rev_james_george.jpg"
-    },
-    {
         "merged": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-debug-80:/drawable_ic_action_pause.xml.flat",
         "source": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-main-82:/drawable/ic_action_pause.xml"
     },
@@ -30,10 +22,6 @@
     {
         "merged": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-debug-80:/mipmap-xhdpi_ic_launcher.png.flat",
         "source": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-main-82:/mipmap-xhdpi/ic_launcher.png"
-    },
-    {
-        "merged": "org.marthoma.centreyouth.app-debug-80:/drawable_leader_aleena_mariya_joy.jpg.flat",
-        "source": "org.marthoma.centreyouth.app-main-82:/drawable/leader_aleena_mariya_joy.jpg"
     },
     {
         "merged": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-debug-80:/drawable_ic_launcher_foreground.xml.flat",
@@ -108,6 +96,10 @@
         "source": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-main-82:/mipmap-hdpi/ic_launcher.png"
     },
     {
+        "merged": "org.marthoma.centreyouth.app-debug-80:/xml_shortcuts.xml.flat",
+        "source": "org.marthoma.centreyouth.app-main-82:/xml/shortcuts.xml"
+    },
+    {
         "merged": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-debug-80:/xml_locales_config.xml.flat",
         "source": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-main-82:/xml/locales_config.xml"
     },
@@ -116,8 +108,8 @@
         "source": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-main-82:/mipmap-xhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "org.marthoma.centreyouth.app-debug-80:/drawable_leader_varghese_sabu.jpg.flat",
-        "source": "org.marthoma.centreyouth.app-main-82:/drawable/leader_varghese_sabu.jpg"
+        "merged": "org.marthoma.centreyouth.app-debug-80:/drawable_splash_transparent.xml.flat",
+        "source": "org.marthoma.centreyouth.app-main-82:/drawable/splash_transparent.xml"
     },
     {
         "merged": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-debug-80:/drawable_ic_launcher_background.xml.flat",
@@ -136,16 +128,16 @@
         "source": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-main-82:/xml/backup_rules.xml"
     },
     {
+        "merged": "org.marthoma.centreyouth.app-debug-80:/drawable_ic_nav_quiz.xml.flat",
+        "source": "org.marthoma.centreyouth.app-main-82:/drawable/ic_nav_quiz.xml"
+    },
+    {
         "merged": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-debug-80:/xml_data_extraction_rules.xml.flat",
         "source": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-main-82:/xml/data_extraction_rules.xml"
     },
     {
         "merged": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-debug-80:/drawable_app_logo.png.flat",
         "source": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-main-82:/drawable/app_logo.png"
-    },
-    {
-        "merged": "org.marthoma.centreyouth.app-debug-80:/drawable_leader_ashin_k_santhosh.jpg.flat",
-        "source": "org.marthoma.centreyouth.app-main-82:/drawable/leader_ashin_k_santhosh.jpg"
     },
     {
         "merged": "/Users/godlyvarghese/.gradle/daemon/8.10.2/org.marthoma.centreyouth.app-debug-80:/mipmap-xxhdpi_ic_launcher_round.png.flat",
