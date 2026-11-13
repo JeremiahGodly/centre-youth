@@ -26,6 +26,10 @@ android {
     signingConfigs {
         create("release") {
             val possibleKeystores = listOf(
+                project.rootProject.file("release.jks"),
+                project.file("release.jks"),
+                file("../release.jks"),
+                file("release.jks"),
                 project.rootProject.file("release.keystore"),
                 project.file("release.keystore"),
                 file("../release.keystore"),
@@ -50,6 +54,10 @@ android {
                 "proguard-rules.pro"
             )
             val possibleKeystores = listOf(
+                project.rootProject.file("release.jks"),
+                project.file("release.jks"),
+                file("../release.jks"),
+                file("release.jks"),
                 project.rootProject.file("release.keystore"),
                 project.file("release.keystore"),
                 file("../release.keystore"),
