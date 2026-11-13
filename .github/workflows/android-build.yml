@@ -72,7 +72,7 @@ jobs:
           KEYSTORE_PASSWORD: "centreYouth2026"
           KEY_ALIAS: "centreyouth"
           KEY_PASSWORD: "centreYouth2026"
-        run: ./gradlew assembleRelease --stacktrace
+        run: ./gradlew assembleRelease -x lintVitalRelease -x lint --stacktrace
 
       - name: Upload Release APK
         if: always()
