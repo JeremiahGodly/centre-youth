@@ -15,3 +15,13 @@ android/app/*.iml
 local.properties
 android/local.properties
 
+# Keystores & Build Artifacts (Keep private, never push to public GitHub!)
+*.keystore
+*.jks
+*.p12
+*.key
+*.aab
+*.apk
+release.properties
+keystore.properties
+
