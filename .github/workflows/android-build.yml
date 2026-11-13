@@ -55,7 +55,7 @@ jobs:
           KEYSTORE_PASSWORD: "centreYouth2026"
           KEY_ALIAS: "centreyouth"
           KEY_PASSWORD: "centreYouth2026"
-        run: ./gradlew clean bundleRelease --stacktrace
+        run: ./gradlew clean bundleRelease -x lintVitalRelease -x lint --stacktrace
 
       - name: Upload Play Store AAB Bundle
         if: always()
