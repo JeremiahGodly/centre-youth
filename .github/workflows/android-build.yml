@@ -55,17 +55,10 @@ jobs:
           KEYSTORE_PASSWORD: "centreYouth2026"
           KEY_ALIAS: "centreyouth"
           KEY_PASSWORD: "centreYouth2026"
-        run: ./gradlew bundleRelease --stacktrace
-
-      - name: Build Release & Debug APKs
-        working-directory: android
-        env:
-          KEYSTORE_PASSWORD: "centreYouth2026"
-          KEY_ALIAS: "centreyouth"
-          KEY_PASSWORD: "centreYouth2026"
-        run: ./gradlew assembleRelease assembleDebug --stacktrace
+        run: ./gradlew clean bundleRelease --stacktrace
 
       - name: Upload Play Store AAB Bundle
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Centre-Youth-PlayStore-AAB
@@ -73,12 +66,19 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-      - name: Upload Test APKs
+      - name: Build Release APK
+        working-directory: android
+        env:
+          KEYSTORE_PASSWORD: "centreYouth2026"
+          KEY_ALIAS: "centreyouth"
+          KEY_PASSWORD: "centreYouth2026"
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Upload Release APK
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Centre-Youth-APKs
-          path: |
-            android/app/build/outputs/apk/release/*.apk
-            android/app/build/outputs/apk/debug/*.apk
+          name: Centre-Youth-Release-APK
+          path: android/app/build/outputs/apk/release/*.apk
           if-no-files-found: warn
           retention-days: 30
